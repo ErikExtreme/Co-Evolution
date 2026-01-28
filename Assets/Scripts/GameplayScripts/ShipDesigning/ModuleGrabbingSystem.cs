@@ -28,20 +28,21 @@ public class ModuleGrabbingSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!click_Action.IsPressed())
+        if (grabbed_Object != null)
+            grabbed_Object.transform.position = Mouse.current.position.ReadValue();
+
+
+        if (click_Action.WasReleasedThisFrame())
         {
             grabbed_Object = null;
             LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup);
-            return;
-        }
-        
-        if (grabbed_Object != null)
-        {
-            grabbed_Object.transform.position = Mouse.current.position.ReadValue();
-            return;
         }
 
-
+        if (click_Action.WasPressedThisFrame() && grabbed_Object == null)
+            Set_Grabbed_Object();
+    }
+    private void Set_Grabbed_Object()
+    {
         pointer_Event_Data.position = Mouse.current.position.ReadValue();
 
         List<RaycastResult> results = new List<RaycastResult>();

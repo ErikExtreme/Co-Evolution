@@ -16,7 +16,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
     PointerEventData pointer_Event_Data;
     EventSystem eventSystem;
 
-    GameObject grabbed_Object;
+    Transform grabbed_Object_Transform;
     void Start()
     {
         click_Action = InputSystem.actions.FindAction("Click");
@@ -28,32 +28,42 @@ public class ModuleGrabbingSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (grabbed_Object != null)
-            grabbed_Object.transform.position = Mouse.current.position.ReadValue();
-
-
-        if (click_Action.WasReleasedThisFrame())
+        if (grabbed_Object_Transform != null)
         {
-            grabbed_Object = null;
-            LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup);
+            grabbed_Object_Transform.position = Mouse.current.position.ReadValue();
+
+
+            if (click_Action.WasReleasedThisFrame())
+            {
+                Transform placementPoint = Raycast_To_Get_Transform("PlacementPoint");
+
+                if (placementPoint != null)
+                {
+                    grabbed_Object_Transform.SetParent(placementPoint.parent);
+                    grabbed_Object_Transform.SetSiblingIndex(placementPoint.GetSiblingIndex());
+                    Destroy(placementPoint.gameObject);
+                }
+
+                grabbed_Object_Transform = null;
+                LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup);
+            }
         }
 
-        if (click_Action.WasPressedThisFrame() && grabbed_Object == null)
-            Set_Grabbed_Object();
+        if (click_Action.WasPressedThisFrame() && grabbed_Object_Transform == null)
+            grabbed_Object_Transform = Raycast_To_Get_Transform("UIModule");
     }
-    private void Set_Grabbed_Object()
+    private Transform Raycast_To_Get_Transform(string tagName)
     {
         pointer_Event_Data.position = Mouse.current.position.ReadValue();
 
         List<RaycastResult> results = new List<RaycastResult>();
         raycaster.Raycast(pointer_Event_Data, results);
 
-        if (results.Count <= 0)
-            return;
-
-        grabbed_Object = results[0].gameObject;
-
-        if (!grabbed_Object.CompareTag("UIModule"))
-            grabbed_Object = null;
+        foreach (RaycastResult result in results)
+        {
+            if (result.gameObject.CompareTag(tagName))
+                return result.gameObject.transform;
+        }
+        return null;
     }
 }

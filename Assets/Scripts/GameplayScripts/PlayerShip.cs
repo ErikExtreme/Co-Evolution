@@ -10,10 +10,9 @@ public class PlayerShip : MonoBehaviour
     [SerializeField] private float movementSpeed;
     [SerializeField] private float rotationSpeed;
 
-    //Movement type 1
     private InputAction followAction;
 
-    Rigidbody2D rigidbodyThis;
+    private Rigidbody2D rigidbodyThis;
 
     void Start()
     {

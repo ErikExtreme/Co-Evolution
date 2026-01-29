@@ -17,6 +17,8 @@ public class ModuleGrabbingSystem : MonoBehaviour
     EventSystem eventSystem;
 
     Transform grabbed_Object_Transform;
+
+    [SerializeField] ShipBlueprint shipBlueprint;
     void Start()
     {
         click_Action = InputSystem.actions.FindAction("Click");
@@ -38,11 +40,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
                 Transform placementPoint = Raycast_To_Get_Transform("PlacementPoint");
 
                 if (placementPoint != null)
-                {
-                    grabbed_Object_Transform.SetParent(placementPoint.parent);
-                    grabbed_Object_Transform.SetSiblingIndex(placementPoint.GetSiblingIndex());
-                    Destroy(placementPoint.gameObject);
-                }
+                    Set_Module(placementPoint);
 
                 grabbed_Object_Transform = null;
                 LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup);
@@ -65,5 +63,21 @@ public class ModuleGrabbingSystem : MonoBehaviour
                 return result.gameObject.transform;
         }
         return null;
+    }
+    private void Set_Module(Transform locationTransform)
+    {
+        int siblingIndex = locationTransform.GetSiblingIndex();
+
+        grabbed_Object_Transform.SetParent(locationTransform.parent);
+        grabbed_Object_Transform.SetSiblingIndex(siblingIndex);
+
+
+        TempModules moduleType = grabbed_Object_Transform.GetComponent<TempModule>().moduleType;
+        int horiPos = siblingIndex % 5;//HARDCODED 5 FIX
+        int vertPos = siblingIndex / 5;//HARDCODED 5 FIX
+        shipBlueprint.SetModule(moduleType, horiPos, vertPos);
+
+
+        Destroy(locationTransform.gameObject);
     }
 }

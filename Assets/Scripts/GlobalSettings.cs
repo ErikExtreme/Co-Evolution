@@ -39,6 +39,18 @@ public static class GlobalSettings
     public const int WEAPON_TILEAFFINITY_Y_MAX = 2;
     public const int WEAPON_TILEAFFINITY_Y_MIN = 1;
 
+    public const float WEAPON_STATUS_STRENGTH_MAX = 100;
+    public const float WEAPON_STATUS_STRENGTH_MIN = 1;
+    public const float WEAPON_AOE_RADIUS_MAX = 10;
+    public const float WEAPON_AOE_RADIUS_MIN = 1;
+
+    public const float WEAPON_RANGE_WEIGHT = 2;
+    public const float WEAPON_ACCURACY_WEIGHT = 2;
+    public const float WEAPON_STATUS_STRENGTH_WEIGHT = 0.2f;
+    public const float WEAPON_PROJECTILE_SPEED_WEIGHT = 2;
+    public const float WEAPON_FIRERATE_WEIGHT = 2;
+    public const float WEAPON_SPREAD_ANGLE_WEIGHT = 2;
+
     #endregion
     #region ShipGenome Settings
 
@@ -83,6 +95,8 @@ public static class GlobalSettings
     public const float SHIP_DRONE_AGGRESSION_MIN = 0f;
 
     #endregion
+
+    #region Genome Methods
 
     public static WeaponGenome RandomWeaponGenome()
     {
@@ -131,4 +145,6 @@ public static class GlobalSettings
             droneAggression = Random.Range(SHIP_DRONE_AGGRESSION_MIN, SHIP_DRONE_AGGRESSION_MAX)
         };
     }
+
+    #endregion
 }

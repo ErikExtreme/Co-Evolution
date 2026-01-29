@@ -4,31 +4,31 @@ public static class GlobalSettings
 {
     #region WeaponGenome Settings
 
-    public const int WEAPON_DAMAGE_MAX = 120;
-    public const int WEAPON_DAMAGE_MIN = 10;
-    public const int WEAPON_BURSTSIZE_MAX = 100;
+    public const int WEAPON_DAMAGE_MAX = 60;
+    public const int WEAPON_DAMAGE_MIN = 5;
+    public const int WEAPON_BURSTSIZE_MAX = 8;
     public const int WEAPON_BURSTSIZE_MIN = 1;
-    public const float WEAPON_FIRERATE_MAX = 100f;
-    public const float WEAPON_FIRERATE_MIN = 10f;
-    public const float WEAPON_COOLDOWNTIME_MAX = 100f;
-    public const float WEAPON_COOLDOWNTIME_MIN = 1f;
-    public const float WEAPON_PROJECTILE_SPEED_MAX = 100f;
-    public const float WEAPON_PROJECTILE_SPEED_MIN = 1f;
-    public const float WEAPON_ACCURACY_MAX = 100f;
-    public const float WEAPON_ACCURACY_MIN = 1f;
-    public const float WEAPON_SPREAD_ANGLE_MAX = 100f;
-    public const float WEAPON_SPREAD_ANGLE_MIN = 100f;
-    public const float WEAPON_RANGE_MAX = 100f;
-    public const float WEAPON_RANGE_MIN = 1f;
+    public const float WEAPON_FIRERATE_MAX = 10f;
+    public const float WEAPON_FIRERATE_MIN = 0.5f;
+    public const float WEAPON_COOLDOWNTIME_MAX = 0.1f;
+    public const float WEAPON_COOLDOWNTIME_MIN = 5f;
+    public const float WEAPON_PROJECTILE_SPEED_MAX = 60f;
+    public const float WEAPON_PROJECTILE_SPEED_MIN = 5f;
+    public const float WEAPON_ACCURACY_MAX = 1f;
+    public const float WEAPON_ACCURACY_MIN = 0.3f;
+    public const float WEAPON_SPREAD_ANGLE_MAX = 25f; //degrees
+    public const float WEAPON_SPREAD_ANGLE_MIN = 0f;
+    public const float WEAPON_RANGE_MAX = 40f;
+    public const float WEAPON_RANGE_MIN = 5f;
 
-    public const int WEAPON_POWERCOST_MAX = 100;
+    public const int WEAPON_POWERCOST_MAX = 15;
     public const int WEAPON_POWERCOST_MIN = 1;
-    public const int WEAPON_HEATPERSHOT_MAX = 100;
-    public const int WEAPON_HEATPERSHOT_MIN = 1;
-    public const float WEAPON_HEATDISSIPATION_MAX = 100f;
-    public const float WEAPON_HEATDISSIPATION_MIN = 1f;
-    public const float WEAPON_CHARGEUPTIME_MAX = 100f;
-    public const float WEAPON_CHARGEUPTIME_MIN = 1f;
+    public const int WEAPON_HEATPERSHOT_MAX = 15;
+    public const int WEAPON_HEATPERSHOT_MIN = 0;
+    public const float WEAPON_HEATDISSIPATION_MAX = 0f;
+    public const float WEAPON_HEATDISSIPATION_MIN = 15f;
+    public const float WEAPON_CHARGEUPTIME_MAX = 3f;
+    public const float WEAPON_CHARGEUPTIME_MIN = 0f;
 
     public const int WEAPON_TILEFOOTPRINT_X_MAX = 2;
     public const int WEAPON_TILEFOOTPRINT_X_MIN = 1;
@@ -39,17 +39,17 @@ public static class GlobalSettings
     public const int WEAPON_TILEAFFINITY_Y_MAX = 2;
     public const int WEAPON_TILEAFFINITY_Y_MIN = 1;
 
-    public const float WEAPON_STATUS_STRENGTH_MAX = 100;
-    public const float WEAPON_STATUS_STRENGTH_MIN = 1;
-    public const float WEAPON_AOE_RADIUS_MAX = 10;
-    public const float WEAPON_AOE_RADIUS_MIN = 1;
+    public const float WEAPON_STATUS_STRENGTH_MAX = 1f; // 0-1 scalar
+    public const float WEAPON_STATUS_STRENGTH_MIN = 0f; // no effect
+    public const float WEAPON_AOE_RADIUS_MAX = 6f;
+    public const float WEAPON_AOE_RADIUS_MIN = 0f; // no AoE
 
-    public const float WEAPON_RANGE_WEIGHT = 2;
-    public const float WEAPON_ACCURACY_WEIGHT = 2;
-    public const float WEAPON_STATUS_STRENGTH_WEIGHT = 0.2f;
-    public const float WEAPON_PROJECTILE_SPEED_WEIGHT = 2;
-    public const float WEAPON_FIRERATE_WEIGHT = 2;
-    public const float WEAPON_SPREAD_ANGLE_WEIGHT = 2;
+    public const float WEAPON_RANGE_WEIGHT = 1.0f;
+    public const float WEAPON_ACCURACY_WEIGHT = 1.0f;
+    public const float WEAPON_STATUS_STRENGTH_WEIGHT = 0.5f;
+    public const float WEAPON_PROJECTILE_SPEED_WEIGHT = 1.0f;
+    public const float WEAPON_FIRERATE_WEIGHT = 1.0f;
+    public const float WEAPON_SPREAD_ANGLE_WEIGHT = 0.7f;
 
     #endregion
     #region ShipGenome Settings

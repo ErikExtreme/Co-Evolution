@@ -10,8 +10,8 @@ public static class GlobalSettings
     public const int WEAPON_BURSTSIZE_MIN = 1;
     public const float WEAPON_FIRERATE_MAX = 10f;
     public const float WEAPON_FIRERATE_MIN = 0.5f;
-    public const float WEAPON_COOLDOWNTIME_MAX = 0.1f;
-    public const float WEAPON_COOLDOWNTIME_MIN = 5f;
+    public const float WEAPON_COOLDOWNTIME_MAX = 5f;
+    public const float WEAPON_COOLDOWNTIME_MIN = 0.1f;
     public const float WEAPON_PROJECTILE_SPEED_MAX = 60f;
     public const float WEAPON_PROJECTILE_SPEED_MIN = 5f;
     public const float WEAPON_ACCURACY_MAX = 1f;
@@ -25,8 +25,8 @@ public static class GlobalSettings
     public const int WEAPON_POWERCOST_MIN = 1;
     public const int WEAPON_HEATPERSHOT_MAX = 15;
     public const int WEAPON_HEATPERSHOT_MIN = 0;
-    public const float WEAPON_HEATDISSIPATION_MAX = 0f;
-    public const float WEAPON_HEATDISSIPATION_MIN = 15f;
+    public const float WEAPON_HEATDISSIPATION_MAX = 15f;
+    public const float WEAPON_HEATDISSIPATION_MIN = 0f;
     public const float WEAPON_CHARGEUPTIME_MAX = 3f;
     public const float WEAPON_CHARGEUPTIME_MIN = 0f;
 
@@ -50,6 +50,10 @@ public static class GlobalSettings
     public const float WEAPON_PROJECTILE_SPEED_WEIGHT = 1.0f;
     public const float WEAPON_FIRERATE_WEIGHT = 1.0f;
     public const float WEAPON_SPREAD_ANGLE_WEIGHT = 0.7f;
+    public const float WEAPON_HEATPERSHOT_WEIGHT = 1.5f;
+
+    public const float WEAPON_SUSTAINED_WEIGHT = 1.3f;
+    public const float WEAPON_DPS_WEIGHT = 0.5f;
 
     #endregion
     #region ShipGenome Settings

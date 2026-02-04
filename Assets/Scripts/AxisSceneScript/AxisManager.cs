@@ -43,7 +43,7 @@ public class AxisManager : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + (Vector3.forward * axisScale));
         Gizmos.DrawLine(transform.position, transform.position - (Vector3.forward * axisScale));
 
-        if (mappedWeaponGenomes.Length > 0)
+        if (mappedWeaponGenomes != null && mappedWeaponGenomes.Length > 0)
         {
             foreach (var g in mappedWeaponGenomes)
             {

@@ -33,7 +33,7 @@ public static class Fitness
 
         return fitness;
     }
-
+    /*
     public static Vector3 OldMapGenome(WeaponGenome genome)
     {
         int B = genome.baseDamage * genome.burstSize;
@@ -63,7 +63,7 @@ public static class Fitness
         Vector3 map = new Vector3(X, Y, Z);
         return map;
     }
-
+    */
     public static Vector3 MapGenome(WeaponGenome g)
     {
         float Norm(float value, float min, float max)
@@ -91,6 +91,7 @@ public static class Fitness
                                  
         // Weighted, normalized difference (guaranteed in [-1,1])
         float X = (wBurst * burstNorm - wSustained * sustainedNorm) / (wBurst + wSustained);
+        X = Mathf.Clamp(X * 1.6f, -1f, 1f);
 
 
         // ---------------------------------------------------------
@@ -98,7 +99,7 @@ public static class Fitness
         // ---------------------------------------------------------
         float wr = WEAPON_RANGE_WEIGHT;
         float wa = WEAPON_ACCURACY_WEIGHT;
-        float ws = WEAPON_STATUS_STRENGTH_WEIGHT;
+        float ws = WEAPON_STATUS_STRENGTH_WEIGHT_Y;
         float wp = WEAPON_PROJECTILE_SPEED_WEIGHT;
         float wf = WEAPON_FIRERATE_WEIGHT;
         float wh = WEAPON_SPREAD_ANGLE_WEIGHT;
@@ -129,25 +130,29 @@ public static class Fitness
                     ((g.burstSize / g.fireRate) + g.cooldownTime);
 
         float DPSNorm = Norm(DPS, WeaponDPSMin, WeaponDPSMax);
-        float accNorm = Norm(g.accuracy, WEAPON_ACCURACY_MIN, WEAPON_ACCURACY_MAX);
+        float powCostNorm = Norm(g.powerCost, WEAPON_POWERCOST_MIN, WEAPON_POWERCOST_MAX);
         float heatDissNorm = Norm(g.heatDissipation, WEAPON_HEATDISSIPATION_MIN, WEAPON_HEATDISSIPATION_MAX);
 
         float aoeNorm = Norm(g.aoeRadius, WEAPON_AOE_RADIUS_MIN, WEAPON_AOE_RADIUS_MAX);
         float statusNorm = Norm(g.statusEffectStrength, WEAPON_STATUS_STRENGTH_MIN, WEAPON_STATUS_STRENGTH_MAX);
         float heatPerNorm = Norm(g.heatPerShot, WEAPON_HEATPERSHOT_MIN, WEAPON_HEATPERSHOT_MAX);
 
-        float wDPS = WEAPON_DPS_WEIGHT; 
-        float wAcc = 1.0f; // Does not have any scaling yet, if you want to add scaling, create a new variable in GlobalSettings
-        float wHeatD = 1.0f; // ^^^^
-        float wAoE = 1.0f; // ^^^^
-        float wStatus = 1.0f; // ^^^^
+        float chargeNorm = Norm(g.chargeUpTime, WEAPON_CHARGEUPTIME_MIN, WEAPON_CHARGEUPTIME_MAX);
+
+        float wDPS = WEAPON_DPS_WEIGHT;
+        float wPowCost = WEAPON_POWERCOST_WEIGHT;
         float wHeatPer = WEAPON_HEATPERSHOT_WEIGHT;
+        float wHeatD = WEAPON_HEATDISSIPATION_WEIGHT;
+        float wAoE = WEAPON_AOE_WEIGHT;
+        float wStatus = WEAPON_STATUS_STRENGTH_WEIGHT_Z;
+        float wChargeE = WEAPON_CHARGEUP_EFF_WEIGHT;
+        float wChargeV = WEAPON_CHARGEUP_VOL_WEIGHT;
 
-        float effRaw = wDPS * DPSNorm + wAcc * accNorm + wHeatD * heatDissNorm; 
-        float volRaw = wAoE * aoeNorm + wStatus * statusNorm + wHeatPer * heatPerNorm; 
+        float effRaw = wDPS * DPSNorm + wPowCost * (1f - powCostNorm) + wHeatPer * (1f - heatPerNorm) + wChargeE * (1f - chargeNorm); 
+        float volRaw = wAoE * aoeNorm + wStatus * statusNorm + wHeatD * (1f - heatDissNorm) + wChargeV * chargeNorm; 
 
-        float effNorm = effRaw / (wDPS + wAcc + wHeatD); 
-        float volNorm = volRaw / (wAoE + wStatus + wHeatPer); 
+        float effNorm = effRaw / (wDPS + wPowCost + wHeatPer + wChargeE); 
+        float volNorm = volRaw / (wAoE + wStatus + wHeatD + wChargeV); 
 
         float Z = effNorm - volNorm; // guaranteed in [-1,1]
 
@@ -162,7 +167,7 @@ public static class Fitness
     }
 
     #region Weapon Delta Properties
-
+    /*
     public static float WeaponDeltaXMin 
     { 
         get 
@@ -255,7 +260,7 @@ public static class Fitness
             return weaponDeltaZMax;
         }
     }
-
+    */
     public static float WeaponDPSMin
     {
         get 
@@ -277,6 +282,6 @@ public static class Fitness
             return DPS;
         }
     }
-
+    
     #endregion
 }

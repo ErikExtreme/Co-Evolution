@@ -44,16 +44,29 @@ public static class GlobalSettings
     public const float WEAPON_AOE_RADIUS_MAX = 6f;
     public const float WEAPON_AOE_RADIUS_MIN = 0f; // no AoE
 
-    public const float WEAPON_RANGE_WEIGHT = 1.0f;
-    public const float WEAPON_ACCURACY_WEIGHT = 1.0f;
-    public const float WEAPON_STATUS_STRENGTH_WEIGHT = 0.5f;
-    public const float WEAPON_PROJECTILE_SPEED_WEIGHT = 1.0f;
-    public const float WEAPON_FIRERATE_WEIGHT = 1.0f;
-    public const float WEAPON_SPREAD_ANGLE_WEIGHT = 0.7f;
-    public const float WEAPON_HEATPERSHOT_WEIGHT = 1.5f;
+    // Control Weights
+    public const float WEAPON_RANGE_WEIGHT = 1.5f;
+    public const float WEAPON_ACCURACY_WEIGHT = 1.7f;
+    public const float WEAPON_STATUS_STRENGTH_WEIGHT_Y = 1.1f;
 
-    public const float WEAPON_SUSTAINED_WEIGHT = 1.3f;
-    public const float WEAPON_DPS_WEIGHT = 0.5f;
+    // Close-Quarters Weights
+    public const float WEAPON_PROJECTILE_SPEED_WEIGHT = 0.85f;
+    public const float WEAPON_FIRERATE_WEIGHT = 0.75f;
+    public const float WEAPON_SPREAD_ANGLE_WEIGHT = 0.55f;
+
+    // Efficiency Weights
+    public const float WEAPON_DPS_WEIGHT = 0.25f;
+    public const float WEAPON_POWERCOST_WEIGHT = 0.4f;
+    public const float WEAPON_HEATPERSHOT_WEIGHT = 0.35f;
+    public const float WEAPON_CHARGEUP_EFF_WEIGHT = 0.35f;
+
+    // Volatility Weights
+    public const float WEAPON_AOE_WEIGHT = 2.2f;
+    public const float WEAPON_STATUS_STRENGTH_WEIGHT_Z = 2.1f;
+    public const float WEAPON_HEATDISSIPATION_WEIGHT = 2.6f;
+    public const float WEAPON_CHARGEUP_VOL_WEIGHT = 2.4f;
+
+    public const float WEAPON_SUSTAINED_WEIGHT = 2f;
 
     #endregion
     #region ShipGenome Settings

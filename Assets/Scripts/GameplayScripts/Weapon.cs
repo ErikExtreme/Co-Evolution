@@ -30,7 +30,6 @@ public class Weapon : MonoBehaviour
         bullets_Left_In_Burst = 0;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (bullets_Left_In_Burst <= 0)
@@ -59,10 +58,6 @@ public class Weapon : MonoBehaviour
 
             }
         }
-
-    }
-    private void Burst()
-    {
 
     }
 }

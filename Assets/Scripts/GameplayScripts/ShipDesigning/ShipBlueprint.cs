@@ -6,9 +6,8 @@ public class ShipBlueprint : MonoBehaviour
     [SerializeField] int sideLength = 5;
     TempModules[,] shipArray;
 
-    [SerializeField] GameObject tempHullPrefab;
-    [SerializeField] GameObject tempWeaponPrefab;
-    [SerializeField] GameObject tempThrusterPrefab;
+    [SerializeField] GameObject weaponPrefab;
+    [SerializeField] GameObject modulePrefab;
 
     private void Start()
     {
@@ -33,26 +32,27 @@ public class ShipBlueprint : MonoBehaviour
                 if (shipArray[hori, vert] == TempModules.none)
                     continue;
 
-                GameObject moduleInstance = null;
-                if (shipArray[hori, vert] == TempModules.hull)
-                    moduleInstance = Instantiate(tempHullPrefab, transform, false);
-                if (shipArray[hori, vert] == TempModules.gun)
-                    moduleInstance = Instantiate(tempWeaponPrefab, transform, false);
-                if (shipArray[hori, vert] == TempModules.thruster)
-                    moduleInstance = Instantiate(tempThrusterPrefab, transform, false);
+                GameObject cellInstance = null;
+                if (shipArray[hori, vert] == TempModules.weapon)
+                    cellInstance = Instantiate(weaponPrefab, transform, false);
+                if (shipArray[hori, vert] == TempModules.module)
+                {
+                    cellInstance = Instantiate(modulePrefab, transform, false);
+
+
+                }
 
 
                 float cellSize = 1f;//HARDCODED 1 FIX
                 Vector2 originOffset = new Vector2(sideLength - 1, sideLength - 1) / 2f;
                 Vector2 position = (new Vector2(hori, sideLength - 1 - vert) - originOffset) * cellSize;
-                moduleInstance.transform.localPosition = position;
+                cellInstance.transform.localPosition = position;
             }
     }
 }
 public enum TempModules
 {
     none,
-    hull,
-    gun,
-    thruster
+    weapon,
+    module
 }

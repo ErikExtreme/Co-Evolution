@@ -4,6 +4,9 @@ public class Weapon : MonoBehaviour
 {
     WeaponGenome weapon_Genome;
 
+    public ShipHealth shipHealth;
+
+
     [SerializeField] GameObject projectilePrefab;
 
     float shoot_Timer;
@@ -24,7 +27,7 @@ public class Weapon : MonoBehaviour
         //weapon_Genome.accuracy   unimplemented
         weapon_Genome.spreadAngle = 5;
         weapon_Genome.range = 5;
-
+        weapon_Genome.powerCost = 1;
 
         shoot_Timer = 1 / weapon_Genome.fireRate;
         bullets_Left_In_Burst = 0;
@@ -39,7 +42,8 @@ public class Weapon : MonoBehaviour
             {
                 shoot_Timer = 1 / weapon_Genome.fireRate;
 
-                bullets_Left_In_Burst = weapon_Genome.burstSize;
+                if (shipHealth.ConsumePower(weapon_Genome.powerCost))
+                    bullets_Left_In_Burst = weapon_Genome.burstSize;
             }
         }
         else

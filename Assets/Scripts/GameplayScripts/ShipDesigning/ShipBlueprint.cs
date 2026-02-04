@@ -34,7 +34,11 @@ public class ShipBlueprint : MonoBehaviour
 
                 GameObject cellInstance = null;
                 if (shipArray[hori, vert] == TempModules.weapon)
+                {
                     cellInstance = Instantiate(weaponPrefab, transform, false);
+
+                    cellInstance.GetComponent<Weapon>().shipHealth = gameObject.GetComponent<ShipHealth>();
+                }
                 if (shipArray[hori, vert] == TempModules.module)
                 {
                     cellInstance = Instantiate(modulePrefab, transform, false);

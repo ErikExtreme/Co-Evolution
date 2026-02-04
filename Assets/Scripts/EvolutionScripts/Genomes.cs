@@ -24,12 +24,10 @@ public class WeaponGenome
     // public SynergyTag synergyTag;
 
     // Special Effects
-    /*
-    public EffectType statusEffectType;
+    //public EffectType statusEffectType;
     public float statusEffectStrength;
     public float aoeRadius;
-    public float piercingDepth;
-     */
+    //public float piercingDepth;
 }
 
 public class ShipGenome

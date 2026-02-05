@@ -159,11 +159,94 @@ public static class Fitness
         return new Vector3(X, Y, Z);
     }
 
-    public static Vector3 MapGenome(ShipGenome genome)
+    public static Vector3 MapGenome(ShipGenome g)
     {
-        Vector3 map = Vector3.zero;
+        float Norm(float value, float min, float max)
+        {
+            return (value - min) / (max - min);
+        }
 
-        return map;
+        // ---------------------------------------------------------
+        // X-Axis: Durability vs Mobility
+        // ---------------------------------------------------------
+        float hpNorm = Norm(g.hullHP, SHIP_HULLHP_MIN, SHIP_HULLHP_MAX);
+        float armorNorm = Norm(g.armor, SHIP_ARMOR_MIN, SHIP_ARMOR_MAX);
+        float shCapNorm = Norm(g.shieldCapacity, SHIP_SHIELD_CAPACITY_MIN, SHIP_SHIELD_CAPACITY_MAX);
+        float shRegNorm = Norm(g.shieldRegen, SHIP_SHIELD_REGEN_MIN, SHIP_SHIELD_REGEN_MAX);
+
+        float speedNorm = Norm(g.speed, SHIP_SPEED_MIN, SHIP_SPEED_MAX);
+        float turnNorm = Norm(g.turnRate, SHIP_TURNRATE_MIN, SHIP_TURNRATE_MAX);
+        float evaNorm = Norm(g.evasion, SHIP_EVASION_MIN, SHIP_EVASION_MAX);
+
+        float wHp = SHIP_HULLHP_WEIGHT;
+        float wArmor = SHIP_ARMOR_WEIGHT;
+        float wShCap = SHIP_SHIELD_CAPACITY_WEIGHT;
+        float wShReg = SHIP_SHIELD_REGEN_WEIGHT;
+        float wSpeed = SHIP_SPEED_WEIGHT;
+        float wTurn = SHIP_TURNRATE_WEIGHT;
+        float wEva = SHIP_EVASION_WEIGHT;
+ 
+        float durRaw = wHp * hpNorm + wArmor * armorNorm + wShCap * shCapNorm + wShReg * shRegNorm;
+        float mobRaw = wSpeed * speedNorm + wTurn * turnNorm + wEva * evaNorm;
+
+        float durNorm = durRaw / (wHp + wArmor + wShCap + wShReg);
+        float mobNorm = mobRaw / (wSpeed + wTurn + wEva);
+
+        float X = durNorm - mobNorm;
+
+
+        // ---------------------------------------------------------
+        // Y-Axis: Power economy vs Weapon platform
+        // ---------------------------------------------------------
+        float powCapNorm = Norm(g.powerCapacity, SHIP_POWER_CAPACITY_MIN, SHIP_POWER_CAPACITY_MAX);
+        float powRegNorm = Norm(g.powerRegen, SHIP_POWER_REGEN_MIN, SHIP_POWER_REGEN_MAX);
+        float spTiDenNorm = Norm(g.specialTileDensity, SHIP_SPECIALTILE_DENSITY_MIN, SHIP_SPECIALTILE_DENSITY_MAX);
+
+        float gridWNorm = Norm(g.gridWidth, SHIP_GRID_WIDTH_MIN, SHIP_GRID_WIDTH_MAX);
+        float gridHNorm = Norm(g.gridHeight, SHIP_GRID_HEIGHT_MIN, SHIP_GRID_HEIGHT_MAX);
+        float droneNorm = Norm(g.droneCount, SHIP_DRONE_COUNT_MIN, SHIP_DRONE_COUNT_MAX);
+
+        float wPowCap = SHIP_POWER_CAPACITY_WEIGHT;
+        float wPowReg = SHIP_POWER_REGEN_WEIGHT;
+        float wSpTiDen = SHIP_SPECIALTILE_DENSITY_WEIGHT;
+        float wGridW = SHIP_GRID_WIDTH_WEIGHT;
+        float wGridH = SHIP_GRID_HEIGHT_WEIGHT;
+        float wDrone = SHIP_DRONE_COUNT_WEIGHT;
+
+        float powRaw = wPowCap * powCapNorm + wPowReg * powRegNorm + wSpTiDen * spTiDenNorm;
+        float wePRaw = wGridW * gridWNorm + wGridH * gridHNorm + wDrone * droneNorm;
+
+        float powNorm = powRaw / (wPowCap + wPowReg + wSpTiDen);
+        float wePNorm = wePRaw / (wGridW + wGridH + wDrone);
+
+        float Y = powNorm - wePNorm;
+
+
+        // ---------------------------------------------------------
+        // Z-Axis: Stability vs Aggression
+        // ---------------------------------------------------------
+        float massNorm = Norm(g.mass, SHIP_MASS_MIN, SHIP_MASS_MAX);
+        float inerNorm = Norm(g.inertia, SHIP_INERTIA_MIN, SHIP_INERTIA_MAX);
+        float droDurNorm = Norm(g.droneDurability, SHIP_DRONE_DURABILITY_MIN, SHIP_DRONE_DURABILITY_MAX);
+        
+        float droSpeedNorm = Norm(g.droneSpeed, SHIP_DRONE_SPEED_MIN, SHIP_DRONE_SPEED_MAX);
+        float droAgreNorm = Norm(g.droneAggression, SHIP_DRONE_AGGRESSION_MIN, SHIP_DRONE_AGGRESSION_MAX);
+
+        float wMass = SHIP_MASS_WEIGHT;
+        float wIner = SHIP_INERTIA_WEIGHT;
+        float wDroDur = SHIP_DRONE_DURABILITY_WEIGHT;
+        float wDroSpeed = SHIP_DRONE_SPEED_WEIGHT;
+        float wDroAgre = SHIP_DRONE_AGGRESSION_WEIGHT;
+
+        float staRaw = wMass * massNorm + wIner * inerNorm + wDroDur * droDurNorm;
+        float aggRaw = wDroSpeed * droSpeedNorm + wDroAgre * droAgreNorm;
+
+        float staNorm = staRaw / (wMass + wIner + wDroDur);
+        float aggNorm = aggRaw / (wDroSpeed + wDroAgre);
+
+        float Z = staNorm - aggNorm;
+
+        return new Vector3(X, Y, Z);
     }
 
     #region Weapon Delta Properties

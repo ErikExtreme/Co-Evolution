@@ -17,18 +17,12 @@ public class WeaponManager : MonoBehaviour
         if (weapons.Count == 0)
             return null;
 
-        try
+        foreach (Weapon weapon in weapons)
         {
-            if (weapons[id] != null)
-                return weapons[id];
+            if (weapon.weapon_Genome.id == id) return weapon;
+        }
 
-            Debug.LogError("Could not find weapon on index: " + id);
-            return null;
-        }
-        catch (System.Exception)
-        {
-            Debug.LogError("Weapon on index: " + id + " does not exist");
-            return null;
-        }
+        Debug.LogError("Could not find weapon with id: " + id);
+        return null;
     }
 }

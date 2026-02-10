@@ -17,18 +17,12 @@ public class ModuleManager : MonoBehaviour
         if (modules.Count == 0)
             return null;
 
-        try
+        foreach (Module module in modules)
         {
-            if (modules[id] != null)
-                return modules[id];
+            if (module.ship_Genome.id == id) return module;
+        }
 
-            Debug.LogError("Could not find modules on index: " + id);
-            return null;
-        }
-        catch (System.Exception)
-        {
-            Debug.LogError("Module on index: " + id + " does not exist");
-            return null;
-        }
+        Debug.LogError("Could not find weapon with id: " + id);
+        return null;
     }
 }

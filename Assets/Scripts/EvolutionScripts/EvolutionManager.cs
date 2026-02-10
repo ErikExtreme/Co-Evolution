@@ -30,17 +30,17 @@ public class EvolutionManager : MonoBehaviour
         // 2. Calculate Fitness for all Weapons and Ship Modules
         foreach (var w in weapons)
         {
-            WeaponStatsTracker tracker = WeaponManager.Instance.GetWeapon(w.id).tracker;
-            if (tracker == null)
+            Weapon weapon = WeaponManager.Instance.GetWeapon(w.id);
+            if (weapon == null)
                 return;
-            w.fitness = Fitness.CalculateFitness(w, tracker, playerTracker);
+            w.fitness = Fitness.CalculateFitness(w, weapon.tracker, playerTracker);
         }
         foreach (var s in shipModules)
         {
-            ModuleStatsTracker tracker = ModuleManager.Instance.GetModule(s.id).tracker;
-            if (tracker == null)
+            Module module = ModuleManager.Instance.GetModule(s.id);
+            if (module == null)
                 return;
-            s.fitness = Fitness.CalculateFitness(s, tracker, playerTracker);
+            s.fitness = Fitness.CalculateFitness(s, module.tracker, playerTracker);
         }
     }
 }

@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class WeaponGenome
 {
+    public int id;
+    public float fitness;
+
     // Combat Profile
     public int baseDamage;
     public int burstSize;
@@ -32,6 +35,9 @@ public class WeaponGenome
 
 public class ShipGenome
 {
+    public int id;
+    public float fitness;
+
     // Core Systems
     public int hullHP;
     public int armor;

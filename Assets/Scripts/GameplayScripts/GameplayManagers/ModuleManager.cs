@@ -11,4 +11,24 @@ public class ModuleManager : MonoBehaviour
     {
         Instance = this;
     }
+
+    public Module GetModule(int id)
+    {
+        if (modules.Count == 0)
+            return null;
+
+        try
+        {
+            if (modules[id] != null)
+                return modules[id];
+
+            Debug.LogError("Could not find modules on index: " + id);
+            return null;
+        }
+        catch (System.Exception)
+        {
+            Debug.LogError("Module on index: " + id + " does not exist");
+            return null;
+        }
+    }
 }

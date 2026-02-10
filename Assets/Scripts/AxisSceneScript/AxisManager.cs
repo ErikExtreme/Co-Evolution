@@ -12,6 +12,8 @@ public class AxisManager : MonoBehaviour
     public Vector3[] mappedWeaponGenomes;
     public Vector3[] mappedShipGenomes;
 
+    public int randomPopSize;
+
     public bool drawWeaponGenomes;
     public bool drawShipGenomes;
 
@@ -30,19 +32,24 @@ public class AxisManager : MonoBehaviour
 
     public void Generate()
     {
-        var result = evoManager.Evolve(50, 20);
-        weaponGenomes = result.weaponGenomes;
-        mappedWeaponGenomes = new Vector3[weaponGenomes.Length];
-        for (int i = 0; i < weaponGenomes.Length; i++)
+        
+    }
+
+    public void GenerateRandom()
+    {
+        WeaponGenome[] weapons = Seeding.RandomWeaponSeed(randomPopSize);
+        ShipGenome[] ships = Seeding.RandomShipSeed(randomPopSize);
+
+        mappedWeaponGenomes = new Vector3[weapons.Length];
+        for (int i = 0; i < weapons.Length; i++)
         {
-            mappedWeaponGenomes[i] = Mapping.MapGenome(weaponGenomes[i]);
+            mappedWeaponGenomes[i] = Mapping.MapGenome(weapons[i]);
         }
 
-        shipGenomes = result.shipGenomes;
-        mappedShipGenomes = new Vector3[shipGenomes.Length];
-        for (int i = 0; i < shipGenomes.Length; i++)
+        mappedShipGenomes = new Vector3[ships.Length];
+        for (int i = 0; i < ships.Length; i++)
         {
-            mappedShipGenomes[i] = Mapping.MapGenome(shipGenomes[i]);
+            mappedShipGenomes[i] = Mapping.MapGenome(ships[i]);
         }
     }
 

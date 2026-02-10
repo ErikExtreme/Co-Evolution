@@ -3,6 +3,7 @@ using UnityEngine;
 public class Module : MonoBehaviour
 {
     ShipGenome ship_Genome;
+    public ModuleStatsTracker tracker;
 
 
     void Start()

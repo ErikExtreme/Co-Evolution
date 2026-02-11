@@ -3087,6 +3087,7 @@ GameObject:
   - component: {fileID: 1699913377}
   - component: {fileID: 1699913378}
   - component: {fileID: 1699913380}
+  - component: {fileID: 1699913381}
   m_Layer: 0
   m_Name: Ship
   m_TagString: Untagged
@@ -3177,6 +3178,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2737d1a52ce72ac41a97c77924f6a0be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipHealth
+--- !u!114 &1699913381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699913375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d5d4725e83bf0c4fb5b2fc1ca738964, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShipDroneManager
+  dronePrefab: {fileID: 1156336660531603227, guid: d7a217b0660841c4f93e603cedd8f486, type: 3}
 --- !u!1 &1766646581
 GameObject:
   m_ObjectHideFlags: 0

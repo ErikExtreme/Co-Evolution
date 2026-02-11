@@ -27,7 +27,10 @@ public class Weapon : MonoBehaviour
         //weapon_Genome.accuracy   unimplemented
         weapon_Genome.spreadAngle = 5;
         weapon_Genome.range = 5;
+
         weapon_Genome.powerCost = 1;
+
+        weapon_Genome.aoeRadius = 1f;
 
         shoot_Timer = 1 / weapon_Genome.fireRate;
         bullets_Left_In_Burst = 0;
@@ -58,7 +61,7 @@ public class Weapon : MonoBehaviour
                 Quaternion rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z + spreadAngle);
 
                 GameObject projectile_Instance = Instantiate(projectilePrefab, transform.position, rotation);
-                projectile_Instance.GetComponent<Projectile>().SetInitialValues(weapon_Genome.baseDamage, weapon_Genome.projectileSpeed, weapon_Genome.range);
+                projectile_Instance.GetComponent<Projectile>().SetInitialValues(weapon_Genome.baseDamage, weapon_Genome.projectileSpeed, weapon_Genome.range,weapon_Genome.aoeRadius);
 
             }
         }

@@ -777,7 +777,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c13a0d3073bb294cb3999a9e1eb4669, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnDebris
-  spawnIntervalSeconds: 7
+  spawnIntervalSeconds: 2.65
   debrisPrefab: {fileID: 4596014262416467555, guid: 93e2bb2acecf1c1468907e1ff9dd903d, type: 3}
   debrisSpeed: 0.1
 --- !u!4 &351209989

@@ -17,5 +17,10 @@ public class EvolutionEditor : Editor
         {
             axisManager.Generate();
         }
+
+        if (GUILayout.Button("Generate Random"))
+        {
+            axisManager.GenerateRandom();
+        }
     }
 }

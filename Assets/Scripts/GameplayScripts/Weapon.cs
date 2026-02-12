@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    WeaponGenome weapon_Genome;
+    public WeaponGenome weapon_Genome;
+    public WeaponStatsTracker tracker;
 
     public ShipHealth shipHealth;
 

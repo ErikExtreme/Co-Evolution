@@ -71,45 +71,76 @@ public static class GlobalSettings
     #endregion
     #region ShipGenome Settings
 
-    public const int SHIP_HULLHP_MAX = 100;
-    public const int SHIP_HULLHP_MIN = 10;
-    public const int SHIP_ARMOR_MAX = 100;
-    public const int SHIP_ARMOR_MIN = 10;
-    public const int SHIP_SHIELD_CAPACITY_MAX = 100;
-    public const int SHIP_SHIELD_CAPACITY_MIN = 10;
-    public const int SHIP_SHIELD_REGEN_MAX = 100;
-    public const int SHIP_SHIELD_REGEN_MIN = 10;
-    public const int SHIP_POWER_CAPACITY_MAX = 100;
-    public const int SHIP_POWER_CAPACITY_MIN = 10;
-    public const int SHIP_POWER_REGEN_MAX = 100;
-    public const int SHIP_POWER_REGEN_MIN = 10;
+    public const int SHIP_HULLHP_MAX = 300;
+    public const int SHIP_HULLHP_MIN = 50;
+    public const int SHIP_ARMOR_MAX = 200;
+    public const int SHIP_ARMOR_MIN = 0;
+    public const int SHIP_SHIELD_CAPACITY_MAX = 250;
+    public const int SHIP_SHIELD_CAPACITY_MIN = 50;
+    public const int SHIP_SHIELD_REGEN_MAX = 40;
+    public const int SHIP_SHIELD_REGEN_MIN = 5;
 
-    public const float SHIP_SPEED_MAX = 100f;
-    public const float SHIP_SPEED_MIN = 1f;
-    public const float SHIP_TURNRATE_MAX = 1f;
-    public const float SHIP_TURNRATE_MIN = 0.1f;
-    public const float SHIP_EVASION_MAX = 1f;
-    public const float SHIP_EVASION_MIN = 0.1f;
-    public const float SHIP_MASS_MAX = 100f;
-    public const float SHIP_MASS_MIN = 1f;
-    public const float SHIP_INERTIA_MAX = 10f;
+    public const int SHIP_POWER_CAPACITY_MAX = 200;
+    public const int SHIP_POWER_CAPACITY_MIN = 50;
+    public const int SHIP_POWER_REGEN_MAX = 30;
+    public const int SHIP_POWER_REGEN_MIN = 5;
+
+    public const float SHIP_SPEED_MAX = 80f;
+    public const float SHIP_SPEED_MIN = 20f;
+    public const float SHIP_TURNRATE_MAX = 1.2f;
+    public const float SHIP_TURNRATE_MIN = 0.2f;
+    public const float SHIP_EVASION_MAX = 0.5f;
+    public const float SHIP_EVASION_MIN = 0f;
+    public const float SHIP_MASS_MAX = 200f;
+    public const float SHIP_MASS_MIN = 20f;
+    public const float SHIP_INERTIA_MAX = 8f;
     public const float SHIP_INERTIA_MIN = 1f;
 
-    public const int SHIP_GRID_WIDTH_MAX = 5;
-    public const int SHIP_GRID_WIDTH_MIN = 0;
-    public const int SHIP_GRID_HEIGHT_MAX = 5;
-    public const int SHIP_GRID_HEIGHT_MIN = 0;
-    public const float SHIP_SPECIALTILE_DENSITY_MAX = 10f;
+    public const int SHIP_GRID_WIDTH_MAX = 8;
+    public const int SHIP_GRID_WIDTH_MIN = 2;
+    public const int SHIP_GRID_HEIGHT_MAX = 8;
+    public const int SHIP_GRID_HEIGHT_MIN = 2;
+    public const float SHIP_SPECIALTILE_DENSITY_MAX = 5f;
     public const float SHIP_SPECIALTILE_DENSITY_MIN = 0f;
 
-    public const int SHIP_DRONE_COUNT_MAX = 20;
-    public const int SHIP_DRONE_COUNT_MIN = 2;
-    public const float SHIP_DRONE_SPEED_MAX = 100f;
-    public const float SHIP_DRONE_SPEED_MIN = 1f;
-    public const int SHIP_DRONE_DURABILITY_MAX = 20;
-    public const int SHIP_DRONE_DURABILITY_MIN = 1;
+    public const int SHIP_DRONE_COUNT_MAX = 12;
+    public const int SHIP_DRONE_COUNT_MIN = 0;
+    public const float SHIP_DRONE_SPEED_MAX = 40f;
+    public const float SHIP_DRONE_SPEED_MIN = 10f;
+    public const int SHIP_DRONE_DURABILITY_MAX = 40;
+    public const int SHIP_DRONE_DURABILITY_MIN = 5;
     public const float SHIP_DRONE_AGGRESSION_MAX = 1f;
     public const float SHIP_DRONE_AGGRESSION_MIN = 0f;
+
+    // Durability Weights
+    public const float SHIP_HULLHP_WEIGHT = 1.2f;
+    public const float SHIP_ARMOR_WEIGHT = 1.0f;
+    public const float SHIP_SHIELD_CAPACITY_WEIGHT = 1.0f;
+    public const float SHIP_SHIELD_REGEN_WEIGHT = 0.8f;
+
+    // Mobility Weights
+    public const float SHIP_SPEED_WEIGHT = 1.2f;
+    public const float SHIP_TURNRATE_WEIGHT = 1.0f;
+    public const float SHIP_EVASION_WEIGHT = 0.8f;
+
+    // Power Economy Weights
+    public const float SHIP_POWER_CAPACITY_WEIGHT = 1.0f;
+    public const float SHIP_POWER_REGEN_WEIGHT = 1.2f;
+    public const float SHIP_SPECIALTILE_DENSITY_WEIGHT = 0.8f;
+
+    // Weapon Platform Weights
+    public const float SHIP_GRID_WIDTH_WEIGHT = 1.0f;
+    public const float SHIP_GRID_HEIGHT_WEIGHT = 1.0f;
+    public const float SHIP_DRONE_COUNT_WEIGHT = 1.2f;
+
+    // Stability Weights
+    public const float SHIP_MASS_WEIGHT = 1.0f;
+    public const float SHIP_INERTIA_WEIGHT = 1.0f;
+    public const float SHIP_DRONE_DURABILITY_WEIGHT = 1.2f;
+
+    // Aggression Weights
+    public const float SHIP_DRONE_SPEED_WEIGHT = 1.2f;
+    public const float SHIP_DRONE_AGGRESSION_WEIGHT = 1.0f;
 
     #endregion
 

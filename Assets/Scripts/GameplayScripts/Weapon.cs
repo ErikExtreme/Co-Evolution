@@ -6,13 +6,15 @@ public class Weapon : MonoBehaviour
     public WeaponStatsTracker tracker;
 
     public ShipHealth shipHealth;
-
+    public PlayerShip playerShip;
 
     [SerializeField] GameObject projectilePrefab;
 
     float shoot_Timer;
     int bullets_Left_In_Burst;
     float cooldown_Timer;
+
+    private Transform target;
 
     void Start()
     {
@@ -35,6 +37,19 @@ public class Weapon : MonoBehaviour
 
         shoot_Timer = 1 / weapon_Genome.fireRate;
         bullets_Left_In_Burst = 0;
+
+        playerShip = transform.GetComponentInParent<PlayerShip>();
+        playerShip.targetSelection += NewTarget;
+    }
+
+    public void NewTarget(Transform target)
+    {
+        this.target = target;
+    }
+
+    public Transform FindNewTarget()
+    {
+        return EnemyManager.Instance.GetClosestEnemy(transform.position);
     }
 
     void Update()
@@ -52,6 +67,15 @@ public class Weapon : MonoBehaviour
         }
         else
         {
+            if (target == null || !target.gameObject.activeSelf)
+            {
+                target = FindNewTarget();
+                if (target == null) return;
+            }
+
+            Vector2 targetDirection = ((Vector2)target.position - (Vector2)transform.position).normalized;
+            float targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 90f;
+
             cooldown_Timer -= Time.deltaTime;
             if (cooldown_Timer <= 0)
             {
@@ -59,7 +83,7 @@ public class Weapon : MonoBehaviour
                 cooldown_Timer = weapon_Genome.cooldownTime;
 
                 float spreadAngle = Random.Range(-weapon_Genome.spreadAngle, weapon_Genome.spreadAngle);
-                Quaternion rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z + spreadAngle);
+                Quaternion rotation = Quaternion.Euler(0, 0, targetAngle + spreadAngle);
 
                 GameObject projectile_Instance = Instantiate(projectilePrefab, transform.position, rotation);
                 projectile_Instance.GetComponent<Projectile>().SetInitialValues(weapon_Genome.baseDamage, weapon_Genome.projectileSpeed, weapon_Genome.range,weapon_Genome.aoeRadius);

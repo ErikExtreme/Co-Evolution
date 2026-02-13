@@ -9,7 +9,7 @@ public class EnemyManager : MonoBehaviour
         Instance = this;
     }
 
-    public Transform GetClosestEnemy(Vector3 pos)
+    public Transform GetClosestEnemy(Vector2 pos)
     {
         return transform;
     }

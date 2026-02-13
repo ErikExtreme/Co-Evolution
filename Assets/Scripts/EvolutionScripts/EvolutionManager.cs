@@ -47,9 +47,11 @@ public class EvolutionManager : MonoBehaviour
 
         WeaponGenome[] selectedWeapons = SelectionElitist<WeaponGenome>(weapons, 50);//Hard coded 50
         WeaponGenome[] offspringWeapons = CrossoverSinglePoint<WeaponGenome>(selectedWeapons);
+        MutatePointMultiple<WeaponGenome>(offspringWeapons, 0.1f,1f);//Hard coded 0.1f and 1f
 
         ShipGenome[] selectedModules = SelectionElitist<ShipGenome>(shipModules, 50);//Hard coded 50
         ShipGenome[] offspringModules = CrossoverSinglePoint<ShipGenome>(selectedModules);
+        MutatePointMultiple<ShipGenome>(offspringModules, 0.1f,1f);//Hard coded 0.1f and 1f
     }
 
     private T[] SelectionElitist<T>(List<T> initialPopulation, int amountToSelect) where T : IGenome
@@ -89,4 +91,23 @@ public class EvolutionManager : MonoBehaviour
         return newGenomes;
     }
 
+    private void MutatePointMultiple<T>(T[] population, float mutationChance, float mutationAmount)
+    {
+        var variablesInGenome = typeof(T).GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+
+        foreach (T genome in population)
+        {
+            for (int j = 0; j < variablesInGenome.Length; j++)
+                if (Random.value < mutationChance)
+                {
+                    float mutationValue = mutationAmount * (Random.value < 0.5f ? 1 : -1);
+
+                    var currentGene = variablesInGenome[j].GetValue(genome);
+                    if (currentGene is float f)
+                        variablesInGenome[j].SetValue(genome, f + mutationValue);
+                    if (currentGene is int i)
+                        variablesInGenome[j].SetValue(genome, i + Mathf.RoundToInt(mutationValue));
+                }
+        }
+    }
 }

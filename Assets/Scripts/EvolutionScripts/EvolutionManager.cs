@@ -19,7 +19,7 @@ public class EvolutionManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void Evolve()
@@ -42,5 +42,17 @@ public class EvolutionManager : MonoBehaviour
                 return;
             s.fitness = Fitness.CalculateFitness(s, module.tracker, playerTracker);
         }
+
+        WeaponGenome[] selectedWeapons = SelectionElitist<WeaponGenome>(weapons, 50);//Hard coded 50
+        ShipGenome[] selectedModules = SelectionElitist<ShipGenome>(shipModules, 50);//Hard coded 50
+    }
+
+    private T[] SelectionElitist<T>(List<T> initialPopulation, int amountToSelect) where T : IGenome
+    {
+        List<T> sortedPopulation = initialPopulation.OrderByDescending(x => x.fitness).ToList();
+
+        T[] selectedIndividuals = sortedPopulation.Take(amountToSelect).ToArray();
+
+        return selectedIndividuals;
     }
 }

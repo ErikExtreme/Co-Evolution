@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public class WeaponGenome
+public class WeaponGenome : IGenome
 {
-    public int id;
-    public float fitness;
+    public int id { get; set; }
+    public float fitness { get; set; }
 
     // Combat Profile
     public int baseDamage;
@@ -33,10 +33,10 @@ public class WeaponGenome
     //public float piercingDepth;
 }
 
-public class ShipGenome
+public class ShipGenome : IGenome
 {
-    public int id;
-    public float fitness;
+    public int id { get; set; }
+    public float fitness { get; set; }
 
     // Core Systems
     public int hullHP;
@@ -71,4 +71,10 @@ public class ShipGenome
     public DefenceTag defenceBonusTag;
     public UtilityTag utilityBonusTag;
      */
+}
+
+public interface IGenome
+{
+    int id { get; set; }
+    float fitness { get; set; }
 }

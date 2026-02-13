@@ -31,6 +31,11 @@ public class WeaponGenome : IGenome
     public float statusEffectStrength;
     public float aoeRadius;
     //public float piercingDepth;
+
+    public IGenome Clone()
+    {
+        return (WeaponGenome)MemberwiseClone();//"shallow copy", doesnt work for lists, arrays, objects etc
+    }
 }
 
 public class ShipGenome : IGenome
@@ -71,10 +76,17 @@ public class ShipGenome : IGenome
     public DefenceTag defenceBonusTag;
     public UtilityTag utilityBonusTag;
      */
+
+    public IGenome Clone()
+    {
+        return (ShipGenome)MemberwiseClone();//"shallow copy", doesnt work for lists, arrays, objects etc
+    }
 }
 
 public interface IGenome
 {
     int id { get; set; }
     float fitness { get; set; }
+
+    IGenome Clone();
 }

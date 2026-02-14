@@ -11,6 +11,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
     [SerializeField] Canvas canvas;
     [SerializeField] RectTransform layoutGroup;
     InputAction click_Action;
+    InputAction openBlueprint_Action;
 
     GraphicRaycaster raycaster;
     PointerEventData pointer_Event_Data;
@@ -22,7 +23,8 @@ public class ModuleGrabbingSystem : MonoBehaviour
     [SerializeField] ShipBlueprint shipBlueprint;
     void Start()
     {
-        click_Action = InputSystem.actions.FindAction("Click");
+        click_Action = InputSystem.actions.FindAction("Click"); 
+        openBlueprint_Action = InputSystem.actions.FindAction("OpenBlueprint");
 
         raycaster = canvas.GetComponent<GraphicRaycaster>();
         eventSystem = EventSystem.current;
@@ -56,6 +58,9 @@ public class ModuleGrabbingSystem : MonoBehaviour
                 grabbed_Object_Transform.TryGetComponent<IGrabbableUI>(out var objectScript))
                 placementTag = objectScript.PlacementTag;
         }
+
+        if (openBlueprint_Action.WasPressedThisFrame())
+            canvas.gameObject.SetActive(!canvas.gameObject.activeSelf);
     }
     private Transform Raycast_To_Get_Transform(string tagName)
     {

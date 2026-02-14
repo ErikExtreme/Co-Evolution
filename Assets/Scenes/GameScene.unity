@@ -3441,6 +3441,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipBlueprint
   sideLength: 5
   weaponPrefab: {fileID: 8052139905561744480, guid: e7aa28ad7bb09664884bb7842a550fb8, type: 3}
+  canvas: {fileID: 1809847684}
 --- !u!114 &1699913378
 MonoBehaviour:
   m_ObjectHideFlags: 0

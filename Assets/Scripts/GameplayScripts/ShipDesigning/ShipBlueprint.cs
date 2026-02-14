@@ -8,6 +8,7 @@ public class ShipBlueprint : MonoBehaviour
     ShipGenome[] modulesArray;
 
     [SerializeField] GameObject weaponPrefab;
+    [SerializeField] Canvas canvas;
 
     private void Start()
     {
@@ -68,6 +69,9 @@ public class ShipBlueprint : MonoBehaviour
         gameObject.GetComponent<ShipHealth>().SetStats(shipCoreStats);
         gameObject.GetComponent<PlayerShip>().SetStats(shipMobilityStats);
         gameObject.GetComponent<ShipDroneManager>().SetStats(shipDroneStats);
+
+
+        canvas.gameObject.SetActive(false);
     }
 }
 public class ShipCoreStats

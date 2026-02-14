@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using static UnityEngine.Rendering.DebugUI;
 
 public class PlayerShip : MonoBehaviour
 {
@@ -12,18 +13,20 @@ public class PlayerShip : MonoBehaviour
     public Transform emptyTarget;
     private bool emptyTargetActive;
 
-    [SerializeField] private float movementSpeed;
-    [SerializeField] private float rotationSpeed;
-
     private InputAction followAction;
     private InputAction targetAction;
     private InputAction rotateAction;
 
     private Rigidbody2D rigidbodyThis;
 
-    public ShipMobilityStats ship_Mobility_Stats;
-
     private float angularDamping = 0.05f;
+
+    //Stats
+    float speed;
+    float turnRate;
+    float evasion;
+    float mass;
+    float inertia;
 
     void Start()
     {
@@ -34,16 +37,6 @@ public class PlayerShip : MonoBehaviour
         rotateAction.Enable();
 
         rigidbodyThis = GetComponent<Rigidbody2D>();
-
-
-        ship_Mobility_Stats = new ShipMobilityStats()
-        {
-            speed = movementSpeed / 20,
-            turn_Rate = rotationSpeed,
-            evasion = 0,
-            mass = 1,
-            inertia = 1
-        };
     }
     void FixedUpdate()
     {
@@ -61,7 +54,7 @@ public class PlayerShip : MonoBehaviour
             if (Vector2.Distance((Vector2)transform.position, mouseWorldPosition) > 0.2f)
             {
                 rigidbodyThis.linearVelocity = Vector2.zero;
-                rigidbodyThis.MovePosition(rigidbodyThis.position + targetDirection * ship_Mobility_Stats.speed * Time.fixedDeltaTime);
+                rigidbodyThis.MovePosition(rigidbodyThis.position + targetDirection * speed * Time.fixedDeltaTime);
             }
         }
 
@@ -94,19 +87,19 @@ public class PlayerShip : MonoBehaviour
         if (rotateAction.IsPressed())
         {
             float rotationDir = rotateAction.ReadValue<float>();
-            rigidbodyThis.AddTorque(rotationDir * ship_Mobility_Stats.turn_Rate, ForceMode2D.Force);
+            rigidbodyThis.AddTorque(rotationDir * turnRate, ForceMode2D.Force);
         }
 
         // Auto-stabilization
         rigidbodyThis.AddTorque(-rigidbodyThis.angularVelocity * angularDamping, ForceMode2D.Force);
     }
-
-}
-public struct ShipMobilityStats
-{
-    public float speed;
-    public float turn_Rate;
-    public float evasion;
-    public float mass;
-    public float inertia;
+    public void SetStats(ShipMobilityStats shipMobilityStats)
+    {
+        //Stats
+        speed = shipMobilityStats.speed;
+        turnRate = shipMobilityStats.turnRate;
+        evasion = shipMobilityStats.evasion;
+        mass = shipMobilityStats.mass;
+        inertia = shipMobilityStats.inertia;
+    }
 }

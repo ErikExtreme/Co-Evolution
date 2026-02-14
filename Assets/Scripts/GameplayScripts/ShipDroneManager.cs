@@ -1,26 +1,40 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ShipDroneManager : MonoBehaviour
 {
     //Stats
-    int droneCount = 1;
-    float droneSpeed = 2;
-    int droneDurability = 1;
+    int droneCount;
+    float droneSpeed;
+    int droneDurability ;
     float droneAggression;
 
     //Variables
     [SerializeField] GameObject dronePrefab;
-    Drone[] drones;
-
-
-    void Start()
+    List<Drone> drones;
+    
+    private void Start()
     {
-        drones = new Drone[droneCount];
+        drones = new List<Drone>();
+    }
 
-        for (int i = 0; i < droneCount; i++)
+    public void SpawnDrones()
+    {
+        for (int i = 0; i < droneCount-drones.Count; i++)
         {
-            drones[i] = Instantiate(dronePrefab, transform.position, Quaternion.Euler(transform.eulerAngles)).GetComponent<Drone>();
-            drones[i].SetStats(droneSpeed,droneDurability,droneAggression);
+            Drone newDrone = Instantiate(dronePrefab, transform.position, Quaternion.Euler(transform.eulerAngles)).GetComponent<Drone>();
+            newDrone.SetStats(droneSpeed, droneDurability, droneAggression);
+            drones.Add(newDrone);
         }
+    }
+
+    public void SetStats(ShipDroneStats ShipDroneStats)
+    {
+        //Stats
+        droneCount = ShipDroneStats.droneCount;
+        droneSpeed = ShipDroneStats.droneSpeed;
+        droneDurability = ShipDroneStats.droneDurability;
+        droneAggression = ShipDroneStats.droneAggression;
     }
 }

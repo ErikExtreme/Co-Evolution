@@ -5,7 +5,7 @@ public class Weapon : MonoBehaviour
     public WeaponGenome weapon_Genome;
     public WeaponStatsTracker tracker;
 
-    public ShipHealth shipHealth;
+    public ShipHealth shipHealthScript;
     public PlayerShip playerShip;
 
     [SerializeField] GameObject projectilePrefab;
@@ -18,7 +18,7 @@ public class Weapon : MonoBehaviour
 
     void Start()
     {
-        weapon_Genome = new WeaponGenome();
+        /*weapon_Genome = new WeaponGenome();
         //weapon_Genome = GlobalSettings.RandomWeaponGenome();
 
         //Temporary(?) default values
@@ -33,7 +33,7 @@ public class Weapon : MonoBehaviour
 
         weapon_Genome.powerCost = 1;
 
-        weapon_Genome.aoeRadius = 1f;
+        weapon_Genome.aoeRadius = 1f;*/
 
         shoot_Timer = 1 / weapon_Genome.fireRate;
         bullets_Left_In_Burst = 0;
@@ -61,7 +61,7 @@ public class Weapon : MonoBehaviour
             {
                 shoot_Timer = 1 / weapon_Genome.fireRate;
 
-                if (shipHealth.ConsumePower(weapon_Genome.powerCost))
+                if (shipHealthScript.ConsumePower(weapon_Genome.powerCost))
                     bullets_Left_In_Burst = weapon_Genome.burstSize;
             }
         }

@@ -17,6 +17,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
     EventSystem eventSystem;
 
     Transform grabbed_Object_Transform;
+    string placementTag;
 
     [SerializeField] ShipBlueprint shipBlueprint;
     void Start()
@@ -37,10 +38,10 @@ public class ModuleGrabbingSystem : MonoBehaviour
 
             if (click_Action.WasReleasedThisFrame())
             {
-                Transform placementPoint = Raycast_To_Get_Transform("PlacementPoint");
+                Transform placementPoint = Raycast_To_Get_Transform(placementTag);
 
                 if (placementPoint != null)
-                    Set_Module(placementPoint);
+                    Set_Module(grabbed_Object_Transform, placementPoint);
 
                 grabbed_Object_Transform = null;
                 LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup);
@@ -48,7 +49,13 @@ public class ModuleGrabbingSystem : MonoBehaviour
         }
 
         if (click_Action.WasPressedThisFrame() && grabbed_Object_Transform == null)
+        {
             grabbed_Object_Transform = Raycast_To_Get_Transform("UIModule");
+
+            if (grabbed_Object_Transform != null &&
+                grabbed_Object_Transform.TryGetComponent<IGrabbableUI>(out var objectScript))
+                placementTag = objectScript.PlacementTag;
+        }
     }
     private Transform Raycast_To_Get_Transform(string tagName)
     {
@@ -64,19 +71,21 @@ public class ModuleGrabbingSystem : MonoBehaviour
         }
         return null;
     }
-    private void Set_Module(Transform locationTransform)
+    private void Set_Module(Transform grabbedObject, Transform locationTransform)
     {
         int siblingIndex = locationTransform.GetSiblingIndex();
 
-        grabbed_Object_Transform.SetParent(locationTransform.parent);
-        grabbed_Object_Transform.SetSiblingIndex(siblingIndex);
+        grabbedObject.SetParent(locationTransform.parent);
+        grabbedObject.SetSiblingIndex(siblingIndex);
 
 
-        TempModules moduleType = grabbed_Object_Transform.GetComponent<TempModule>().moduleType;
         int horiPos = siblingIndex % 5;//HARDCODED 5 FIX
         int vertPos = siblingIndex / 5;//HARDCODED 5 FIX
-        shipBlueprint.SetModule(moduleType, horiPos, vertPos);
 
+        if (grabbed_Object_Transform.TryGetComponent<UIWeapon>(out var uiWeapon))
+            shipBlueprint.SetWeapon(uiWeapon.weaponGenome, horiPos, vertPos);
+        if (grabbed_Object_Transform.TryGetComponent<UIShipModule>(out var uiShipModule))
+            shipBlueprint.SetModule(uiShipModule.shipGenome, horiPos);
 
         Destroy(locationTransform.gameObject);
     }

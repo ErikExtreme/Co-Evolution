@@ -7,6 +7,7 @@ TagManager:
   - Asteroid
   - UIModule
   - PlacementPoint
+  - ModuleSlot
   layers:
   - Default
   - TransparentFX

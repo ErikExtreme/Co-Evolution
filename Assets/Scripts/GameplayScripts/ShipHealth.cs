@@ -4,12 +4,12 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class ShipHealth : MonoBehaviour
 {
     //Stats
-    int hullHP=1;
-    int armor = 1;
-    int shieldCapacity = 1;
-    int shieldRegen = 1;
-    int powerCapacity = 1;
-    int powerRegen = 1;
+    int hullHP;
+    int armor;
+    int shieldCapacity;
+    int shieldRegen;
+    int powerCapacity;
+    int powerRegen;
 
     //Current
     private int health;
@@ -40,6 +40,21 @@ public class ShipHealth : MonoBehaviour
             if (power < powerCapacity)
                 power += powerRegen;
         }
+    }
+    public void SetStats(ShipCoreStats shipCoreStats)
+    {
+        //Stats
+        hullHP = shipCoreStats.hullHP;
+        armor = shipCoreStats.armor;
+        shieldCapacity = shipCoreStats.shieldCapacity;
+        shieldRegen = shipCoreStats.shieldRegen;
+        powerCapacity = shipCoreStats.powerCapacity;
+        powerRegen = shipCoreStats.powerRegen;
+
+        //Current, shouldn't necessarly be set here, depends on design
+        health = hullHP;
+        shield = shieldCapacity;
+        power = powerCapacity;
     }
 
     public void TakeDamage(int damage)

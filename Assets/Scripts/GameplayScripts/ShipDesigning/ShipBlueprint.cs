@@ -3,16 +3,21 @@ using UnityEngine;
 
 public class ShipBlueprint : MonoBehaviour
 {
-    [SerializeField] int sideLength = 5;
     WeaponGenome[,] weaponsArray;
     ShipGenome[] modulesArray;
 
     [SerializeField] GameObject weaponPrefab;
     [SerializeField] Canvas canvas;
 
+    public int CurrentGridWidth {  get; private set; }
+    public int CurrentGridHeight {  get; private set; }
+
     private void Start()
     {
-        weaponsArray = new WeaponGenome[sideLength, sideLength];
+        CurrentGridWidth = 5;
+        CurrentGridHeight = 5;
+
+        weaponsArray = new WeaponGenome[CurrentGridWidth, CurrentGridHeight];
         modulesArray = new ShipGenome[5];//Hard coded fix
     }
 
@@ -35,8 +40,11 @@ public class ShipBlueprint : MonoBehaviour
             Destroy(child.gameObject);
         }
 
-        for (int vert = 0; vert < sideLength; vert++)
-            for (int hori = 0; hori < sideLength; hori++)
+
+        ShipHealth shipHealthScript = gameObject.GetComponent<ShipHealth>();
+
+        for (int vert = 0; vert < CurrentGridHeight; vert++)
+            for (int hori = 0; hori < CurrentGridWidth; hori++)
             {
                 if (weaponsArray[hori, vert] == null)
                     continue;
@@ -44,10 +52,10 @@ public class ShipBlueprint : MonoBehaviour
                 GameObject cellInstance = Instantiate(weaponPrefab, transform, false);
                 Weapon weaponScript = cellInstance.GetComponent<Weapon>();
                 weaponScript.weapon_Genome = weaponsArray[hori, vert];
-                weaponScript.shipHealthScript = gameObject.GetComponent<ShipHealth>();//Separate out energy from health script?
+                weaponScript.shipHealthScript = shipHealthScript;//Separate out energy from health script?
 
-                Vector2 originOffset = new Vector2(sideLength - 1, sideLength - 1) / 2f;
-                Vector2 position = (new Vector2(hori, sideLength - 1 - vert) - originOffset);
+                Vector2 originOffset = new Vector2(CurrentGridWidth - 1, CurrentGridHeight - 1) / 2f;
+                Vector2 position = (new Vector2(hori, CurrentGridHeight - 1 - vert) - originOffset);
                 cellInstance.transform.localPosition = position;
             }
 
@@ -66,7 +74,7 @@ public class ShipBlueprint : MonoBehaviour
             shipMobilityStats.Add(module.speed, module.turnRate, module.evasion, module.mass, module.inertia);
             shipDroneStats.Add(module.droneCount, module.droneSpeed, module.droneDurability, module.droneAggression);
         }
-        gameObject.GetComponent<ShipHealth>().SetStats(shipCoreStats);
+        shipHealthScript.SetStats(shipCoreStats);
         gameObject.GetComponent<PlayerShip>().SetStats(shipMobilityStats);
         gameObject.GetComponent<ShipDroneManager>().SetStats(shipDroneStats);
 

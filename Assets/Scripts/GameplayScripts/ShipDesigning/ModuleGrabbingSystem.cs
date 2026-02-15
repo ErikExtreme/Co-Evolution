@@ -84,13 +84,19 @@ public class ModuleGrabbingSystem : MonoBehaviour
         grabbedObject.SetSiblingIndex(siblingIndex);
 
 
-        int horiPos = siblingIndex % 5;//HARDCODED 5 FIX
-        int vertPos = siblingIndex / 5;//HARDCODED 5 FIX
-
         if (grabbed_Object_Transform.TryGetComponent<UIWeapon>(out var uiWeapon))
+        {
+            int horiPos = siblingIndex % shipBlueprint.CurrentGridWidth;
+            int vertPos = siblingIndex / shipBlueprint.CurrentGridWidth;
+
             shipBlueprint.SetWeapon(uiWeapon.weaponGenome, horiPos, vertPos);
+        }
         if (grabbed_Object_Transform.TryGetComponent<UIShipModule>(out var uiShipModule))
+        {
+            int horiPos = siblingIndex % 5;//HARDCODED 5 FIX
+
             shipBlueprint.SetModule(uiShipModule.shipGenome, horiPos);
+        }
 
         Destroy(locationTransform.gameObject);
     }

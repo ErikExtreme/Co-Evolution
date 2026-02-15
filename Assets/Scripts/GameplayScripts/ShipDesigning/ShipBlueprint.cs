@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ShipBlueprint : MonoBehaviour
 {
@@ -8,16 +10,16 @@ public class ShipBlueprint : MonoBehaviour
 
     [SerializeField] GameObject weaponPrefab;
     [SerializeField] Canvas canvas;
+    [SerializeField] RectTransform gridLayoutGroup;
 
-    public int CurrentGridWidth {  get; private set; }
-    public int CurrentGridHeight {  get; private set; }
+    [SerializeField] private int maxWeaponGridSize = 20;
+    public int MaxWeaponGridSize => maxWeaponGridSize;
+    public int CurrentGridWidth { get; private set; }
+    public int CurrentGridHeight { get; private set; }
 
     private void Start()
     {
-        CurrentGridWidth = 5;
-        CurrentGridHeight = 5;
-
-        weaponsArray = new WeaponGenome[CurrentGridWidth, CurrentGridHeight];
+        weaponsArray = new WeaponGenome[maxWeaponGridSize, maxWeaponGridSize];
         modulesArray = new ShipGenome[5];//Hard coded fix
     }
 
@@ -30,9 +32,27 @@ public class ShipBlueprint : MonoBehaviour
     }
     public void SetModule(ShipGenome newModule, int pos)
     {
-        if (modulesArray[pos] == null)
-            modulesArray[pos] = newModule;
+        if (modulesArray[pos] != null)
+            return;
+
+        modulesArray[pos] = newModule;
+
+
+        CurrentGridWidth += newModule.gridWidth;
+        CurrentGridWidth = Math.Clamp(CurrentGridWidth, 0, maxWeaponGridSize);
+        CurrentGridHeight += newModule.gridHeight;
+        CurrentGridHeight = Math.Clamp(CurrentGridHeight, 0, maxWeaponGridSize);
+
+        for (int i = 0; i < CurrentGridWidth * CurrentGridHeight; i++)
+        {
+            gridLayoutGroup.GetChild(i).gameObject.SetActive(true);
+        }
+        for (int i = CurrentGridWidth * CurrentGridHeight; i < MaxWeaponGridSize * MaxWeaponGridSize; i++)
+        {
+            gridLayoutGroup.GetChild(i).gameObject.SetActive(false);
+        }
     }
+
     public void ConstructShip()
     {
         foreach (Transform child in transform)
@@ -107,8 +127,8 @@ public class ShipMobilityStats
     public float turnRate;
     public float evasion;
     public float mass;
-    public float inertia; 
-    
+    public float inertia;
+
     public void Add(float speed, float turnRate, float evasion, float mass, float inertia)
     {
         this.speed += speed;
@@ -129,8 +149,8 @@ public class ShipDroneStats
     public int droneCount;
     public float droneSpeed;
     public int droneDurability;
-    public float droneAggression; 
-    
+    public float droneAggression;
+
     public void Add(int droneCount, float droneSpeed, int droneDurability, float droneAggression)
     {
         this.droneCount += droneCount;

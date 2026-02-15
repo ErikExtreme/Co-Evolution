@@ -26,8 +26,8 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
         //shipGenome.mass = 1;
         //shipGenome.inertia = 1;
 
-        //shipGenome.gridWidth
-        //shipGenome.gridHeight
+        shipGenome.gridWidth = 3;
+        shipGenome.gridHeight = 3;
         //shipGenome.specialTileDensity
 
         shipGenome.droneCount = 1;

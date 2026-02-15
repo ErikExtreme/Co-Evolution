@@ -23,7 +23,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
     [SerializeField] ShipBlueprint shipBlueprint;
     void Start()
     {
-        click_Action = InputSystem.actions.FindAction("Click"); 
+        click_Action = InputSystem.actions.FindAction("Click");
         openBlueprint_Action = InputSystem.actions.FindAction("OpenBlueprint");
 
         raycaster = canvas.GetComponent<GraphicRaycaster>();
@@ -80,7 +80,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
     {
         int siblingIndex = locationTransform.GetSiblingIndex();
 
-        grabbedObject.SetParent(locationTransform.parent);
+        grabbedObject.SetParent(locationTransform.parent, false);
         grabbedObject.SetSiblingIndex(siblingIndex);
 
 

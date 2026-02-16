@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class ShipBlueprint : MonoBehaviour
 {
@@ -45,16 +46,14 @@ public class ShipBlueprint : MonoBehaviour
         currentGridWidth += newModule.gridWidth;
         currentGridHeight += newModule.gridHeight;
 
-        for (int i = 0; i < CurrentGridWidth * CurrentGridHeight; i++)
-        {
-            gridLayoutGroup.GetChild(i).gameObject.SetActive(true);
-        }
-        for (int i = CurrentGridWidth * CurrentGridHeight; i < MaxWeaponGridSize * MaxWeaponGridSize; i++)
-        {
-            gridLayoutGroup.GetChild(i).gameObject.SetActive(false);
-        }
-
-        gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75+26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
+        for (int i = 0; i < MaxWeaponGridSize; i++)
+            for (int j = 0; j < MaxWeaponGridSize; j++)
+            {
+                bool shouldBeActive = i < CurrentGridWidth&& j< CurrentGridHeight;
+                int index = i + j * MaxWeaponGridSize;
+                gridLayoutGroup.GetChild(index).gameObject.SetActive(shouldBeActive);
+            }
+        gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75 + 26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
     }
     public void RemoveWeapon(int horiPos, int vertPos)
     {
@@ -67,15 +66,13 @@ public class ShipBlueprint : MonoBehaviour
 
         modulesArray[pos] = null;
 
-        for (int i = 0; i < CurrentGridWidth * CurrentGridHeight; i++)
-        {
-            gridLayoutGroup.GetChild(i).gameObject.SetActive(true);
-        }
-        for (int i = CurrentGridWidth * CurrentGridHeight; i < MaxWeaponGridSize * MaxWeaponGridSize; i++)
-        {
-            gridLayoutGroup.GetChild(i).gameObject.SetActive(false);
-        }
-
+        for (int i = 0; i < MaxWeaponGridSize; i++)
+            for (int j = 0; j < MaxWeaponGridSize; j++)
+            {
+                bool shouldBeActive = i < CurrentGridWidth && j < CurrentGridHeight;
+                int index = i + j * MaxWeaponGridSize;
+                gridLayoutGroup.GetChild(index).gameObject.SetActive(shouldBeActive);
+            }
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75 + 26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
     }
 

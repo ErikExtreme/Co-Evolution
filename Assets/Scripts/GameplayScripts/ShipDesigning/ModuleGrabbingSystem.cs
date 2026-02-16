@@ -102,7 +102,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
         {
             int horiPos = siblingIndex % shipBlueprint.CurrentGridWidth;
             int vertPos = siblingIndex / shipBlueprint.CurrentGridWidth;
-
+            Debug.Log(horiPos + "   " + vertPos);
             shipBlueprint.SetWeapon(uiWeapon.weaponGenome, horiPos, vertPos);
 
             uiWeapon.isActive = true;

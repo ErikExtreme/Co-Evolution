@@ -12,9 +12,11 @@ public class ShipBlueprint : MonoBehaviour
     [SerializeField] Canvas canvas;
     [SerializeField] RectTransform gridLayoutGroup;
 
+    [SerializeField] private int moduleListSize = 5;
     [SerializeField] private int maxWeaponGridSize = 20;
     private int currentGridWidth;
     private int currentGridHeight;
+    public int ModuleListSize => moduleListSize;
     public int MaxWeaponGridSize => maxWeaponGridSize;
     public int CurrentGridWidth => Math.Clamp(currentGridWidth, 0, maxWeaponGridSize);
     public int CurrentGridHeight => Math.Clamp(currentGridHeight, 0, maxWeaponGridSize);
@@ -22,7 +24,7 @@ public class ShipBlueprint : MonoBehaviour
     private void Start()
     {
         weaponsArray = new WeaponGenome[maxWeaponGridSize, maxWeaponGridSize];
-        modulesArray = new ShipGenome[5];//Hard coded fix
+        modulesArray = new ShipGenome[moduleListSize];
     }
 
     public void SetWeapon(WeaponGenome newModule, int horiPos, int vertPos)
@@ -51,6 +53,8 @@ public class ShipBlueprint : MonoBehaviour
         {
             gridLayoutGroup.GetChild(i).gameObject.SetActive(false);
         }
+
+        gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75+26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
     }
     public void RemoveWeapon(int horiPos, int vertPos)
     {
@@ -71,6 +75,8 @@ public class ShipBlueprint : MonoBehaviour
         {
             gridLayoutGroup.GetChild(i).gameObject.SetActive(false);
         }
+
+        gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75 + 26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
     }
 
     public void ConstructShip()

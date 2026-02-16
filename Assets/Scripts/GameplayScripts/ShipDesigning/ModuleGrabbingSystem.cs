@@ -9,7 +9,9 @@ public class ModuleGrabbingSystem : MonoBehaviour
 {
     [SerializeField] Camera mainCamera;
     [SerializeField] Canvas canvas;
-    [SerializeField] List<RectTransform> layoutGroups;
+    [SerializeField] RectTransform stockPileLayoutGroup;
+    [SerializeField] RectTransform weaponsLayoutGroup;
+    [SerializeField] RectTransform modulesLayoutGroup;
     InputAction click_Action;
     InputAction openBlueprint_Action;
 
@@ -31,7 +33,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
         eventSystem = EventSystem.current;
         pointer_Event_Data = new PointerEventData(eventSystem);
     }
-    // Update is called once per frame
+
     void Update()
     {
         if (grabbed_Object_Transform != null)
@@ -48,10 +50,9 @@ public class ModuleGrabbingSystem : MonoBehaviour
 
                 grabbed_Object_Transform = null;
 
-                foreach (var layoutGroup in layoutGroups)
-                {
-                    LayoutRebuilder.MarkLayoutForRebuild(layoutGroup);
-                }
+                LayoutRebuilder.MarkLayoutForRebuild(stockPileLayoutGroup);
+                LayoutRebuilder.MarkLayoutForRebuild(weaponsLayoutGroup);
+                LayoutRebuilder.MarkLayoutForRebuild(modulesLayoutGroup);
             }
         }
 
@@ -108,7 +109,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
         }
         if (grabbed_Object_Transform.TryGetComponent<UIShipModule>(out var uiShipModule))
         {
-            int horiPos = siblingIndex % 5;//HARDCODED 5 FIX
+            int horiPos = siblingIndex % shipBlueprint.ModuleListSize;
 
             shipBlueprint.SetModule(uiShipModule.shipGenome, horiPos);
 
@@ -121,7 +122,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
 
         GameObject slotInstance = Instantiate(emptySlotPrefab, grabbedObject.parent);
         slotInstance.transform.SetSiblingIndex(siblingIndex);
-        grabbedObject.SetParent(layoutGroups[0]);
+        grabbedObject.SetParent(stockPileLayoutGroup);
         grabbedObject.transform.localScale = Vector2.one;
 
         if (grabbed_Object_Transform.TryGetComponent<UIWeapon>(out var uiWeapon))
@@ -135,7 +136,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
         }
         if (grabbed_Object_Transform.TryGetComponent<UIShipModule>(out var uiShipModule))
         {
-            int horiPos = siblingIndex % 5;//HARDCODED 5 FIX
+            int horiPos = siblingIndex % shipBlueprint.ModuleListSize;
 
             shipBlueprint.RemoveModule(horiPos);
 

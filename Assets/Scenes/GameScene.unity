@@ -5095,10 +5095,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ModuleGrabbingSystem
   mainCamera: {fileID: 1862225234}
   canvas: {fileID: 1809847684}
-  layoutGroups:
-  - {fileID: 2103772006}
-  - {fileID: 242994248}
-  - {fileID: 1776092522}
+  stockPileLayoutGroup: {fileID: 2103772006}
+  weaponsLayoutGroup: {fileID: 1776092522}
+  modulesLayoutGroup: {fileID: 242994248}
   shipBlueprint: {fileID: 1699913377}
   emptySlotPrefab: {fileID: 6724617543036507939, guid: 22b2dc48090bd004dbf740f2e2929872, type: 3}
 --- !u!4 &1135286556
@@ -7608,6 +7607,7 @@ MonoBehaviour:
   weaponPrefab: {fileID: 8052139905561744480, guid: e7aa28ad7bb09664884bb7842a550fb8, type: 3}
   canvas: {fileID: 1809847684}
   gridLayoutGroup: {fileID: 1776092522}
+  moduleListSize: 5
   maxWeaponGridSize: 10
 --- !u!114 &1699913378
 MonoBehaviour:

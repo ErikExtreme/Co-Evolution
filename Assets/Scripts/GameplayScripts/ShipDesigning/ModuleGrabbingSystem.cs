@@ -21,6 +21,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
     string placementTag;
 
     [SerializeField] ShipBlueprint shipBlueprint;
+    [SerializeField] GameObject emptySlotPrefab;
     void Start()
     {
         click_Action = InputSystem.actions.FindAction("Click");
@@ -60,7 +61,12 @@ public class ModuleGrabbingSystem : MonoBehaviour
 
             if (grabbed_Object_Transform != null &&
                 grabbed_Object_Transform.TryGetComponent<IGrabbableUI>(out var objectScript))
+            {
                 placementTag = objectScript.PlacementTag;
+
+                if (objectScript.isActive)
+                    RemoveModule(grabbed_Object_Transform);
+            }
         }
 
         if (openBlueprint_Action.WasPressedThisFrame())
@@ -85,14 +91,11 @@ public class ModuleGrabbingSystem : MonoBehaviour
         int siblingIndex = locationTransform.GetSiblingIndex();
 
         grabbed_Object_Transform.TryGetComponent<IGrabbableUI>(out var objectScript);
-        if (objectScript.isActive)
-            locationTransform.SetSiblingIndex(grabbedObject.GetSiblingIndex());
-        else
-            Destroy(locationTransform.gameObject);
 
-        grabbedObject.SetParent(locationTransform.parent, false);
+        grabbedObject.SetParent(locationTransform.parent);
+        grabbedObject.transform.localScale = locationTransform.localScale;
         grabbedObject.SetSiblingIndex(siblingIndex);
-
+        Destroy(locationTransform.gameObject);
 
         if (grabbed_Object_Transform.TryGetComponent<UIWeapon>(out var uiWeapon))
         {
@@ -110,6 +113,35 @@ public class ModuleGrabbingSystem : MonoBehaviour
             shipBlueprint.SetModule(uiShipModule.shipGenome, horiPos);
 
             uiShipModule.isActive = true;
+        }
+    }
+    private void RemoveModule(Transform grabbedObject)
+    {
+        int siblingIndex = grabbedObject.GetSiblingIndex();
+
+        GameObject slotInstance = Instantiate(emptySlotPrefab, grabbedObject.parent);
+        slotInstance.transform.SetSiblingIndex(siblingIndex);
+        grabbedObject.SetParent(layoutGroups[0]);
+        grabbedObject.transform.localScale = Vector2.one;
+
+        if (grabbed_Object_Transform.TryGetComponent<UIWeapon>(out var uiWeapon))
+        {
+            int horiPos = siblingIndex % shipBlueprint.CurrentGridWidth;
+            int vertPos = siblingIndex / shipBlueprint.CurrentGridWidth;
+
+            shipBlueprint.RemoveWeapon(horiPos, vertPos);
+
+            uiWeapon.isActive = false;
+        }
+        if (grabbed_Object_Transform.TryGetComponent<UIShipModule>(out var uiShipModule))
+        {
+            int horiPos = siblingIndex % 5;//HARDCODED 5 FIX
+
+            shipBlueprint.RemoveModule(horiPos);
+
+            uiShipModule.isActive = false;
+
+            slotInstance.tag = "ModuleSlot";
         }
     }
 }

@@ -13,9 +13,11 @@ public class ShipBlueprint : MonoBehaviour
     [SerializeField] RectTransform gridLayoutGroup;
 
     [SerializeField] private int maxWeaponGridSize = 20;
+    private int currentGridWidth;
+    private int currentGridHeight;
     public int MaxWeaponGridSize => maxWeaponGridSize;
-    public int CurrentGridWidth { get; private set; }
-    public int CurrentGridHeight { get; private set; }
+    public int CurrentGridWidth => Math.Clamp(currentGridWidth, 0, maxWeaponGridSize);
+    public int CurrentGridHeight => Math.Clamp(currentGridHeight, 0, maxWeaponGridSize);
 
     private void Start()
     {
@@ -38,10 +40,28 @@ public class ShipBlueprint : MonoBehaviour
         modulesArray[pos] = newModule;
 
 
-        CurrentGridWidth += newModule.gridWidth;
-        CurrentGridWidth = Math.Clamp(CurrentGridWidth, 0, maxWeaponGridSize);
-        CurrentGridHeight += newModule.gridHeight;
-        CurrentGridHeight = Math.Clamp(CurrentGridHeight, 0, maxWeaponGridSize);
+        currentGridWidth += newModule.gridWidth;
+        currentGridHeight += newModule.gridHeight;
+
+        for (int i = 0; i < CurrentGridWidth * CurrentGridHeight; i++)
+        {
+            gridLayoutGroup.GetChild(i).gameObject.SetActive(true);
+        }
+        for (int i = CurrentGridWidth * CurrentGridHeight; i < MaxWeaponGridSize * MaxWeaponGridSize; i++)
+        {
+            gridLayoutGroup.GetChild(i).gameObject.SetActive(false);
+        }
+    }
+    public void RemoveWeapon(int horiPos, int vertPos)
+    {
+        weaponsArray[horiPos, vertPos] = null;
+    }
+    public void RemoveModule(int pos)
+    {
+        currentGridWidth -= modulesArray[pos].gridWidth;
+        currentGridHeight -= modulesArray[pos].gridHeight;
+
+        modulesArray[pos] = null;
 
         for (int i = 0; i < CurrentGridWidth * CurrentGridHeight; i++)
         {

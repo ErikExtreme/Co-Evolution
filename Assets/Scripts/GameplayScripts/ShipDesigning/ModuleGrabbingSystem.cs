@@ -9,7 +9,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
 {
     [SerializeField] Camera mainCamera;
     [SerializeField] Canvas canvas;
-    [SerializeField] RectTransform layoutGroup;
+    [SerializeField] List<RectTransform> layoutGroups;
     InputAction click_Action;
     InputAction openBlueprint_Action;
 
@@ -46,7 +46,11 @@ public class ModuleGrabbingSystem : MonoBehaviour
                     Set_Module(grabbed_Object_Transform, placementPoint);
 
                 grabbed_Object_Transform = null;
-                LayoutRebuilder.ForceRebuildLayoutImmediate(layoutGroup);
+
+                foreach (var layoutGroup in layoutGroups)
+                {
+                    LayoutRebuilder.MarkLayoutForRebuild(layoutGroup);
+                }
             }
         }
 
@@ -80,6 +84,12 @@ public class ModuleGrabbingSystem : MonoBehaviour
     {
         int siblingIndex = locationTransform.GetSiblingIndex();
 
+        grabbed_Object_Transform.TryGetComponent<IGrabbableUI>(out var objectScript);
+        if (objectScript.isActive)
+            locationTransform.SetSiblingIndex(grabbedObject.GetSiblingIndex());
+        else
+            Destroy(locationTransform.gameObject);
+
         grabbedObject.SetParent(locationTransform.parent, false);
         grabbedObject.SetSiblingIndex(siblingIndex);
 
@@ -90,14 +100,16 @@ public class ModuleGrabbingSystem : MonoBehaviour
             int vertPos = siblingIndex / shipBlueprint.CurrentGridWidth;
 
             shipBlueprint.SetWeapon(uiWeapon.weaponGenome, horiPos, vertPos);
+
+            uiWeapon.isActive = true;
         }
         if (grabbed_Object_Transform.TryGetComponent<UIShipModule>(out var uiShipModule))
         {
             int horiPos = siblingIndex % 5;//HARDCODED 5 FIX
 
             shipBlueprint.SetModule(uiShipModule.shipGenome, horiPos);
-        }
 
-        Destroy(locationTransform.gameObject);
+            uiShipModule.isActive = true;
+        }
     }
 }

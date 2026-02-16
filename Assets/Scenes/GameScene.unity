@@ -5119,7 +5119,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ModuleGrabbingSystem
   mainCamera: {fileID: 1862225234}
   canvas: {fileID: 1809847684}
-  layoutGroup: {fileID: 2103772006}
+  layoutGroups:
+  - {fileID: 1776092522}
+  - {fileID: 242994248}
+  - {fileID: 2103772006}
   shipBlueprint: {fileID: 1699913377}
 --- !u!4 &1135286556
 Transform:

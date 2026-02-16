@@ -3,6 +3,7 @@ using UnityEngine;
 public class UIWeapon : MonoBehaviour, IGrabbableUI
 {
     public string PlacementTag => "PlacementPoint";
+    public bool isActive { get; set; }
 
     public WeaponGenome weaponGenome;
 

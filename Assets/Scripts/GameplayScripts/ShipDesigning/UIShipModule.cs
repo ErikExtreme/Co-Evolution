@@ -4,6 +4,7 @@ using UnityEngine;
 public class UIShipModule : MonoBehaviour, IGrabbableUI
 {
     public string PlacementTag => "ModuleSlot";
+    public bool isActive { get; set; }
 
     public ShipGenome shipGenome;
 

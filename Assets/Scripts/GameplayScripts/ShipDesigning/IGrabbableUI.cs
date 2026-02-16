@@ -2,5 +2,6 @@ using UnityEngine;
 
 public interface IGrabbableUI
 {
-    string PlacementTag {  get; }
+    string PlacementTag { get; }
+    bool isActive { get; set; }
 }

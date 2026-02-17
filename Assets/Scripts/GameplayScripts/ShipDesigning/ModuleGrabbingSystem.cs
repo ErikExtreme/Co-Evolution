@@ -102,7 +102,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
         {
             int horiPos = siblingIndex % shipBlueprint.MaxWeaponGridSize;
             int vertPos = siblingIndex / shipBlueprint.MaxWeaponGridSize;
-            Debug.Log(horiPos + "   " + vertPos);
+
             shipBlueprint.SetWeapon(uiWeapon.weaponGenome, horiPos, vertPos);
 
             uiWeapon.isActive = true;
@@ -127,8 +127,8 @@ public class ModuleGrabbingSystem : MonoBehaviour
 
         if (grabbed_Object_Transform.TryGetComponent<UIWeapon>(out var uiWeapon))
         {
-            int horiPos = siblingIndex % shipBlueprint.CurrentGridWidth;
-            int vertPos = siblingIndex / shipBlueprint.CurrentGridWidth;
+            int horiPos = siblingIndex % shipBlueprint.MaxWeaponGridSize;
+            int vertPos = siblingIndex / shipBlueprint.MaxWeaponGridSize;
 
             shipBlueprint.RemoveWeapon(horiPos, vertPos);
 

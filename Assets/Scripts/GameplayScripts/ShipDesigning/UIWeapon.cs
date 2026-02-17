@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIWeapon : MonoBehaviour, IGrabbableUI
 {
@@ -32,5 +33,29 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
 
         //weaponGenome.statusEffectStrength
         weaponGenome.aoeRadius = 1f;
+    }
+
+    public void DisplayStats(Text statsTextBox)
+    {
+        statsTextBox.text = 
+            "Damage: " + weaponGenome.baseDamage +
+            "\nBurst size: " + weaponGenome.burstSize +
+            "\nFire rate: " + weaponGenome.fireRate +
+            "\nShot cooldown: " + weaponGenome.cooldownTime +
+            "\nProjectile speed: " + weaponGenome.projectileSpeed +
+            "\nAccuracy: " + weaponGenome.accuracy +
+            "\nSpread: " + weaponGenome.spreadAngle +
+            "\nRange: " + weaponGenome.range +
+
+            "\nPower cost: " + weaponGenome.powerCost +
+            "\nHeat per shot: " + weaponGenome.heatPerShot +
+            "\nHeat dissipation: " + weaponGenome.heatDissipation +
+            "\nCharge up time: " + weaponGenome.chargeUpTime +
+
+            "\nTile footprint: " + weaponGenome.tileFootprint +
+            "\nTile affinity: " + weaponGenome.tileAffinity +
+
+            "\nStatus effect strength: " + weaponGenome.statusEffectStrength +
+            "\nAoe radius: " + weaponGenome.aoeRadius;
     }
 }

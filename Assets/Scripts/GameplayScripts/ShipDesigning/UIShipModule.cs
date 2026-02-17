@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIShipModule : MonoBehaviour, IGrabbableUI
 {
@@ -36,4 +37,31 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
         shipGenome.droneDurability = 1;
         //float droneAggression;
     }
+
+    public void DisplayStats(Text statsTextBox)
+    {
+        statsTextBox.text =
+            "Hull HP: " + shipGenome.hullHP +
+            "\nArmor: " + shipGenome.armor +
+            "\nShield cap: " + shipGenome.shieldCapacity +
+            "\nShiled regen: " + shipGenome.shieldRegen +
+            "\nPower cap: " + shipGenome.powerCapacity +
+            "\nPower regen: " + shipGenome.powerRegen +
+
+            "\nSpeed: " + shipGenome.speed +
+            "\nTurn rate: " + shipGenome.turnRate +
+            "\nEvasion: " + shipGenome.evasion +
+            "\nMass: " + shipGenome.mass +
+            "\nInertia: " + shipGenome.inertia +
+
+            "\nGrid width: " + shipGenome.gridWidth +
+            "\nGrid height: " + shipGenome.gridHeight +
+            "\nSpecial Tile Density: " + shipGenome.specialTileDensity +
+
+            "\nDrone count: " + shipGenome.droneCount +
+            "\nDrone speed: " + shipGenome.droneSpeed +
+            "\nDrone durability: " + shipGenome.droneDurability +
+            "\nDrone aggression: " + shipGenome.droneAggression;
+    }
+
 }

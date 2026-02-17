@@ -78,11 +78,11 @@ public class ShipBlueprint : MonoBehaviour
 
     public void ConstructShip()
     {
-        foreach (Transform child in transform)
+        for (int i = 1; i < transform.childCount; i++)//skip first child
         {
-            Destroy(child.gameObject);
+            Destroy(transform.GetChild(i).gameObject);
         }
-
+        transform.GetChild(0).transform.localScale = new Vector2(currentGridWidth * 1.06f, currentGridHeight * 1.06f);
 
         ShipHealth shipHealthScript = gameObject.GetComponent<ShipHealth>();
 

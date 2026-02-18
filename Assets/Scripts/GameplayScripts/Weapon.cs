@@ -15,7 +15,7 @@ public class Weapon : MonoBehaviour
     float cooldown_Timer;
 
     private Transform target;
-
+    
     void Start()
     {
         /*weapon_Genome = new WeaponGenome();

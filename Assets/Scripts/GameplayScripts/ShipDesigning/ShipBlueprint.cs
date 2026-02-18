@@ -6,8 +6,8 @@ using UnityEngine.UIElements;
 
 public class ShipBlueprint : MonoBehaviour
 {
-    WeaponGenome[,] weaponsArray;
-    ShipGenome[] modulesArray;
+    (WeaponGenome genome, WeaponStatsTracker tracker)[,] weaponsArray;
+    (ShipGenome genome, ModuleStatsTracker tracker)[] modulesArray;
 
     [SerializeField] GameObject weaponPrefab;
     [SerializeField] Canvas canvas;
@@ -24,32 +24,32 @@ public class ShipBlueprint : MonoBehaviour
 
     private void Start()
     {
-        weaponsArray = new WeaponGenome[maxWeaponGridSize, maxWeaponGridSize];
-        modulesArray = new ShipGenome[moduleListSize];
+        weaponsArray = new (WeaponGenome genome, WeaponStatsTracker tracker)[maxWeaponGridSize, maxWeaponGridSize];
+        modulesArray = new (ShipGenome genome, ModuleStatsTracker tracker)[moduleListSize];
     }
 
-    public void SetWeapon(WeaponGenome newModule, int horiPos, int vertPos)
+    public void SetWeapon(WeaponGenome genome, WeaponStatsTracker tracker, int horiPos, int vertPos)
     {
-        if (weaponsArray[horiPos, vertPos] == null)
+        if (weaponsArray[horiPos, vertPos].genome == null)
         {
-            weaponsArray[horiPos, vertPos] = newModule;
+            weaponsArray[horiPos, vertPos] = (genome, tracker);
         }
     }
-    public void SetModule(ShipGenome newModule, int pos)
+    public void SetModule(ShipGenome genome, ModuleStatsTracker tracker, int pos)
     {
-        if (modulesArray[pos] != null)
+        if (modulesArray[pos].genome != null)
             return;
 
-        modulesArray[pos] = newModule;
+        modulesArray[pos] = (genome, tracker);
 
 
-        currentGridWidth += newModule.gridWidth;
-        currentGridHeight += newModule.gridHeight;
+        currentGridWidth += genome.gridWidth;
+        currentGridHeight += genome.gridHeight;
 
         for (int i = 0; i < MaxWeaponGridSize; i++)
             for (int j = 0; j < MaxWeaponGridSize; j++)
             {
-                bool shouldBeActive = i < CurrentGridWidth&& j< CurrentGridHeight;
+                bool shouldBeActive = i < CurrentGridWidth && j < CurrentGridHeight;
                 int index = i + j * MaxWeaponGridSize;
                 gridLayoutGroup.GetChild(index).gameObject.SetActive(shouldBeActive);
             }
@@ -57,14 +57,16 @@ public class ShipBlueprint : MonoBehaviour
     }
     public void RemoveWeapon(int horiPos, int vertPos)
     {
-        weaponsArray[horiPos, vertPos] = null;
+        weaponsArray[horiPos, vertPos].genome = null;
+        weaponsArray[horiPos, vertPos].tracker = null;
     }
     public void RemoveModule(int pos)
     {
-        currentGridWidth -= modulesArray[pos].gridWidth;
-        currentGridHeight -= modulesArray[pos].gridHeight;
+        currentGridWidth -= modulesArray[pos].genome.gridWidth;
+        currentGridHeight -= modulesArray[pos].genome.gridHeight;
 
-        modulesArray[pos] = null;
+        modulesArray[pos].genome = null;
+        modulesArray[pos].tracker = null;
 
         for (int i = 0; i < MaxWeaponGridSize; i++)
             for (int j = 0; j < MaxWeaponGridSize; j++)
@@ -89,13 +91,14 @@ public class ShipBlueprint : MonoBehaviour
         for (int vert = 0; vert < CurrentGridHeight; vert++)
             for (int hori = 0; hori < CurrentGridWidth; hori++)
             {
-                if (weaponsArray[hori, vert] == null)
+                if (weaponsArray[hori, vert].genome == null)
                     continue;
 
                 GameObject cellInstance = Instantiate(weaponPrefab, transform, false);
                 Weapon weaponScript = cellInstance.GetComponent<Weapon>();
-                weaponScript.weapon_Genome = weaponsArray[hori, vert];
+                weaponScript.weapon_Genome = weaponsArray[hori, vert].genome;
                 weaponScript.shipHealthScript = shipHealthScript;//Separate out energy from health script?
+                weaponScript.tracker = weaponsArray[hori, vert].tracker;
 
                 Vector2 originOffset = new Vector2(CurrentGridWidth - 1, CurrentGridHeight - 1) / 2f;
                 Vector2 position = (new Vector2(hori, CurrentGridHeight - 1 - vert) - originOffset);
@@ -108,14 +111,15 @@ public class ShipBlueprint : MonoBehaviour
         ShipMobilityStats shipMobilityStats = new ShipMobilityStats();
         ShipDroneStats shipDroneStats = new ShipDroneStats();
 
-        foreach (ShipGenome module in modulesArray)
+        foreach ((ShipGenome genome, ModuleStatsTracker tracker) module in modulesArray)
         {
-            if (module == null)
+            ShipGenome genome = module.genome;
+            if (genome == null)
                 continue;
 
-            shipCoreStats.Add(module.hullHP, module.armor, module.shieldCapacity, module.shieldRegen, module.powerCapacity, module.powerRegen);
-            shipMobilityStats.Add(module.speed, module.turnRate, module.evasion, module.mass, module.inertia);
-            shipDroneStats.Add(module.droneCount, module.droneSpeed, module.droneDurability, module.droneAggression);
+            shipCoreStats.Add(genome.hullHP, genome.armor, genome.shieldCapacity, genome.shieldRegen, genome.powerCapacity, genome.powerRegen);
+            shipMobilityStats.Add(genome.speed, genome.turnRate, genome.evasion, genome.mass, genome.inertia);
+            shipDroneStats.Add(genome.droneCount, genome.droneSpeed, genome.droneDurability, genome.droneAggression);
         }
         shipHealthScript.SetStats(shipCoreStats);
         gameObject.GetComponent<PlayerShip>().SetStats(shipMobilityStats);

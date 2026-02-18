@@ -6,7 +6,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] GameObject UIweaponPrefab;
     [SerializeField] GameObject UImodulePrefab;
 
-    [SerializeField] Text statsTextBox; 
+    [SerializeField] Text statsTextBox;
     private void Start()
     {
         //For testing
@@ -22,11 +22,15 @@ public class Inventory : MonoBehaviour
     public void AddModule(ShipGenome shipGenome)
     {
         GameObject instance = Instantiate(UImodulePrefab, transform);
-        instance.GetComponent<UIShipModule>().Initialize(shipGenome, statsTextBox);
+        UIShipModule script = instance.GetComponent<UIShipModule>();
+        script.Initialize(shipGenome, statsTextBox);
+        ModuleManager.Instance.AddModule(shipGenome, script.moduleStatsTracker);
     }
     public void AddWeapon(WeaponGenome weaponGenome)
     {
         GameObject instance = Instantiate(UIweaponPrefab, transform);
-        instance.GetComponent<UIWeapon>().Initialize(weaponGenome, statsTextBox);
+        UIWeapon script = instance.GetComponent<UIWeapon>();
+        script.Initialize(weaponGenome, statsTextBox);
+        WeaponManager.Instance.AddWeapon(weaponGenome,script.weaponStatsTracker);
     }
 }

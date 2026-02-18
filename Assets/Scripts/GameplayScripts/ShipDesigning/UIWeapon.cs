@@ -6,7 +6,9 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
     public string PlacementTag => "PlacementPoint";
     public bool isActive { get; set; }
 
+
     public WeaponGenome weaponGenome;
+    public WeaponStatsTracker weaponStatsTracker;
 
     Text statsTextBox;
 
@@ -40,6 +42,8 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
     {
         this.weaponGenome = weaponGenome;
         statsTextBox = textBox;
+
+        weaponStatsTracker = new WeaponStatsTracker();
     }
     public void DisplayStats()
     {

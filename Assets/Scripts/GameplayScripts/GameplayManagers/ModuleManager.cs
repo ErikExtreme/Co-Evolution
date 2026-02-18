@@ -25,4 +25,11 @@ public class ModuleManager : MonoBehaviour
         Debug.LogError("Could not find weapon with id: " + id);
         return null;
     }
+    public void AddModule(ShipGenome shipGenome, ModuleStatsTracker moduleStatsTracker)
+    {
+        Module module = new Module();
+        module.ship_Genome = shipGenome;
+        module.tracker = moduleStatsTracker;
+        modules.Add(module);
+    }
 }

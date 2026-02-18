@@ -5,7 +5,7 @@ public class Module : MonoBehaviour
     public ShipGenome ship_Genome;
     public ModuleStatsTracker tracker;
 
-
+    
     void Start()
     {
         ship_Genome = new ShipGenome();

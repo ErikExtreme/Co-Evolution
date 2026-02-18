@@ -66,7 +66,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
             if (grabbed_Object_Transform == null)
                 return;
 
-            if(grabbed_Object_Transform.parent == inventoryLayoutGroup)
+            if (grabbed_Object_Transform.parent == inventoryLayoutGroup)
                 grabbed_Object_Transform.SetParent(canvas.transform);
 
             if (grabbed_Object_Transform.TryGetComponent<IGrabbableUI>(out var objectScript))
@@ -112,7 +112,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
             int horiPos = siblingIndex % shipBlueprint.MaxWeaponGridSize;
             int vertPos = siblingIndex / shipBlueprint.MaxWeaponGridSize;
 
-            shipBlueprint.SetWeapon(uiWeapon.weaponGenome, horiPos, vertPos);
+            shipBlueprint.SetWeapon(uiWeapon.weaponGenome, uiWeapon.weaponStatsTracker, horiPos, vertPos);
 
             uiWeapon.isActive = true;
         }
@@ -120,7 +120,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
         {
             int horiPos = siblingIndex % shipBlueprint.ModuleListSize;
 
-            shipBlueprint.SetModule(uiShipModule.shipGenome, horiPos);
+            shipBlueprint.SetModule(uiShipModule.shipGenome, uiShipModule.moduleStatsTracker, horiPos);
 
             uiShipModule.isActive = true;
         }

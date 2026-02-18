@@ -9,7 +9,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
 {
     [SerializeField] Camera mainCamera;
     [SerializeField] Canvas canvas;
-    [SerializeField] RectTransform stockPileLayoutGroup;
+    [SerializeField] RectTransform inventoryLayoutGroup;
     [SerializeField] RectTransform weaponsLayoutGroup;
     [SerializeField] RectTransform modulesLayoutGroup;
     InputAction click_Action;
@@ -43,6 +43,9 @@ public class ModuleGrabbingSystem : MonoBehaviour
 
             if (click_Action.WasReleasedThisFrame())
             {
+                if (grabbed_Object_Transform.parent != modulesLayoutGroup && grabbed_Object_Transform.parent != weaponsLayoutGroup)
+                    grabbed_Object_Transform.SetParent(inventoryLayoutGroup);
+
                 Transform placementPoint = Raycast_To_Get_Transform(placementTag);
 
                 if (placementPoint != null)
@@ -50,7 +53,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
 
                 grabbed_Object_Transform = null;
 
-                LayoutRebuilder.MarkLayoutForRebuild(stockPileLayoutGroup);
+                LayoutRebuilder.MarkLayoutForRebuild(inventoryLayoutGroup);
                 LayoutRebuilder.MarkLayoutForRebuild(weaponsLayoutGroup);
                 LayoutRebuilder.MarkLayoutForRebuild(modulesLayoutGroup);
             }
@@ -60,14 +63,20 @@ public class ModuleGrabbingSystem : MonoBehaviour
         {
             grabbed_Object_Transform = Raycast_To_Get_Transform("UIModule");
 
-            if (grabbed_Object_Transform != null &&
-                grabbed_Object_Transform.TryGetComponent<IGrabbableUI>(out var objectScript))
+            if (grabbed_Object_Transform == null)
+                return;
+
+            if(grabbed_Object_Transform.parent == inventoryLayoutGroup)
+                grabbed_Object_Transform.SetParent(canvas.transform);
+
+            if (grabbed_Object_Transform.TryGetComponent<IGrabbableUI>(out var objectScript))
             {
                 placementTag = objectScript.PlacementTag;
 
                 if (objectScript.isActive)
                     RemoveModule(grabbed_Object_Transform);
             }
+
         }
 
         if (openBlueprint_Action.WasPressedThisFrame())
@@ -122,7 +131,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
 
         GameObject slotInstance = Instantiate(emptySlotPrefab, grabbedObject.parent);
         slotInstance.transform.SetSiblingIndex(siblingIndex);
-        grabbedObject.SetParent(stockPileLayoutGroup);
+        grabbedObject.SetParent(canvas.transform);
         grabbedObject.transform.localScale = Vector2.one;
 
         if (grabbed_Object_Transform.TryGetComponent<UIWeapon>(out var uiWeapon))

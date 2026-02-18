@@ -9,6 +9,8 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
 
     public ShipGenome shipGenome;
 
+    Text statsTextBox;
+
     private void Start()
     {
         shipGenome = new ShipGenome();
@@ -36,9 +38,14 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
         shipGenome.droneSpeed = 2;
         shipGenome.droneDurability = 1;
         //float droneAggression;
-    }
 
-    public void DisplayStats(Text statsTextBox)
+    }
+    public void Initialize(ShipGenome shipGenome, Text textBox)
+    {
+        this.shipGenome = shipGenome;
+        statsTextBox = textBox;
+    }
+    public void DisplayStats()
     {
         statsTextBox.text =
             "Hull HP: " + shipGenome.hullHP +

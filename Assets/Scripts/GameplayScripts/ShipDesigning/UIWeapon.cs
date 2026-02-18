@@ -8,6 +8,8 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
 
     public WeaponGenome weaponGenome;
 
+    Text statsTextBox;
+
     void Start()
     {
         weaponGenome = new WeaponGenome();
@@ -34,8 +36,12 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
         //weaponGenome.statusEffectStrength
         weaponGenome.aoeRadius = 1f;
     }
-
-    public void DisplayStats(Text statsTextBox)
+    public void Initialize(WeaponGenome weaponGenome, Text textBox)
+    {
+        this.weaponGenome = weaponGenome;
+        statsTextBox = textBox;
+    }
+    public void DisplayStats()
     {
         statsTextBox.text = 
             "Damage: " + weaponGenome.baseDamage +

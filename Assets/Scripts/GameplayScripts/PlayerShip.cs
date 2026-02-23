@@ -24,7 +24,6 @@ public class PlayerShip : MonoBehaviour
     //Stats
     float speed;
     float turnRate;
-    float evasion;
     float mass;
     float inertia;
 
@@ -98,7 +97,6 @@ public class PlayerShip : MonoBehaviour
         //Stats
         speed = shipMobilityStats.speed;
         turnRate = shipMobilityStats.turnRate;
-        evasion = shipMobilityStats.evasion;
         mass = shipMobilityStats.mass;
         inertia = shipMobilityStats.inertia;
     }

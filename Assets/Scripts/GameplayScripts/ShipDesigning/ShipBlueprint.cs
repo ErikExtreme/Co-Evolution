@@ -117,8 +117,8 @@ public class ShipBlueprint : MonoBehaviour
             if (genome == null)
                 continue;
 
-            shipCoreStats.Add(genome.hullHP, genome.armor, genome.shieldCapacity, genome.shieldRegen, genome.powerCapacity, genome.powerRegen);
-            shipMobilityStats.Add(genome.speed, genome.turnRate, genome.evasion, genome.mass, genome.inertia);
+            shipCoreStats.Add(genome.hullHP, genome.armor, genome.shieldCapacity, genome.shieldRegen, genome.powerCapacity, genome.powerRegen, genome.evasion);
+            shipMobilityStats.Add(genome.speed, genome.turnRate, genome.mass, genome.inertia);
             shipDroneStats.Add(genome.droneCount, genome.droneSpeed, genome.droneDurability, genome.droneAggression);
         }
         shipHealthScript.SetStats(shipCoreStats);
@@ -138,7 +138,9 @@ public class ShipCoreStats
     public int powerCapacity;
     public int powerRegen;
 
-    public void Add(int hullHP, int armor, int shieldCapacity, int shieldRegen, int powerCapacity, int powerRegen)
+    public float evasion;
+
+    public void Add(int hullHP, int armor, int shieldCapacity, int shieldRegen, int powerCapacity, int powerRegen, float evasion)
     {
         this.hullHP += hullHP;
         this.armor += armor;
@@ -146,21 +148,21 @@ public class ShipCoreStats
         this.shieldRegen += shieldRegen;
         this.powerCapacity += powerCapacity;
         this.powerRegen += powerRegen;
+
+        this.evasion += evasion;
     }
 }
 public class ShipMobilityStats
 {
     public float speed;
     public float turnRate;
-    public float evasion;
     public float mass;
     public float inertia;
 
-    public void Add(float speed, float turnRate, float evasion, float mass, float inertia)
+    public void Add(float speed, float turnRate, float mass, float inertia)
     {
         this.speed += speed;
         this.turnRate += turnRate;
-        this.evasion += evasion;
         this.mass += mass;
         this.inertia += inertia;
     }

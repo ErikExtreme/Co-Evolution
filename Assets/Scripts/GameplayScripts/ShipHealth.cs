@@ -11,6 +11,8 @@ public class ShipHealth : MonoBehaviour
     int powerCapacity;
     int powerRegen;
 
+    float evasion;
+
     //Current
     private int health;
     private int shield;
@@ -51,6 +53,8 @@ public class ShipHealth : MonoBehaviour
         powerCapacity = shipCoreStats.powerCapacity;
         powerRegen = shipCoreStats.powerRegen;
 
+        evasion = shipCoreStats.evasion;
+
         //Current, shouldn't necessarly be set here, depends on design
         health = hullHP;
         shield = shieldCapacity;
@@ -59,6 +63,10 @@ public class ShipHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        //Evasion
+        if (Random.value < evasion)
+            return;
+
         //Shield damage
         if (shield >= damage)
         {

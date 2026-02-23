@@ -28,8 +28,8 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
         weaponGenome.range = 5;
 
         weaponGenome.powerCost = 1;
-        //weaponGenome.heatPerShot
-        //weaponGenome.heatDissipation
+        weaponGenome.heatPerShot = 10;
+        weaponGenome.heatDissipation = 5;
         //weaponGenome.chargeUpTime
 
         //weaponGenome.tileFootprint
@@ -47,7 +47,7 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
     }
     public void DisplayStats()
     {
-        statsTextBox.text = 
+        statsTextBox.text =
             "Damage: " + weaponGenome.baseDamage +
             "\nBurst size: " + weaponGenome.burstSize +
             "\nFire rate: " + weaponGenome.fireRate +

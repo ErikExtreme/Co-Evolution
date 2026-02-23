@@ -10,12 +10,17 @@ public class Weapon : MonoBehaviour
 
     [SerializeField] GameObject projectilePrefab;
 
-    float shoot_Timer;
-    int bullets_Left_In_Burst;
-    float cooldown_Timer;
+    float chargeUpTimer;
+
     float currentHeat;
     int maxHeat = 100;
-    bool overHeated;
+    bool isOverHeated;
+
+    int bullets_Left_In_Burst;
+    float cooldown_Timer;
+
+    float shoot_Timer;
+
 
     private Transform target;
 
@@ -38,6 +43,7 @@ public class Weapon : MonoBehaviour
 
         weapon_Genome.aoeRadius = 1f;*/
 
+        chargeUpTimer = weapon_Genome.chargeUpTime;
         shoot_Timer = 1 / weapon_Genome.fireRate;
         bullets_Left_In_Burst = 0;
 
@@ -57,7 +63,7 @@ public class Weapon : MonoBehaviour
 
     void Update()
     {
-        if (!overHeated)
+        if (!isOverHeated)
         {
             HandleShooting();
         }
@@ -66,13 +72,22 @@ public class Weapon : MonoBehaviour
         currentHeat = Mathf.Max(currentHeat, 0);
 
         if (currentHeat >= maxHeat)
-            overHeated = true;
+        {
+            isOverHeated = true;
+            chargeUpTimer = weapon_Genome.chargeUpTime;
+        }
         else if (currentHeat <= 0)
-            overHeated = false;
+            isOverHeated = false;
     }
 
     private void HandleShooting()
     {
+        chargeUpTimer -= Time.deltaTime;
+        if (chargeUpTimer > 0)//Need to charge up again if weapon hasnt shot for X seconds?
+        {
+            return;
+        }
+
         if (bullets_Left_In_Burst <= 0)
         {
             HandleBurstRefill();

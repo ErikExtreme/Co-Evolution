@@ -29,7 +29,7 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
 
         weaponGenome.powerCost = 1;
         weaponGenome.heatPerShot = 10;
-        weaponGenome.heatDissipation = 5;
+        weaponGenome.heatDissipation = 50;
         //weaponGenome.chargeUpTime
 
         //weaponGenome.tileFootprint

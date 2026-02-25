@@ -1,12 +1,11 @@
 using UnityEngine;
 
-public class Weapon : MonoBehaviour
+public abstract class Weapon : MonoBehaviour
 {
     public WeaponGenome weapon_Genome;
     public WeaponStatsTracker tracker;
 
     public ShipHealth shipHealthScript;
-    public PlayerShip playerShip;
 
     [SerializeField] GameObject projectilePrefab;
 
@@ -43,12 +42,13 @@ public class Weapon : MonoBehaviour
 
         weapon_Genome.aoeRadius = 1f;*/
 
+        OnStart();
+    }
+    protected virtual void OnStart()
+    {
         chargeUpTimer = weapon_Genome.chargeUpTime;
         shoot_Timer = 1 / weapon_Genome.fireRate;
         bullets_Left_In_Burst = 0;
-
-        playerShip = transform.GetComponentInParent<PlayerShip>();
-        playerShip.targetSelection += NewTarget;
     }
 
     public void NewTarget(Transform target)
@@ -56,10 +56,7 @@ public class Weapon : MonoBehaviour
         this.target = target;
     }
 
-    public Transform FindNewTarget()
-    {
-        return EnemyManager.Instance.GetClosestEnemy(transform.position);
-    }
+    public abstract Transform FindNewTarget();
 
     void Update()
     {

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2663494755964284404}
   - component: {fileID: 9110661033118640137}
   - component: {fileID: 7345952109575627650}
-  - component: {fileID: 7974625803187336662}
+  - component: {fileID: -7867922924017004174}
   m_Layer: 0
   m_Name: WeaponPrefab
   m_TagString: Untagged
@@ -139,7 +139,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &7974625803187336662
+--- !u!114 &-7867922924017004174
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -148,7 +148,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 8052139905561744480}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80df0af59d5bd84428ca007a0247f1ab, type: 3}
+  m_Script: {fileID: 11500000, guid: 02f74a9cc5caefb4ba3dc6298e341350, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Weapon
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerWeapon
+  shipHealthScript: {fileID: 0}
   projectilePrefab: {fileID: 116823659217514177, guid: 444cec6cfbb9fd94ab3d0cf738ce139b, type: 3}
+  playerShip: {fileID: 0}

@@ -27,7 +27,7 @@ public class WeaponManager : MonoBehaviour
     }
     public void AddWeapon(WeaponGenome weaponGenome,WeaponStatsTracker weaponStatsTracker)
     {
-        Weapon weapon = new Weapon();
+        PlayerWeapon weapon = new PlayerWeapon();
         weapon.weapon_Genome = weaponGenome;
         weapon.tracker = weaponStatsTracker;
         weapons.Add(weapon);

@@ -4,14 +4,14 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class ShipHealth : MonoBehaviour
 {
     //Stats
-    int hullHP;
-    int armor;
-    int shieldCapacity;
-    int shieldRegen;
-    int powerCapacity;
-    int powerRegen;
+    protected int hullHP;
+    protected int armor;
+    protected int shieldCapacity;
+    protected int shieldRegen;
+    protected int powerCapacity;
+    protected int powerRegen;
 
-    float evasion;
+    protected float evasion;
 
     //Current
     private int health;
@@ -85,7 +85,7 @@ public class ShipHealth : MonoBehaviour
             health -= 1;
 
         if (health <= 0)
-            Debug.Log("RAN OUT OF HEALTH");//lose in some way
+            OutOfHealth();
     }
     public void RegainHealth(int regainAmount)
     {
@@ -102,5 +102,9 @@ public class ShipHealth : MonoBehaviour
         }
         else
             return false;
+    }
+    protected virtual void OutOfHealth()
+    {
+        Debug.Log("RAN OUT OF HEALTH");//lose in some way
     }
 }

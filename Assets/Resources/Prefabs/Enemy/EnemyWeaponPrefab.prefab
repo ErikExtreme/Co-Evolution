@@ -11,8 +11,7 @@ GameObject:
   - component: {fileID: 1962126970032158013}
   - component: {fileID: 2849702603443415651}
   - component: {fileID: 3293912565006868368}
-  - component: {fileID: 6975962863013471243}
-  - component: {fileID: 2284809827608774807}
+  - component: {fileID: 962889965124784174}
   m_Layer: 0
   m_Name: EnemyWeaponPrefab
   m_TagString: Untagged
@@ -28,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1170203728939420144}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -140,7 +139,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
---- !u!114 &6975962863013471243
+--- !u!114 &962889965124784174
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -149,25 +148,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1170203728939420144}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80df0af59d5bd84428ca007a0247f1ab, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Weapon
-  shipHealthScript: {fileID: 0}
-  playerShip: {fileID: 0}
-  projectilePrefab: {fileID: 116823659217514177, guid: 444cec6cfbb9fd94ab3d0cf738ce139b, type: 3}
---- !u!114 &2284809827608774807
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1170203728939420144}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbada279b9a960141843e893f3426a5e, type: 3}
+  m_Script: {fileID: 11500000, guid: 2a3cb439774af46469ecc1eb54515dad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyWeapon
-  weaponScript: {fileID: 6975962863013471243}
+  shipHealthScript: {fileID: 0}
+  projectilePrefab: {fileID: 116823659217514177, guid: 444cec6cfbb9fd94ab3d0cf738ce139b, type: 3}
   baseDamage: 1
   burstSize: 1
   fireRate: 1

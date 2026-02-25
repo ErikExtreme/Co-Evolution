@@ -6513,6 +6513,7 @@ GameObject:
   - component: {fileID: 1325803546}
   - component: {fileID: 1325803545}
   - component: {fileID: 1325803544}
+  - component: {fileID: 1325803548}
   m_Layer: 0
   m_Name: EnemyShip
   m_TagString: Untagged
@@ -6589,6 +6590,31 @@ Transform:
   - {fileID: 2663494755841600996}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1325803548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1325803543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ebc294be3e6bab4eba840bce1f48990, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OverrideShipStats
+  shipHealthScript: {fileID: 1325803544}
+  playerShipScript: {fileID: 1325803545}
+  hullHP: 1
+  armor: 1
+  shieldCapacity: 1
+  shieldRegen: 1
+  powerCapacity: 1
+  powerRegen: 1
+  speed: 1
+  turnRate: 1
+  evasion: 1
+  mass: 1
+  inertia: 1
 --- !u!1 &1332474978
 GameObject:
   m_ObjectHideFlags: 0
@@ -10813,6 +10839,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2284809827608774807, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: fireRate
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2284809827608774807, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: burstSize
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2284809827608774807, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: powerCost
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2284809827608774807, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: cooldownTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2284809827608774807, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: projectileSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6975962863013471243, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: playerShip
+      value: 
+      objectReference: {fileID: 1325803545}
+    - target: {fileID: 6975962863013471243, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: shipHealthScript
+      value: 
+      objectReference: {fileID: 1325803544}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

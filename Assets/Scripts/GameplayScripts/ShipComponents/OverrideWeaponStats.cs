@@ -1,7 +1,7 @@
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 
-public class WeaponStats : MonoBehaviour
+public class OverrideWeaponStats : MonoBehaviour
 {
     [SerializeField] Weapon weaponScript;
 
@@ -35,6 +35,8 @@ public class WeaponStats : MonoBehaviour
 
     private void Start()
     {
+        weaponScript.weapon_Genome = new WeaponGenome();
+
         weaponScript.weapon_Genome.baseDamage = baseDamage;
         weaponScript.weapon_Genome.burstSize = burstSize;
         weaponScript.weapon_Genome.fireRate = fireRate;

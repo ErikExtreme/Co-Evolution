@@ -6595,7 +6595,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9bc89ab7fa0745468bf82cdbe0fb4c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
-  emptyTarget: {fileID: 0}
+  speed: 1
+  turnRate: 0.035
+  mass: 1
+  inertia: 1
+  angularDamping: 0.01
+  destination: {x: 10, y: 10}
 --- !u!1 &1332474978
 GameObject:
   m_ObjectHideFlags: 0

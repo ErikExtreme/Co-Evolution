@@ -13,7 +13,7 @@ public class EnemyMovement : MonoBehaviour
 
     private Rigidbody2D rigidbodyThis;
 
-    private Vector2? destination;
+    public Vector2? destination;
 
     void Start()
     {
@@ -30,11 +30,14 @@ public class EnemyMovement : MonoBehaviour
             Vector2 targetDirection = (target - (Vector2)transform.position).normalized;
             float targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 90f;
             float angleDifference = Mathf.DeltaAngle(rigidbodyThis.rotation, targetAngle);
-            rigidbodyThis.AddTorque(angleDifference * turnRate - rigidbodyThis.angularVelocity * angularDamping, ForceMode2D.Force);
+            rigidbodyThis.AddTorque(angleDifference * turnRate, ForceMode2D.Force);
 
 
             rigidbodyThis.linearVelocity = Vector2.zero;
             rigidbodyThis.MovePosition(rigidbodyThis.position + (Vector2)transform.up * speed * Time.fixedDeltaTime);
         }
+
+        // Auto-stabilization
+        rigidbodyThis.AddTorque(- rigidbodyThis.angularVelocity * angularDamping, ForceMode2D.Force);
     }
 }

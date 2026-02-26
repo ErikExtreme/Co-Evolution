@@ -71,6 +71,7 @@ public class ShipHealth : MonoBehaviour
         if (shield >= damage)
         {
             shield -= damage;
+            Debug.Log(shield);
             return;
         }
 
@@ -86,6 +87,8 @@ public class ShipHealth : MonoBehaviour
 
         if (health <= 0)
             OutOfHealth();
+
+        Debug.Log(health);
     }
     public void RegainHealth(int regainAmount)
     {

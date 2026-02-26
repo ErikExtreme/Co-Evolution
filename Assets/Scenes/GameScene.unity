@@ -521,7 +521,7 @@ GameObject:
   - component: {fileID: 97015368}
   - component: {fileID: 97015370}
   - component: {fileID: 97015369}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ShipBody
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -887,7 +887,7 @@ GameObject:
   m_Component:
   - component: {fileID: 173902032}
   - component: {fileID: 173902033}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Triangle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1533,7 +1533,7 @@ GameObject:
   m_Component:
   - component: {fileID: 299471436}
   - component: {fileID: 299471437}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Triangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1699,7 +1699,7 @@ GameObject:
   m_Component:
   - component: {fileID: 313474488}
   - component: {fileID: 313474489}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Triangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2183,7 +2183,7 @@ GameObject:
   m_Component:
   - component: {fileID: 426100107}
   - component: {fileID: 426100108}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Triangle (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4106,7 +4106,7 @@ GameObject:
   m_Component:
   - component: {fileID: 842439711}
   - component: {fileID: 842439712}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4874,9 +4874,9 @@ GameObject:
   - component: {fileID: 979897280}
   - component: {fileID: 979897282}
   - component: {fileID: 979897281}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: ShipBody
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5015,7 +5015,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1002294313}
   - component: {fileID: 1002294314}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Triangle (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6517,7 +6517,7 @@ GameObject:
   - component: {fileID: 1325803551}
   m_Layer: 0
   m_Name: EnemyShip
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6584,7 +6584,7 @@ MonoBehaviour:
   enemyShieldRegen: 1
   enemyPowerCapacity: 1
   enemyPowerRegen: 1
-  enemyEvasion: 1
+  enemyEvasion: 0.1
 --- !u!114 &1325803550
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7787,7 +7787,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1672759555}
   - component: {fileID: 1672759556}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Triangle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9492,7 +9492,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1868650232}
   - component: {fileID: 1868650233}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Circle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10841,6 +10841,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 962889965124784174, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: baseDamage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
       propertyPath: spreadAngle
       value: 5
       objectReference: {fileID: 0}
@@ -10855,6 +10859,10 @@ PrefabInstance:
     - target: {fileID: 1170203728939420144, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
       propertyPath: m_Name
       value: EnemyWeaponPrefab
+      objectReference: {fileID: 0}
+    - target: {fileID: 1170203728939420144, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: m_TagString
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 1962126970032158013, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
       propertyPath: m_LocalPosition.x

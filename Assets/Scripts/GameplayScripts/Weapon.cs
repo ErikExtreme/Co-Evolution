@@ -8,6 +8,7 @@ public abstract class Weapon : MonoBehaviour
     public ShipHealth shipHealthScript;
 
     [SerializeField] GameObject projectilePrefab;
+    protected string opponentTag;
 
     float chargeUpTimer;
 
@@ -49,6 +50,8 @@ public abstract class Weapon : MonoBehaviour
         chargeUpTimer = weapon_Genome.chargeUpTime;
         shoot_Timer = 1 / weapon_Genome.fireRate;
         bullets_Left_In_Burst = 0;
+
+        opponentTag = "Enemy";
     }
 
     public void NewTarget(Transform target)
@@ -121,7 +124,7 @@ public abstract class Weapon : MonoBehaviour
 
 
         GameObject projectile_Instance = Instantiate(projectilePrefab, transform.position, rotation);
-        projectile_Instance.GetComponent<Projectile>().SetInitialValues(weapon_Genome.baseDamage, weapon_Genome.projectileSpeed, weapon_Genome.range, weapon_Genome.aoeRadius);
+        projectile_Instance.GetComponent<Projectile>().SetInitialValues(weapon_Genome.baseDamage, weapon_Genome.projectileSpeed, weapon_Genome.range, weapon_Genome.aoeRadius,opponentTag);
 
 
         bullets_Left_In_Burst--;

@@ -49,6 +49,8 @@ public class EnemyWeapon : Weapon
         weapon_Genome.aoeRadius = aoeRadius;
 
         base.OnStart();
+
+        opponentTag = "Player";
     }
 
     public override Transform FindNewTarget()

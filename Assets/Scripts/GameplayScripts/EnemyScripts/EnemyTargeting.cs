@@ -25,6 +25,12 @@ public class EnemyTargeting : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             target = collision.transform;
+
+            EnemyWeapon[] weapons = GetComponentsInChildren<EnemyWeapon>();
+            foreach (var weapon in weapons)
+            {
+                weapon.NewTarget(target);
+            }
         }
     }
 

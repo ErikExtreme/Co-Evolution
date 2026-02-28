@@ -33,14 +33,14 @@ public class EvolutionManager : MonoBehaviour
             Weapon weapon = WeaponManager.Instance.GetWeapon(w.id);
             if (weapon == null)
                 return;
-            w.fitness = Fitness.CalculateFitness(w, weapon.tracker, playerTracker);
+            w.fitness = Fitness.IndividualFitness(w, weapon.tracker, playerTracker);
         }
         foreach (var s in shipModules)
         {
             Module module = ModuleManager.Instance.GetModule(s.id);
             if (module == null)
                 return;
-            s.fitness = Fitness.CalculateFitness(s, module.tracker, playerTracker);
+            s.fitness = Fitness.IndividualFitness(s, module.tracker, playerTracker);
         }
     }
 }

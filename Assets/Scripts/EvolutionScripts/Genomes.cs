@@ -4,6 +4,7 @@ public class WeaponGenome
 {
     public int id;
     public float fitness;
+    public Vector3 mapping = Vector3.zero;
 
     // Combat Profile
     public int baseDamage;
@@ -37,6 +38,7 @@ public class ShipGenome
 {
     public int id;
     public float fitness;
+    public Vector3 mapping = Vector3.zero;
 
     // Core Systems
     public int hullHP;

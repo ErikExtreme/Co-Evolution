@@ -244,6 +244,11 @@ MonoBehaviour:
   evoManager: {fileID: 1907858948}
   axisScale: 10
   generation: 1
+  mappedWeaponGenomes: []
+  mappedShipGenomes: []
+  randomPopSize: 0
+  drawWeaponGenomes: 0
+  drawShipGenomes: 0
 --- !u!114 &1907858948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -256,6 +261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6de7d80f6bff8ba48b7b7229c53cf2d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EvolutionManager
+  initalPopulationSize: 0
 --- !u!4 &1907858949
 Transform:
   m_ObjectHideFlags: 0
@@ -271,9 +277,96 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1937593246
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1937593249}
+  - component: {fileID: 1937593248}
+  - component: {fileID: 1937593250}
+  - component: {fileID: 1937593247}
+  m_Layer: 0
+  m_Name: SynergyTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1937593247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937593246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21f45ee7fb1f56544846bc3e8333f3ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerBehaviorTracker
+  avgSpeed: 0
+  avgTurnRate: 0
+  movementEntropy: 0
+  avgEngagementDistance: 0
+  avgAngleToEnemy: 0
+  normSpeed: 0
+  normTurnRate: 0
+  normEntropy: 0
+  normEngagementDistance: 0
+  normAngleToEnemy: 0
+--- !u!114 &1937593248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937593246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57e27c615db31ae4ab5483c58271c9d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SynergyTestHarness
+  weaponCount: 200
+  shipCount: 200
+  player: {fileID: 1937593247}
+--- !u!4 &1937593249
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937593246}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -29.46416, y: -0, z: -13.23229}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1937593250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1937593246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af99f587cfe494c4c8dfb6dd3d4dca97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SynergySensitivityTest
+  weaponCount: 200
+  shipCount: 200
+  player: {fileID: 1937593247}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 38787983}
   - {fileID: 1907858949}
+  - {fileID: 1937593249}

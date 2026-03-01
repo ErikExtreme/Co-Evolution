@@ -26,6 +26,6 @@ public class CombatEventRouter : MonoBehaviour
 
     public void ReportEnemyFocus(string enemyType)
     {
-        PlayerBehaviorTracker.Instance.RegisterEnemyFocus(enemyType);
+        //PlayerBehaviorTracker.Instance.RegisterEnemyFocus(enemyType);
     }
 }

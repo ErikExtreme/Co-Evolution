@@ -5,7 +5,7 @@ using static GlobalSettings;
 public static class Fitness
 {
     // Weapon -> Ship compatibility matrix (3x3)
-    private static readonly float[,] WeaponToShipMatrix = new float[,]
+    private static readonly float[,] WeaponToShipMatrixOG = new float[,]
     {
     //   Xs (Dur/Mob)   Ys (Pow/Plat)   Zs (Sta/Agg)
     {   0.2f,          0.7f,           0.3f },   // Xw (Burst/Sustained)
@@ -14,12 +14,27 @@ public static class Fitness
     };
 
     // Ship -> Weapon compatibility matrix (3x3)
-    private static readonly float[,] ShipToWeaponMatrix = new float[,]
+    private static readonly float[,] ShipToWeaponMatrixOG = new float[,]
     {
     //   Xw (Burst/Sus)  Yw (Ctrl/CQ)   Zw (Eff/Vol)
     {   0.6f,          -0.5f,          0.7f },   // Xs (Dur/Mob)
     {   0.7f,           0.8f,          0.3f },   // Ys (Pow/Plat)
     {   0.3f,          -0.2f,          0.8f }    // Zs (Sta/Agg)
+    };
+
+    // In Fitness.cs, make these internal so test harness can touch them if needed
+    internal static float[,] WeaponToShipMatrix = new float[,]
+    {
+    { 2f, 7f, 3f },
+    { -4f, 8f, -2f },
+    { 8f, 3f, 7f }
+    };
+
+    internal static float[,] ShipToWeaponMatrix = new float[,]
+    {
+    { 6f, -5f, 7f },
+    { 7f,  8f, 3f },
+    { 3f, -2f, 8f }
     };
 
     private static Vector3 Multiply(float[,] M, Vector3 v)
@@ -72,7 +87,8 @@ public static class Fitness
         }
 
         float avgDist = totalDist / shipPopulation.Count;
-        float synergy = 1f / (1f + avgDist);
+        //float synergy = 1f / (1f + avgDist); // old
+        float synergy = Mathf.Exp(-0.3f * avgDist); // new
 
         // 3. Player preference alignment
         Vector3 playerPref = Mapping.PlayerPreferenceWeaponMapping(player);
@@ -83,7 +99,8 @@ public static class Fitness
         const float alpha = 0.7f;
         const float beta = 0.3f;
 
-        return alpha * synergy + beta * playerAlign;
+        //return alpha * synergy + beta * playerAlign;
+        return synergy; // for the synergy test
     }
 
     public static float CooperativeFitness(ShipGenome offspring, List<WeaponGenome> weaponPopulation, PlayerBehaviorTracker player)
@@ -108,7 +125,8 @@ public static class Fitness
         }
 
         float avgDist = totalDist / weaponPopulation.Count;
-        float synergy = 1f / (1f + avgDist);
+        //float synergy = 1f / (1f + avgDist); // old
+        float synergy = Mathf.Exp(-0.3f * avgDist); // new
 
         // 3. Player preference alignment
         Vector3 playerPref = Mapping.PlayerPreferenceShipMapping(player);
@@ -119,6 +137,7 @@ public static class Fitness
         const float alpha = 0.7f;
         const float beta = 0.3f;
 
-        return alpha * synergy + beta * playerAlign;
+        //return alpha * synergy + beta * playerAlign;
+        return synergy; // for the synergy test
     }
 }

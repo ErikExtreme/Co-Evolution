@@ -35,7 +35,8 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
         //weaponGenome.tileFootprint
         //weaponGenome.tileAffinity
 
-        //weaponGenome.statusEffectStrength
+        weaponGenome.statusEffectType = EffectType.None;
+        weaponGenome.statusEffectStrength = 1f;
         weaponGenome.aoeRadius = 1f;
     }
     public void Initialize(WeaponGenome weaponGenome, Text textBox)

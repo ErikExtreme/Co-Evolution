@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 public class EnemyMovement : MonoBehaviour
 {
     //Stats
-    [SerializeField] float speed;
+    [SerializeField] float baseSpeed;
     [SerializeField] float turnRate;
     [SerializeField] float mass;
     [SerializeField] float inertia;
@@ -14,6 +14,9 @@ public class EnemyMovement : MonoBehaviour
     private Rigidbody2D rigidbodyThis;
 
     public Vector2? destination;
+
+    public float speedModifier = 1;
+    public float Speed { get { return baseSpeed * speedModifier; } }
 
     void Start()
     {
@@ -32,12 +35,11 @@ public class EnemyMovement : MonoBehaviour
             float angleDifference = Mathf.DeltaAngle(rigidbodyThis.rotation, targetAngle);
             rigidbodyThis.AddTorque(angleDifference * turnRate, ForceMode2D.Force);
 
-
             rigidbodyThis.linearVelocity = Vector2.zero;
-            rigidbodyThis.MovePosition(rigidbodyThis.position + (Vector2)transform.up * speed * Time.fixedDeltaTime);
+            rigidbodyThis.MovePosition(rigidbodyThis.position + (Vector2)transform.up * Speed * Time.fixedDeltaTime);
         }
 
         // Auto-stabilization
-        rigidbodyThis.AddTorque(- rigidbodyThis.angularVelocity * angularDamping, ForceMode2D.Force);
+        rigidbodyThis.AddTorque(-rigidbodyThis.angularVelocity * angularDamping, ForceMode2D.Force);
     }
 }

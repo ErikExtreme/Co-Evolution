@@ -6,14 +6,20 @@ public class Projectile : MonoBehaviour
     private float aoeRadius;
     private float lifeTime;
 
+    private EffectType effectType;
+    private float effectStrength;
+
     private string opponentTag;
 
-    public void SetInitialValues(int damage, float velocity, float range, float aoeRadius, string opponentTag)
+    public void SetInitialValues(int damage, float velocity, float range, float aoeRadius, EffectType effectType, float effectStrength, string opponentTag)
     {
         this.damage = damage;
         gameObject.GetComponent<Rigidbody2D>().linearVelocity = transform.up * velocity;
         lifeTime = range / velocity;
         this.aoeRadius = aoeRadius;
+
+        this.effectType = effectType;
+        this.effectStrength = effectStrength;
 
         this.opponentTag = opponentTag;
     }
@@ -37,6 +43,7 @@ public class Projectile : MonoBehaviour
         if (collision.gameObject.CompareTag(opponentTag))
         {
             collision.gameObject.GetComponentInParent<ShipHealth>().TakeDamage(damage);
+            collision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength);
 
             AoeCollision();
             Destroy(gameObject);
@@ -49,7 +56,10 @@ public class Projectile : MonoBehaviour
         foreach (var aoeCollision in Results)
         {
             if (aoeCollision.gameObject.CompareTag(opponentTag))
+            {
                 aoeCollision.gameObject.GetComponentInParent<ShipHealth>().TakeDamage(damage);
+                aoeCollision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength);
+            }
 
             if (aoeCollision.gameObject.CompareTag("Asteroid"))
                 aoeCollision.gameObject.GetComponent<Asteroid>().TakeDamage(damage);

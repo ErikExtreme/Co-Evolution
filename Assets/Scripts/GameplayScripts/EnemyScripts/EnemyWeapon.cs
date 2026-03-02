@@ -23,7 +23,7 @@ public class EnemyWeapon : Weapon
     //// public SynergyTag synergyTag;
 
     // Special Effects
-    //public EffectType statusEffectType;
+    [SerializeField] EffectType statusEffectType;
     [SerializeField] float statusEffectStrength;
     [SerializeField] float aoeRadius;
     //public float piercingDepth;
@@ -45,6 +45,7 @@ public class EnemyWeapon : Weapon
         weapon_Genome.heatDissipation = heatDissipation;
         weapon_Genome.chargeUpTime = chargeUpTime;
 
+        weapon_Genome.statusEffectType = statusEffectType;
         weapon_Genome.statusEffectStrength = statusEffectStrength;
         weapon_Genome.aoeRadius = aoeRadius;
 

@@ -7635,6 +7635,7 @@ GameObject:
   - component: {fileID: 1699913378}
   - component: {fileID: 1699913380}
   - component: {fileID: 1699913381}
+  - component: {fileID: 1699913382}
   m_Layer: 0
   m_Name: Ship
   m_TagString: Player
@@ -7740,6 +7741,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipDroneManager
   dronePrefab: {fileID: 1156336660531603227, guid: d7a217b0660841c4f93e603cedd8f486, type: 3}
+--- !u!114 &1699913382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699913375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9ceead3095dff3468d7bca7fe739c20, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatusEffectHandler
 --- !u!1 &1735225113
 GameObject:
   m_ObjectHideFlags: 0
@@ -10175,6 +10188,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2210187875960683089, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
+      propertyPath: enemyHullHP
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2210187875960683089, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
+      propertyPath: enemyShieldRegen
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5534002332984215149, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -4.11
@@ -10218,6 +10239,10 @@ PrefabInstance:
     - target: {fileID: 6602281869372471137, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
       propertyPath: m_Name
       value: EnemyShip
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581799396004403518, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
+      propertyPath: baseSpeed
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

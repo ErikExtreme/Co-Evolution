@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class EnemyHealth : ShipHealth
 {
@@ -11,7 +12,7 @@ public class EnemyHealth : ShipHealth
 
     [SerializeField] float enemyEvasion;
 
-    void Start()
+    protected override void OnStart()
     {
         hullHP = enemyHullHP;
         armor = enemyArmor;
@@ -19,6 +20,8 @@ public class EnemyHealth : ShipHealth
         shieldRegen = enemyShieldRegen;
         powerCapacity = enemyPowerCapacity;
         powerRegen = enemyPowerRegen;
+
+        base.OnStart();
     }
 
     protected override void OutOfHealth()

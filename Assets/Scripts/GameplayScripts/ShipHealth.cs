@@ -14,19 +14,28 @@ public class ShipHealth : MonoBehaviour
     protected float evasion;
 
     //Current
-    private int health;
-    private int shield;
-    private int power;
+    protected int health;
+    protected int shield;
+    protected int power;
 
-    float regenTimer;
+    protected float regenTimer;
+
+    //Modifiers
+    [System.NonSerialized] public float armorReduction;
 
     void Start()
+    {
+        OnStart();
+    }
+    protected virtual void OnStart()
     {
         health = hullHP;
         shield = shieldCapacity;
         power = powerCapacity;
 
         regenTimer = 1;
+
+        armorReduction = 0;
     }
 
     void Update()
@@ -71,24 +80,20 @@ public class ShipHealth : MonoBehaviour
         if (shield >= damage)
         {
             shield -= damage;
-            Debug.Log(shield);
             return;
         }
-
-        damage -= shield;
-        damage -= armor;
-        shield = 0;
+        else
+        {
+            damage -= shield;
+            shield = 0;
+        }
 
         //Hull damage
-        if (damage > 0)
-            health -= damage;
-        else
-            health -= 1;
+        damage -= Mathf.RoundToInt(Mathf.Max(armor * armorReduction, 0));
+        health -= Mathf.Max(damage, 1);
 
         if (health <= 0)
             OutOfHealth();
-
-        Debug.Log(health);
     }
     public void RegainHealth(int regainAmount)
     {

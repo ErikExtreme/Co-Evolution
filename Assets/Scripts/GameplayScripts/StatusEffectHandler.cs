@@ -43,6 +43,8 @@ public class StatusEffectHandler : MonoBehaviour
                     StatusEffectExpired(statusEffect);
             }
 
+            statusEffects.RemoveAll(statusEffect =>  statusEffect.timeLeft <= 0);
+
             secondTimer = 0;
         }
 

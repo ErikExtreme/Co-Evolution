@@ -1,28 +1,29 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class EnemyMovement : MonoBehaviour
+public class EnemyMovement : ShipMovement
 {
     //Stats
-    [SerializeField] float baseSpeed;
-    [SerializeField] float turnRate;
-    [SerializeField] float mass;
-    [SerializeField] float inertia;
+    [SerializeField] float enemyBaseSpeed;
+    [SerializeField] float enemyTurnRate;
+    [SerializeField] float enemyMass;
+    [SerializeField] float enemyInertia;
 
-    [SerializeField] float angularDamping = 0.05f;
+    [SerializeField] float enemyAngularDamping = 0.01f;
 
-    private Rigidbody2D rigidbodyThis;
 
     public Vector2? destination;
 
-    public float speedModifier = 1;
-    public float Speed { get { return baseSpeed * speedModifier; } }
-
-    void Start()
+    protected override void OnStart()
     {
-        rigidbodyThis = GetComponent<Rigidbody2D>();
-    }
+        base.OnStart();
 
+        base.speed = enemyBaseSpeed;
+        base.turnRate = enemyTurnRate;
+        base.mass = enemyMass;
+        base.inertia = enemyInertia;
+        base.angularDamping = enemyAngularDamping;
+    }
     // Update is called once per frame
     void FixedUpdate()
     {

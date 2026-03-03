@@ -10244,6 +10244,22 @@ PrefabInstance:
       propertyPath: baseSpeed
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7581799396004403518, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
+      propertyPath: enemyMass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581799396004403518, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
+      propertyPath: enemyInertia
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581799396004403518, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
+      propertyPath: enemyTurnRate
+      value: 0.035
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581799396004403518, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
+      propertyPath: enemyBaseSpeed
+      value: 2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

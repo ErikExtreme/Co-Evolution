@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using static UnityEngine.Rendering.DebugUI;
 
-public class PlayerShip : MonoBehaviour
+public class PlayerShip : ShipMovement
 {
     public delegate void TargetSelect(Transform target);
     public TargetSelect targetSelection;
@@ -17,25 +17,15 @@ public class PlayerShip : MonoBehaviour
     private InputAction targetAction;
     private InputAction rotateAction;
 
-    private Rigidbody2D rigidbodyThis;
-
-    private float angularDamping = 0.05f;
-
-    //Stats
-    float speed;
-    float turnRate;
-    float mass;
-    float inertia;
-
-    void Start()
+    protected override void OnStart()
     {
+        base.OnStart();
+
         followAction = InputSystem.actions.FindAction("MoveForward");
         targetAction = InputSystem.actions.FindAction("TargetSelect");
         rotateAction = InputSystem.actions.FindAction("Rotate");
 
         rotateAction.Enable();
-
-        rigidbodyThis = GetComponent<Rigidbody2D>();
     }
     void FixedUpdate()
     {
@@ -53,7 +43,7 @@ public class PlayerShip : MonoBehaviour
             if (Vector2.Distance((Vector2)transform.position, mouseWorldPosition) > 0.2f)
             {
                 rigidbodyThis.linearVelocity = Vector2.zero;
-                rigidbodyThis.MovePosition(rigidbodyThis.position + targetDirection * speed * Time.fixedDeltaTime);
+                rigidbodyThis.MovePosition(rigidbodyThis.position + targetDirection * Speed * Time.fixedDeltaTime);
             }
         }
 

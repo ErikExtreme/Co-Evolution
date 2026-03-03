@@ -6,7 +6,7 @@ public class StatusEffectHandler : MonoBehaviour
     private List<(EffectType type, float strength)> statusEffects;
 
     private ShipHealth healthScript;
-    private EnemyMovement enemyMovementScript;
+    private ShipMovement movementScript;
 
     private float secondTimer = 0;
     void Start()
@@ -14,7 +14,7 @@ public class StatusEffectHandler : MonoBehaviour
         statusEffects = new List<(EffectType type, float strength)>();
 
         healthScript = GetComponent<ShipHealth>();
-        enemyMovementScript = GetComponent<EnemyMovement>();
+        movementScript = GetComponent<ShipMovement>();
     }
 
     void Update()
@@ -68,7 +68,7 @@ public class StatusEffectHandler : MonoBehaviour
                 //No passive effect
                 break;
             case EffectType.Slow:
-                enemyMovementScript.speedModifier = 1 - 0.5f * strength;//Converts 1-0 range to 0.5-1 range
+                movementScript.speedModifier = 1 - 0.5f * strength;//Converts 1-0 range to 0.5-1 range
                 break;
             case EffectType.ArmorPierce:
                 healthScript.armorReduction = 1 - 0.5f * strength;//Converts 1-0 range to 0.5-1 range

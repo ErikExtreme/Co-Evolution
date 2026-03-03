@@ -19,10 +19,18 @@ public class StatusEffectHandler : MonoBehaviour
 
     void Update()
     {
+        statusEffects.ForEach(statusEffect => statusEffect.timeLeft -= Time.deltaTime);
+
         if (secondTimer >= 1)
         {
             foreach (var statusEffect in statusEffects)
             {
+                if (statusEffect.timeLeft <= 0)
+                {
+                    StatusEffectExpired(statusEffect);
+                    continue;
+                }
+
                 switch (statusEffect.type)
                 {
                     case EffectType.Burn:
@@ -37,12 +45,7 @@ public class StatusEffectHandler : MonoBehaviour
                     default:
                         break;
                 }
-
-                statusEffect.timeLeft -= Time.deltaTime;
-                if (statusEffect.timeLeft <= 0)
-                    StatusEffectExpired(statusEffect);
             }
-
             statusEffects.RemoveAll(statusEffect =>  statusEffect.timeLeft <= 0);
 
             secondTimer = 0;

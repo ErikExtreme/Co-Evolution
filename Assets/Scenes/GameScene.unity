@@ -10203,7 +10203,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3906823858836314636, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
       propertyPath: statusEffectType
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5534002332984215149, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
       propertyPath: m_LocalPosition.x

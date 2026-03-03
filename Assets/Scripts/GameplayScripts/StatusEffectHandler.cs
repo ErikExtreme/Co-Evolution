@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class StatusEffectHandler : MonoBehaviour
 {
-    private List<(EffectType type, float strength)> statusEffects;
+    private List<StatusEffect> statusEffects;
 
     private ShipHealth healthScript;
     private ShipMovement movementScript;
@@ -11,7 +11,7 @@ public class StatusEffectHandler : MonoBehaviour
     private float secondTimer = 0;
     void Start()
     {
-        statusEffects = new List<(EffectType type, float strength)>();
+        statusEffects = new List<StatusEffect>();
 
         healthScript = GetComponent<ShipHealth>();
         movementScript = GetComponent<ShipMovement>();
@@ -38,8 +38,11 @@ public class StatusEffectHandler : MonoBehaviour
                         break;
                 }
 
-                //statusEffect.timer -= Time.deltaTime;
+                statusEffect.timeLeft -= Time.deltaTime;
+                if (statusEffect.timeLeft <= 0)
+                    StatusEffectExpired(statusEffect);
             }
+
             secondTimer = 0;
         }
 
@@ -60,7 +63,7 @@ public class StatusEffectHandler : MonoBehaviour
                 return;
         }
 
-        statusEffects.Add((type, strength));
+        statusEffects.Add(new StatusEffect(type, strength, 5));//5 is duration in seconds, dont know what to base it on, statusEffectStrength?
 
         switch (type)
         {
@@ -77,25 +80,37 @@ public class StatusEffectHandler : MonoBehaviour
                 break;
         }
     }
-    //private void StatusEffectExpired(EffectType effectType)
-    //{
-    //    switch (effectType)
-    //    {
-    //        case EffectType.Burn:
-    //            //No passive effect
-    //            break;
-    //        case EffectType.Slow:
-    //            enemyMovementScript.speedModifier = 1;//Resets to base speed
-    //            break;
-    //        case EffectType.ArmorPierce:
-    //            healthScript.armorReduction = 1;//Resets to base armor
-    //            break;
-    //        default:
-    //            break;
-    //    }
-    //}
+    private void StatusEffectExpired(StatusEffect statusEffect)
+    {
+        switch (statusEffect.type)
+        {
+            case EffectType.Burn:
+                //No passive effect
+                break;
+            case EffectType.Slow:
+                movementScript.speedModifier = 1;//Resets to base speed
+                break;
+            case EffectType.ArmorPierce:
+                healthScript.armorReduction = 1;//Resets to base armor
+                break;
+            default:
+                break;
+        }
+    }
 }
+class StatusEffect
+{
+    public EffectType type;
+    public float strength;
+    public float timeLeft;
 
+    public StatusEffect(EffectType type, float strength, float timeLeft)
+    {
+        this.type = type;
+        this.strength = strength;
+        this.timeLeft = timeLeft;
+    }
+}
 public enum EffectType
 {
     None,

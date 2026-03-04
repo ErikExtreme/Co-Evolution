@@ -13,9 +13,9 @@ public abstract class ShipMovement : MonoBehaviour
 
     protected Rigidbody2D rigidbodyThis;
 
-    public float speedModifier = 1;
+    [System.NonSerialized] public float speedModifier = 1;
     public float Speed { get { return speed * speedModifier; } }
-    
+
     void Start()
     {
         OnStart();

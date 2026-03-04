@@ -387,12 +387,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9bc89ab7fa0745468bf82cdbe0fb4c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
-  baseSpeed: 0
-  turnRate: 0.035
-  mass: 1
-  inertia: 1
-  angularDamping: 0.01
   speedModifier: 1
+  enemyBaseSpeed: 2
+  enemyTurnRate: 0.035
+  enemyMass: 1
+  enemyInertia: 1
+  enemyAngularDamping: 0.01
 --- !u!114 &2210187875960683089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,7 +405,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a455bab768e4f5243acbf460fcbc2c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  armorReduction: 0
   enemyHullHP: 1
   enemyArmor: 1
   enemyShieldCapacity: 1
@@ -704,6 +703,10 @@ PrefabInstance:
       propertyPath: shipHealthScript
       value: 
       objectReference: {fileID: 2210187875960683089}
+    - target: {fileID: 962889965124784174, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: statusEffectType
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1170203728939420144, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
       propertyPath: m_Name
       value: EnemyWeaponPrefab

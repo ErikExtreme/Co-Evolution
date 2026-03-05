@@ -283,7 +283,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5534002332984215149}
   - component: {fileID: 8137314541756966069}
-  - component: {fileID: 8512010317266770575}
   - component: {fileID: 7581799396004403518}
   - component: {fileID: 2210187875960683089}
   - component: {fileID: 1716039677175244755}
@@ -339,42 +338,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &8512010317266770575
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6602281869372471137}
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Radius: 25
 --- !u!114 &7581799396004403518
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,7 +350,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9bc89ab7fa0745468bf82cdbe0fb4c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
-  speedModifier: 1
   enemyBaseSpeed: 2
   enemyTurnRate: 0.035
   enemyMass: 1

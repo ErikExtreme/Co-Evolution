@@ -11,6 +11,12 @@ public class EnemyTargeting : MonoBehaviour
     void Start()
     {
         movementScript = GetComponent<EnemyMovement>();
+
+        target = GameObject.FindGameObjectWithTag("Player").transform;
+        foreach (var weapon in GetComponentsInChildren<EnemyWeapon>())
+        {
+            weapon.NewTarget(target);
+        }
     }
 
     void Update()
@@ -18,19 +24,6 @@ public class EnemyTargeting : MonoBehaviour
         if (target != null)
         {
             SetDestination();
-        }
-    }
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            target = collision.transform;
-
-            EnemyWeapon[] weapons = GetComponentsInChildren<EnemyWeapon>();
-            foreach (var weapon in weapons)
-            {
-                weapon.NewTarget(target);
-            }
         }
     }
 

@@ -26,6 +26,6 @@ public class EnemyHealth : ShipHealth
 
     protected override void OutOfHealth()
     {
-        Destroy(gameObject);
+        GetComponentInParent<WaveManager>().DestroyEnemy(gameObject);
     }
 }

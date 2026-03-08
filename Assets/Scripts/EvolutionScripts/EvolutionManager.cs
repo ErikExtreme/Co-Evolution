@@ -364,11 +364,27 @@ public class EvolutionManager : MonoBehaviour
 
     private WeaponGenome GetElite(List<WeaponGenome> genomes)
     {
-        return genomes[0].Clone();
+        WeaponGenome best = genomes[0];
+
+        for (int i = 1; i < genomes.Count; i++)
+        {
+            if (genomes[i].fitness > best.fitness)
+                best = genomes[i];
+        }
+
+        return best.Clone();
     }
 
     private ShipGenome GetElite(List<ShipGenome> genomes)
     {
-        return genomes[0].Clone();
+        ShipGenome best = genomes[0];
+
+        for (int i = 1; i < genomes.Count; i++)
+        {
+            if (genomes[i].fitness > best.fitness)
+                best = genomes[i];
+        }
+
+        return best.Clone();
     }
 }

@@ -51,18 +51,58 @@ public static class Fitness
         return 1f / (1f + Mathf.Abs(a - b));
     }
 
-    public static float IndividualFitness(WeaponGenome genome, WeaponStatsTracker tracker, PlayerBehaviorTracker playerTracker)
+    public static float IndividualFitness(WeaponGenome g, WeaponStatsTracker t, PlayerBehaviorTracker p)
     {
-        float fitness = 0;
+        // 1. Stat quality
+        Vector3 axis = Mapping.MapGenome(g);
+        float statScore = axis.magnitude / Mathf.Sqrt(3f);
 
-        return fitness;
+        // 2. Tracker performance
+        float dmgNorm = Mathf.Clamp01(t.damageDealt / 5000f);
+        float killNorm = Mathf.Clamp01(t.kills / 50f);
+        float rangeNorm = Mathf.Clamp01(t.avgEffectiveRange / 40f);
+
+        float trackerScore = (dmgNorm * 0.5f) + (killNorm * 0.3f) + (rangeNorm * 0.2f);
+
+        // 3. Player alignment
+        Vector3 playerAxis = Mapping.PlayerPreferenceWeaponMapping(p);
+        float alignment = Vector3.Dot(playerAxis, axis);
+        float alignmentScore = (alignment + 1f) * 0.5f;
+
+        // Final score
+        float fitness =
+            (statScore * 0.4f) +
+            (trackerScore * 0.4f) +
+            (alignmentScore * 0.2f);
+
+        return Mathf.Clamp01(fitness);
     }
 
-    public static float IndividualFitness(ShipGenome genome, ModuleStatsTracker tracker, PlayerBehaviorTracker playerTracker)
+    public static float IndividualFitness(ShipGenome g, ModuleStatsTracker t, PlayerBehaviorTracker p)
     {
-        float fitness = 0;
+        // 1. Stat quality
+        Vector3 axis = Mapping.MapGenome(g);
+        float statScore = axis.magnitude / Mathf.Sqrt(3f);
 
-        return fitness;
+        // 2. Tracker performance
+        float avoidNorm = Mathf.Clamp01(t.damageAvoided / 3000f);
+        float powerNorm = Mathf.Clamp01(t.powerSaved / 2000f);
+        float heatNorm = Mathf.Clamp01(t.heatReduced / 2000f);
+
+        float trackerScore = (avoidNorm * 0.5f) + (powerNorm * 0.3f) + (heatNorm * 0.2f);
+
+        // 3. Player alignment
+        Vector3 playerAxis = Mapping.PlayerPreferenceShipMapping(p);
+        float alignment = Vector3.Dot(playerAxis, axis);
+        float alignmentScore = (alignment + 1f) * 0.5f;
+
+        // Final score
+        float fitness =
+            (statScore * 0.4f) +
+            (trackerScore * 0.4f) +
+            (alignmentScore * 0.2f);
+
+        return Mathf.Clamp01(fitness);
     }
 
     public static float CooperativeFitness(WeaponGenome offspring, List<ShipGenome> shipPopulation, PlayerBehaviorTracker player)

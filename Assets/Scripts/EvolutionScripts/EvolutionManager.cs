@@ -87,12 +87,32 @@ public class EvolutionManager : MonoBehaviour
 
     private WeaponGenome SelectParent(List<WeaponGenome> genomes)
     {
-        return genomes[0].Clone();
+        int k = 3;
+        WeaponGenome best = null;
+
+        for (int i = 0; i < k; i++)
+        {
+            var candidate = genomes[Random.Range(0, genomes.Count)];
+            if (best == null || candidate.fitness > best.fitness)
+                best = candidate;
+        }
+
+        return best.Clone();
     }
 
     private ShipGenome SelectParent(List<ShipGenome> genomes)
     {
-        return genomes[0].Clone();
+        int k = 3;
+        ShipGenome best = null;
+
+        for (int i = 0; i < k; i++)
+        {
+            var candidate = genomes[Random.Range(0, genomes.Count)];
+            if (best == null || candidate.fitness > best.fitness)
+                best = candidate;
+        }
+
+        return best.Clone();
     }
 
     private Vector3 ComputeMutationDirection(WeaponGenome parent, List<WeaponGenome> population)

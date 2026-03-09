@@ -1751,9 +1751,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7b4d30d0c03ecf48a903b69e5cd9c0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
+  shipConstructionCanvas: {fileID: 1809847684}
   enemyPrefab: {fileID: 6602281869372471137, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
   enemiesInWave: 1
-  enemyPerWaveIncrease: 1
+  enemyAmountIncrease: 2
 --- !u!1 &363021946
 GameObject:
   m_ObjectHideFlags: 0
@@ -7738,6 +7739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1249b52dffd79e4180ce137e8e647c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipBlueprint
+  waveManager: {fileID: 351209991}
   weaponPrefab: {fileID: 8052139905561744480, guid: e7aa28ad7bb09664884bb7842a550fb8, type: 3}
   canvas: {fileID: 1809847684}
   gridLayoutGroup: {fileID: 1776092522}

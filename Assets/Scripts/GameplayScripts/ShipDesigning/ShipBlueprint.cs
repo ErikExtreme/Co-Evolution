@@ -9,6 +9,7 @@ public class ShipBlueprint : MonoBehaviour
     (WeaponGenome genome, WeaponStatsTracker tracker)[,] weaponsArray;
     (ShipGenome genome, ModuleStatsTracker tracker)[] modulesArray;
 
+    [SerializeField] WaveManager waveManager;
     [SerializeField] GameObject weaponPrefab;
     [SerializeField] Canvas canvas;
     [SerializeField] RectTransform gridLayoutGroup;
@@ -127,6 +128,7 @@ public class ShipBlueprint : MonoBehaviour
 
 
         canvas.gameObject.SetActive(false);
+        waveManager.StartWave();
     }
 }
 public class ShipCoreStats

@@ -4,6 +4,8 @@ using UnityEngine.UIElements;
 
 public class WaveManager : MonoBehaviour
 {
+    [SerializeField] Canvas shipConstructionCanvas;
+
     List<GameObject> enemiesLeftInWave;
 
     [SerializeField] GameObject enemyPrefab;
@@ -11,7 +13,7 @@ public class WaveManager : MonoBehaviour
     Camera sceneCamera;
 
     [SerializeField] int enemiesInWave = 1;
-    [SerializeField] int enemyPerWaveIncrease = 1;
+    [SerializeField] int enemyAmountIncrease = 1;
     void Start()
     {
         enemiesLeftInWave = new List<GameObject>();
@@ -22,11 +24,14 @@ public class WaveManager : MonoBehaviour
     {
         if (enemiesLeftInWave.Count <= 0)
         {
-            StartWave();
+            WaveCompleted();
         }
     }
-
-    private void StartWave()
+    private void WaveCompleted()
+    {
+        shipConstructionCanvas.gameObject.SetActive(true);
+    }
+    public void StartWave()
     {
         for (int i = 0; i < enemiesInWave; i++)
         {
@@ -34,7 +39,7 @@ public class WaveManager : MonoBehaviour
             GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, transform);
             enemiesLeftInWave.Add(enemy);
         }
-        enemiesInWave += enemyPerWaveIncrease;
+        enemiesInWave += enemyAmountIncrease;
     }
 
     private Vector2 RandomPointOutsideScreen(float objectWidth)

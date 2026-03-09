@@ -66,6 +66,7 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
             "\nTile footprint: " + weaponGenome.tileFootprint +
             "\nTile affinity: " + weaponGenome.tileAffinity +
 
+            "\nStatus effect: " + weaponGenome.statusEffectType.ToString() +
             "\nStatus effect strength: " + weaponGenome.statusEffectStrength +
             "\nAoe radius: " + weaponGenome.aoeRadius;
     }

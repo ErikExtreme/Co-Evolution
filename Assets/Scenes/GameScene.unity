@@ -2133,8 +2133,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
   shipConstructionCanvas: {fileID: 1809847684}
+  waveDisplayText: {fileID: 2022970820}
   enemyPrefab: {fileID: 6602281869372471137, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
-  enemiesInWave: 1
+  initialEnemies: 1
   enemyAmountIncrease: 2
 --- !u!1 &363021946
 GameObject:
@@ -3263,7 +3264,7 @@ RectTransform:
   m_GameObject: {fileID: 606480824}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.46973684, y: 0.46973684, z: 0.46973684}
+  m_LocalScale: {x: 0.40746382, y: 0.40746382, z: 0.40746382}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1055935552}
@@ -3273,7 +3274,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 126.29999, y: -58.8}
+  m_AnchoredPosition: {x: 109.29999, y: -50.87599}
   m_SizeDelta: {x: 523.2456, y: 63.93025}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &606480826
@@ -4717,6 +4718,7 @@ RectTransform:
   m_Children:
   - {fileID: 1676480386}
   - {fileID: 606480825}
+  - {fileID: 2022970819}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -8983,7 +8985,7 @@ RectTransform:
   m_GameObject: {fileID: 1676480385}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.46973684, y: 0.46973684, z: 0.46973684}
+  m_LocalScale: {x: 0.40746382, y: 0.40746382, z: 0.40746382}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 159869520}
@@ -8994,7 +8996,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 126.29999, y: -20.899994}
+  m_AnchoredPosition: {x: 109.3, y: -18}
   m_SizeDelta: {x: 523.2456, y: 63.93025}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1676480387
@@ -11502,6 +11504,85 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2021181695}
+  m_CullTransparentMesh: 1
+--- !u!1 &2022970818
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2022970819}
+  - component: {fileID: 2022970821}
+  - component: {fileID: 2022970820}
+  m_Layer: 5
+  m_Name: WaveText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2022970819
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2022970818}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.4074612, y: 0.4074612, z: 0.4074612}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 801267081}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 442.9083, y: 111.20999}
+  m_Pivot: {x: 0.5, y: 1}
+--- !u!114 &2022970820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2022970818}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 76
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 145
+    m_Alignment: 1
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: 'Wave: 1'
+--- !u!222 &2022970821
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2022970818}
   m_CullTransparentMesh: 1
 --- !u!1 &2045149456
 GameObject:

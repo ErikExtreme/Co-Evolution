@@ -1,10 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class WaveManager : MonoBehaviour
 {
     [SerializeField] Canvas shipConstructionCanvas;
+    [SerializeField] Text waveDisplayText;
 
     List<GameObject> enemiesLeftInWave;
 
@@ -12,8 +14,10 @@ public class WaveManager : MonoBehaviour
 
     Camera sceneCamera;
 
-    [SerializeField] int enemiesInWave = 1;
+    [SerializeField] int initialEnemies = 1;
     [SerializeField] int enemyAmountIncrease = 1;
+    private int currentWave = 1;
+    private int enemiesInWave { get { return initialEnemies + enemyAmountIncrease * (currentWave - 1); } }
     void Start()
     {
         enemiesLeftInWave = new List<GameObject>();
@@ -30,6 +34,8 @@ public class WaveManager : MonoBehaviour
     private void WaveCompleted()
     {
         shipConstructionCanvas.gameObject.SetActive(true);
+
+        waveDisplayText.text = "Wave: " + currentWave;
     }
     public void StartWave()
     {
@@ -39,7 +45,7 @@ public class WaveManager : MonoBehaviour
             GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, transform);
             enemiesLeftInWave.Add(enemy);
         }
-        enemiesInWave += enemyAmountIncrease;
+        currentWave++;
     }
 
     private Vector2 RandomPointOutsideScreen(float objectWidth)

@@ -38,7 +38,6 @@ public class ModuleGrabbingSystem : MonoBehaviour
         {
             grabbed_Object_Transform.position = Mouse.current.position.ReadValue();
 
-
             if (click_Action.WasReleasedThisFrame())
             {
                 if (grabbed_Object_Transform.parent != modulesLayoutGroup && grabbed_Object_Transform.parent != weaponsLayoutGroup)
@@ -83,7 +82,6 @@ public class ModuleGrabbingSystem : MonoBehaviour
 
         List<RaycastResult> results = new List<RaycastResult>();
         raycaster.Raycast(pointer_Event_Data, results);
-
         foreach (RaycastResult result in results)
         {
             if (result.gameObject.CompareTag(tagName))

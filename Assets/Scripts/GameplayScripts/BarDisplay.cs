@@ -23,7 +23,7 @@ public class BarDisplay : MonoBehaviour
         if (displayedStatName == "shipHealth")
             fillPercent = (float)shipHealthScript.Health / shipHealthScript.HullHP;
         if (displayedStatName == "shipShield")
-            fillPercent = (float)shipHealthScript.Health / shipHealthScript.ShieldCapacity;
+            fillPercent = (float)shipHealthScript.Shield / shipHealthScript.ShieldCapacity;
         if (displayedStatName == "shipPower")
             fillPercent = (float)shipHealthScript.Power / shipHealthScript.PowerCapacity;
 

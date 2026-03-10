@@ -4,19 +4,19 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class ShipHealth : MonoBehaviour
 {
     //Stats
-    protected int hullHP;
+    public int HullHP { get; protected set; }
     protected int armor;
-    protected int shieldCapacity;
+    public int ShieldCapacity { get; protected set; }
     protected int shieldRegen;
-    protected int powerCapacity;
+    public int PowerCapacity { get; protected set; }
     protected int powerRegen;
 
     protected float evasion;
 
     //Current
-    protected int health;
-    protected int shield;
-    protected int power;
+    public int Health { get; protected set; }
+    public int Shield { get; protected set; }
+    public int Power { get; protected set; }
 
     protected float regenTimer;
 
@@ -29,13 +29,13 @@ public class ShipHealth : MonoBehaviour
     }
     protected virtual void OnStart()
     {
-        health = hullHP;
-        shield = shieldCapacity;
-        power = powerCapacity;
+        Health = HullHP;
+        Shield = ShieldCapacity;
+        Power = PowerCapacity;
 
         regenTimer = 1;
 
-        armorReduction = 0;
+        armorReduction = 1;
     }
 
     void Update()
@@ -45,29 +45,29 @@ public class ShipHealth : MonoBehaviour
         {
             regenTimer = 1;
 
-            if (shield < shieldCapacity)
-                shield += shieldRegen;
+            if (Shield < ShieldCapacity)
+                Shield += shieldRegen;
 
-            if (power < powerCapacity)
-                power += powerRegen;
+            if (Power < PowerCapacity)
+                Power += powerRegen;
         }
     }
     public void SetStats(ShipCoreStats shipCoreStats)
     {
         //Stats
-        hullHP = shipCoreStats.hullHP;
+        HullHP = shipCoreStats.hullHP;
         armor = shipCoreStats.armor;
-        shieldCapacity = shipCoreStats.shieldCapacity;
+        ShieldCapacity = shipCoreStats.shieldCapacity;
         shieldRegen = shipCoreStats.shieldRegen;
-        powerCapacity = shipCoreStats.powerCapacity;
+        PowerCapacity = shipCoreStats.powerCapacity;
         powerRegen = shipCoreStats.powerRegen;
 
         evasion = shipCoreStats.evasion;
 
         //Current, shouldn't necessarly be set here, depends on design
-        health = hullHP;
-        shield = shieldCapacity;
-        power = powerCapacity;
+        Health = HullHP;
+        Shield = ShieldCapacity;
+        Power = PowerCapacity;
     }
 
     public void TakeDamage(int damage)
@@ -77,35 +77,35 @@ public class ShipHealth : MonoBehaviour
             return;
 
         //Shield damage
-        if (shield >= damage)
+        if (Shield >= damage)
         {
-            shield -= damage;
+            Shield -= damage;
             return;
         }
         else
         {
-            damage -= shield;
-            shield = 0;
+            damage -= Shield;
+            Shield = 0;
         }
 
         //Hull damage
         damage -= Mathf.RoundToInt(Mathf.Max(armor * armorReduction, 0));
-        health -= Mathf.Max(damage, 1);
+        Health -= Mathf.Max(damage, 1);
 
-        if (health <= 0)
+        if (Health <= 0)
             OutOfHealth();
     }
     public void RegainHealth(int regainAmount)
     {
-        health += regainAmount;
-        if (health > hullHP)
-            health = hullHP;
+        Health += regainAmount;
+        if (Health > HullHP)
+            Health = HullHP;
     }
     public bool ConsumePower(int amountConsumed)
     {
-        if (power >= amountConsumed)
+        if (Power >= amountConsumed)
         {
-            power -= amountConsumed;
+            Power -= amountConsumed;
             return true;
         }
         else

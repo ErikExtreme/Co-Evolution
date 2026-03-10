@@ -14,11 +14,11 @@ public class EnemyHealth : ShipHealth
 
     protected override void OnStart()
     {
-        hullHP = enemyHullHP;
+        HullHP = enemyHullHP;
         armor = enemyArmor;
-        shieldCapacity = enemyShieldRegen;
+        ShieldCapacity = enemyShieldRegen;
         shieldRegen = enemyShieldRegen;
-        powerCapacity = enemyPowerCapacity;
+        PowerCapacity = enemyPowerCapacity;
         powerRegen = enemyPowerRegen;
 
         base.OnStart();

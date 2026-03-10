@@ -7,6 +7,7 @@ public class WaveManager : MonoBehaviour
 {
     [SerializeField] Canvas shipConstructionCanvas;
     [SerializeField] Text waveDisplayText;
+    [SerializeField] Text enemiesLeftText;
 
     List<GameObject> enemiesLeftInWave;
 
@@ -16,8 +17,9 @@ public class WaveManager : MonoBehaviour
 
     [SerializeField] int initialEnemies = 1;
     [SerializeField] int enemyAmountIncrease = 1;
-    private int currentWave = 1;
+    private int currentWave = 0;
     private int enemiesInWave { get { return initialEnemies + enemyAmountIncrease * (currentWave - 1); } }
+    bool wavesPaused = false;
     void Start()
     {
         enemiesLeftInWave = new List<GameObject>();
@@ -26,16 +28,16 @@ public class WaveManager : MonoBehaviour
 
     void Update()
     {
-        if (enemiesLeftInWave.Count <= 0)
+        if (enemiesLeftInWave.Count <= 0 && wavesPaused == false)
         {
             WaveCompleted();
         }
     }
     private void WaveCompleted()
     {
+        wavesPaused = true;
+        currentWave++;
         shipConstructionCanvas.gameObject.SetActive(true);
-
-        waveDisplayText.text = "Wave: " + currentWave;
     }
     public void StartWave()
     {
@@ -45,7 +47,11 @@ public class WaveManager : MonoBehaviour
             GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, transform);
             enemiesLeftInWave.Add(enemy);
         }
-        currentWave++;
+
+        waveDisplayText.text = "Wave: " + currentWave;
+        enemiesLeftText.text = enemiesLeftInWave.Count + "/" + enemiesInWave;
+
+        wavesPaused = false;
     }
 
     private Vector2 RandomPointOutsideScreen(float objectWidth)
@@ -80,5 +86,7 @@ public class WaveManager : MonoBehaviour
     {
         enemiesLeftInWave.Remove(enemy);
         Destroy(enemy);
+
+        enemiesLeftText.text = enemiesLeftInWave.Count + "/" + enemiesInWave;
     }
 }

@@ -130,5 +130,8 @@ public abstract class Weapon : MonoBehaviour
         bullets_Left_In_Burst--;
         cooldown_Timer = weapon_Genome.cooldownTime;
         currentHeat += weapon_Genome.heatPerShot;
+
+        //Rotates weapon to point in shooting direction
+        transform.rotation = Quaternion.Euler(0, 0, targetAngle);
     }
 }

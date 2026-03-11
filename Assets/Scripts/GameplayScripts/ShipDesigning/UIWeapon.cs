@@ -39,12 +39,11 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
         weaponGenome.statusEffectStrength = 1f;
         weaponGenome.aoeRadius = 1f;
     }
-    public void Initialize(WeaponGenome weaponGenome, Text textBox)
+    public void Initialize(WeaponGenome weaponGenome,WeaponStatsTracker weaponStatsTracker, Text textBox)
     {
         this.weaponGenome = weaponGenome;
+        this.weaponStatsTracker = weaponStatsTracker;
         statsTextBox = textBox;
-
-        weaponStatsTracker = new WeaponStatsTracker();
     }
     public void DisplayStats()
     {

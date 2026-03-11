@@ -42,12 +42,11 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
         //float droneAggression;
 
     }
-    public void Initialize(ShipGenome shipGenome, Text textBox)
+    public void Initialize(ShipGenome shipGenome,ModuleStatsTracker moduleStatsTracker, Text textBox)
     {
         this.shipGenome = shipGenome;
+        this.moduleStatsTracker = moduleStatsTracker;
         statsTextBox = textBox;
-
-        moduleStatsTracker = new ModuleStatsTracker();
     }
     public void DisplayStats()
     {

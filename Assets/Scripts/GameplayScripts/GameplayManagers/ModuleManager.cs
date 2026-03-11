@@ -7,6 +7,8 @@ public class ModuleManager : MonoBehaviour
 
     public List<Module> modules = new List<Module>();
 
+    [SerializeField] Inventory inventory;
+
     void Awake()
     {
         Instance = this;
@@ -31,5 +33,7 @@ public class ModuleManager : MonoBehaviour
         module.ship_Genome = shipGenome;
         module.tracker = moduleStatsTracker;
         modules.Add(module);
+
+        inventory.AddModule(shipGenome, moduleStatsTracker);
     }
 }

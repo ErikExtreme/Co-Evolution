@@ -7,6 +7,8 @@ public class WeaponManager : MonoBehaviour
 
     public List<Weapon> weapons = new List<Weapon>();
 
+    [SerializeField] Inventory inventory;
+
     void Awake()
     {
         Instance = this;
@@ -25,11 +27,13 @@ public class WeaponManager : MonoBehaviour
         Debug.LogError("Could not find weapon with id: " + id);
         return null;
     }
-    public void AddWeapon(WeaponGenome weaponGenome,WeaponStatsTracker weaponStatsTracker)
+    public void AddWeapon(WeaponGenome weaponGenome, WeaponStatsTracker weaponStatsTracker)
     {
         PlayerWeapon weapon = new PlayerWeapon();
         weapon.weapon_Genome = weaponGenome;
         weapon.tracker = weaponStatsTracker;
         weapons.Add(weapon);
+
+        inventory.AddWeapon(weaponGenome, weaponStatsTracker);
     }
 }

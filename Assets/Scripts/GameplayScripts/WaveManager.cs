@@ -5,6 +5,7 @@ using UnityEngine.UIElements;
 
 public class WaveManager : MonoBehaviour
 {
+    [SerializeField] Canvas upgradeSelectionCanvas;
     [SerializeField] Canvas shipConstructionCanvas;
     [SerializeField] Text waveDisplayText;
     [SerializeField] Text enemiesLeftText;
@@ -17,9 +18,9 @@ public class WaveManager : MonoBehaviour
 
     [SerializeField] int initialEnemies = 1;
     [SerializeField] int enemyAmountIncrease = 1;
-    private int currentWave = 0;
+    private int currentWave = 1;
     private int enemiesInWave { get { return initialEnemies + enemyAmountIncrease * (currentWave - 1); } }
-    bool wavesPaused = false;
+    bool wavesPaused = true;
     void Start()
     {
         enemiesLeftInWave = new List<GameObject>();
@@ -37,7 +38,12 @@ public class WaveManager : MonoBehaviour
     {
         wavesPaused = true;
         currentWave++;
-        shipConstructionCanvas.gameObject.SetActive(true);
+
+        upgradeSelectionCanvas.gameObject.SetActive(true);
+        upgradeSelectionCanvas.GetComponent<UpgradeSelection>().GetUpgrades();
+
+
+        //shipConstructionCanvas.gameObject.SetActive(true);
     }
     public void StartWave()
     {

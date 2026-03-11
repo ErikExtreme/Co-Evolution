@@ -21,7 +21,7 @@ public class EvolutionManager : MonoBehaviour
             WeaponManager.Instance.AddWeapon(weaponGenome, new WeaponStatsTracker());
         }
 
-        shipModules = Seeding.RandomShipSeed(initalPopulationSize).ToList(); 
+        shipModules = Seeding.RandomShipSeed(initalPopulationSize).ToList();
         foreach (var moduleGenome in shipModules)
         {
             ModuleManager.Instance.AddModule(moduleGenome, new ModuleStatsTracker());
@@ -36,8 +36,8 @@ public class EvolutionManager : MonoBehaviour
         // 2. Calculate Individual Fitness for all Weapons and Ship Modules
         foreach (var w in weapons)
         {
-            Weapon weapon = WeaponManager.Instance.GetWeapon(w.id);
-            if (weapon == null)
+            (WeaponGenome genome, WeaponStatsTracker tracker) weapon = WeaponManager.Instance.GetWeapon(w.id);
+            if (weapon.genome == null || weapon.tracker == null)
             {
                 w.fitness = 0;
                 Debug.LogWarning("Could not find weapon for id: " + w.id);
@@ -47,8 +47,8 @@ public class EvolutionManager : MonoBehaviour
         }
         foreach (var s in shipModules)
         {
-            Module module = ModuleManager.Instance.GetModule(s.id);
-            if (module == null)
+            (ShipGenome genome, ModuleStatsTracker tracker) module = ModuleManager.Instance.GetModule(s.id);
+            if (module.genome == null || module.tracker == null)
             {
                 s.fitness = 0;
                 Debug.LogWarning("Could not find module for id: " + s.id);

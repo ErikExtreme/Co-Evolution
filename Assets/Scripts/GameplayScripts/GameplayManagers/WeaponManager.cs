@@ -5,7 +5,7 @@ public class WeaponManager : MonoBehaviour
 {
     public static WeaponManager Instance;
 
-    public List<Weapon> weapons = new List<Weapon>();
+    public List<(WeaponGenome genome, WeaponStatsTracker tracker)> weapons = new List<(WeaponGenome genome, WeaponStatsTracker tracker)>();
 
     [SerializeField] Inventory inventory;
 
@@ -14,25 +14,26 @@ public class WeaponManager : MonoBehaviour
         Instance = this;
     }
 
-    public Weapon GetWeapon(int id)
+    public (WeaponGenome genome, WeaponStatsTracker tracker) GetWeapon(int id)
     {
         if (weapons.Count == 0)
-            return null;
+            return (null, null);
 
-        foreach (Weapon weapon in weapons)
+        foreach (var weapon in weapons)
         {
-            if (weapon.weapon_Genome.id == id) return weapon;
+            if (weapon.genome.id == id)
+            {
+                return weapon;
+            }
+
         }
 
         Debug.LogError("Could not find weapon with id: " + id);
-        return null;
+        return (null, null); ;
     }
     public void AddWeapon(WeaponGenome weaponGenome, WeaponStatsTracker weaponStatsTracker)
     {
-        PlayerWeapon weapon = new PlayerWeapon();
-        weapon.weapon_Genome = weaponGenome;
-        weapon.tracker = weaponStatsTracker;
-        weapons.Add(weapon);
+        weapons.Add((weaponGenome, weaponStatsTracker));
 
         inventory.AddWeapon(weaponGenome, weaponStatsTracker);
     }

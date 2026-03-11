@@ -5,7 +5,7 @@ public class ModuleManager : MonoBehaviour
 {
     public static ModuleManager Instance;
 
-    public List<Module> modules = new List<Module>();
+    public List<(ShipGenome genome, ModuleStatsTracker tracker)> modules = new List<(ShipGenome genome, ModuleStatsTracker tracker)>();
 
     [SerializeField] Inventory inventory;
 
@@ -14,25 +14,22 @@ public class ModuleManager : MonoBehaviour
         Instance = this;
     }
 
-    public Module GetModule(int id)
+    public (ShipGenome genome, ModuleStatsTracker tracker) GetModule(int id)
     {
         if (modules.Count == 0)
-            return null;
+            return (null,null);
 
-        foreach (Module module in modules)
+        foreach (var module in modules)
         {
-            if (module.ship_Genome.id == id) return module;
+            if (module.genome.id == id) return module;
         }
 
         Debug.LogError("Could not find module with id: " + id);
-        return null;
+        return (null, null);
     }
     public void AddModule(ShipGenome shipGenome, ModuleStatsTracker moduleStatsTracker)
     {
-        Module module = new Module();
-        module.ship_Genome = shipGenome;
-        module.tracker = moduleStatsTracker;
-        modules.Add(module);
+        modules.Add((shipGenome, moduleStatsTracker));
 
         inventory.AddModule(shipGenome, moduleStatsTracker);
     }

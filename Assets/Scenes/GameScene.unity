@@ -245,6 +245,7 @@ GameObject:
   - component: {fileID: 40335384}
   - component: {fileID: 40335383}
   - component: {fileID: 40335382}
+  - component: {fileID: 40335386}
   m_Layer: 5
   m_Name: UpgradesCanvas
   m_TagString: Untagged
@@ -327,8 +328,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 387854163}
   - {fileID: 53418366}
+  - {fileID: 387854163}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -336,6 +337,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &40335386
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 40335381}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 966d96eee803f924c9b509a714604455, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UpgradeSelection
+  evolutionManager: {fileID: 1719151129}
+  weaponSelectionParent: {fileID: 53418366}
+  moduleSelectionParent: {fileID: 387854163}
+  uiWeaponPrefab: {fileID: 3263046220863769382, guid: 7e26c89484f2721498015cdafb15c872, type: 3}
+  uiModulePrefab: {fileID: 785426229192667523, guid: 623122d3d63090f49991ba5126fb0f4f, type: 3}
+  upgradeAmount: 5
 --- !u!1 &53418365
 GameObject:
   m_ObjectHideFlags: 0
@@ -1350,6 +1369,10 @@ PrefabInstance:
     - target: {fileID: 6602281869372471137, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
       propertyPath: m_Name
       value: EnemyShip
+      objectReference: {fileID: 0}
+    - target: {fileID: 6602281869372471137, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3508,6 +3531,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7b4d30d0c03ecf48a903b69e5cd9c0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
+  upgradeSelectionCanvas: {fileID: 40335384}
   shipConstructionCanvas: {fileID: 1809847684}
   waveDisplayText: {fileID: 2022970820}
   enemiesLeftText: {fileID: 122876024}
@@ -13398,6 +13422,7 @@ GameObject:
   - component: {fileID: 1699913380}
   - component: {fileID: 1699913381}
   - component: {fileID: 1699913382}
+  - component: {fileID: 1699913383}
   m_Layer: 0
   m_Name: Ship
   m_TagString: Player
@@ -13516,6 +13541,75 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ceead3095dff3468d7bca7fe739c20, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatusEffectHandler
+--- !u!114 &1699913383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699913375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21f45ee7fb1f56544846bc3e8333f3ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerBehaviorTracker
+  avgSpeed: 0
+  avgTurnRate: 0
+  movementEntropy: 0
+  avgEngagementDistance: 0
+  avgAngleToEnemy: 0
+  normSpeed: 0
+  normTurnRate: 0
+  normEntropy: 0
+  normEngagementDistance: 0
+  normAngleToEnemy: 0
+--- !u!1 &1719151128
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1719151130}
+  - component: {fileID: 1719151129}
+  m_Layer: 0
+  m_Name: EvolutionManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1719151129
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1719151128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6de7d80f6bff8ba48b7b7229c53cf2d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EvolutionManager
+  initalPopulationSize: 15
+  burstPopSize: 5
+  generations: 5
+--- !u!4 &1719151130
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1719151128}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 388.17435, y: 193.62872, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1773472878
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15710,6 +15804,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponManager
   weapons: []
+  inventory: {fileID: 2103772010}
 --- !u!114 &2045149459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15723,6 +15818,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ModuleManager
   modules: []
+  inventory: {fileID: 2103772010}
 --- !u!114 &2045149460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16283,6 +16379,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1862225235}
+  - {fileID: 1719151130}
   - {fileID: 2045149461}
   - {fileID: 1036293905}
   - {fileID: 351209989}

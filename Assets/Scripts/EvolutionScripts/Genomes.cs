@@ -35,6 +35,9 @@ public class WeaponGenome
 
     public WeaponGenome Clone() => new WeaponGenome(this);
 
+    public static int nextWeaponId = 0;
+    public static int GetNextWeaponId() => nextWeaponId++;
+
     public WeaponGenome(WeaponGenome other)
     {
         id = 0;
@@ -102,6 +105,9 @@ public class ShipGenome
      */
 
     public ShipGenome Clone() => new ShipGenome(this);
+
+    public static int nextShipId = 0;
+    public static int GetNextShipId() => nextShipId++;
 
     public ShipGenome(ShipGenome other)
     {

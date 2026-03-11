@@ -150,6 +150,7 @@ public static class GlobalSettings
     {
         return new WeaponGenome()
         {
+            id = WeaponGenome.GetNextWeaponId(),
             baseDamage = Random.Range(WEAPON_DAMAGE_MIN, WEAPON_DAMAGE_MAX),
             burstSize = Random.Range(WEAPON_BURSTSIZE_MIN, WEAPON_BURSTSIZE_MAX),
             fireRate = Random.Range(WEAPON_FIRERATE_MIN, WEAPON_FIRERATE_MAX),
@@ -173,6 +174,7 @@ public static class GlobalSettings
     {
         return new ShipGenome()
         {
+            id = ShipGenome.GetNextShipId(),
             hullHP = Random.Range(SHIP_HULLHP_MIN, SHIP_HULLHP_MAX),
             armor = Random.Range(SHIP_ARMOR_MIN, SHIP_ARMOR_MAX),
             shieldCapacity = Random.Range(SHIP_SHIELD_CAPACITY_MIN, SHIP_SHIELD_CAPACITY_MAX),

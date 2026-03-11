@@ -19,13 +19,7 @@ public class EvolutionManager : MonoBehaviour
         shipModules = Seeding.RandomShipSeed(initalPopulationSize).ToList();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    public void Evolve()
+    public (List<WeaponGenome> weapons, List<ShipGenome> modules) Evolve()
     {
         // 1. Get Player Tracker
         PlayerBehaviorTracker playerTracker = PlayerBehaviorTracker.Instance;
@@ -35,14 +29,22 @@ public class EvolutionManager : MonoBehaviour
         {
             Weapon weapon = WeaponManager.Instance.GetWeapon(w.id);
             if (weapon == null)
-                return;
+            {
+                w.fitness = 0;
+                Debug.LogWarning("Could not find weapon for id: " + w.id);
+                continue;
+            }
             w.fitness = Fitness.IndividualFitness(w, weapon.tracker, playerTracker);
         }
         foreach (var s in shipModules)
         {
             Module module = ModuleManager.Instance.GetModule(s.id);
             if (module == null)
-                return;
+            {
+                s.fitness = 0;
+                Debug.LogWarning("Could not find module for id: " + s.id);
+                continue;
+            }
             s.fitness = Fitness.IndividualFitness(s, module.tracker, playerTracker);
         }
 
@@ -83,6 +85,10 @@ public class EvolutionManager : MonoBehaviour
             weaponPop = nextGenW;
             shipPop = nextGenS;
         }
+
+        weaponPop = weaponPop.OrderByDescending(g => g.fitness).ToList();
+        shipPop = shipPop.OrderByDescending(g => g.fitness).ToList();
+        return (weaponPop, shipPop);
     }
 
     private WeaponGenome SelectParent(List<WeaponGenome> genomes)

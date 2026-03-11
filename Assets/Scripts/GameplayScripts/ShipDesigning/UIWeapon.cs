@@ -12,33 +12,6 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
 
     Text statsTextBox;
 
-    //void Start()
-    //{
-    //    weaponGenome = new WeaponGenome();
-    //    //weaponGenome = GlobalSettings.RandomWeaponGenome();
-
-    //    //Temporary(?) default values
-    //    weaponGenome.baseDamage = 1;
-    //    weaponGenome.burstSize = 3;
-    //    weaponGenome.fireRate = 1f;
-    //    weaponGenome.cooldownTime = 0.3f;
-    //    weaponGenome.projectileSpeed = 2;
-    //    //weapon_Genome.accuracy   unimplemented
-    //    weaponGenome.spreadAngle = 5;
-    //    weaponGenome.range = 5;
-
-    //    weaponGenome.powerCost = 1;
-    //    weaponGenome.heatPerShot = 10;
-    //    weaponGenome.heatDissipation = 50;
-    //    weaponGenome.chargeUpTime = 2;
-
-    //    //weaponGenome.tileFootprint
-    //    //weaponGenome.tileAffinity
-
-    //    weaponGenome.statusEffectType = EffectType.None;
-    //    weaponGenome.statusEffectStrength = 1f;
-    //    weaponGenome.aoeRadius = 1f;
-    //}
     public void Initialize(WeaponGenome weaponGenome,WeaponStatsTracker weaponStatsTracker, Text textBox)
     {
         this.weaponGenome = weaponGenome;

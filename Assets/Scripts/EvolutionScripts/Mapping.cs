@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using static GlobalSettings;
 
 public class Mapping
@@ -235,6 +235,59 @@ public class Mapping
 
         return new Vector3(X, Y, Z);
     }
+
+    public static Vector3 PlayerPreferenceWeaponMapping(PlayerBehaviorTracker p)
+    {
+        // X‑axis: Burst ↔ Sustained
+        // High entropy and high turn rate → bursty, chaotic play
+        // Long engagement distance → sustained, steady play
+        float burst = Mathf.Clamp01((p.normEntropy + p.normTurnRate) * 0.5f);
+        float sustained = Mathf.Clamp01(p.normEngagementDistance);
+        float x = Mathf.Clamp(burst - sustained, -1f, 1f);
+
+        // Y‑axis: Control ↔ Close‑Quarters
+        // Long distance + low angle deviation → control
+        // High turn rate + high entropy → CQ
+        float control = Mathf.Clamp01((p.normEngagementDistance - p.normAngleToEnemy) * 0.5f);
+        float cq = Mathf.Clamp01((p.normTurnRate + p.normEntropy) * 0.5f);
+        float y = Mathf.Clamp(control - cq, -1f, 1f);
+
+        // Z‑axis: Efficiency ↔ Volatility
+        // Low entropy → efficient, precise
+        // High entropy → volatile, chaotic
+        float efficiency = Mathf.Clamp01(-p.normEntropy);
+        float volatility = Mathf.Clamp01(p.normEntropy);
+        float z = Mathf.Clamp(efficiency - volatility, -1f, 1f);
+
+        return new Vector3(x, y, z);
+    }
+
+    public static Vector3 PlayerPreferenceShipMapping(PlayerBehaviorTracker p)
+    {
+        // X‑axis: Durability ↔ Mobility
+        // High speed + high turn rate → mobility
+        // Low entropy + low speed → durability
+        float mobility = Mathf.Clamp01((p.normSpeed + p.normTurnRate) * 0.5f);
+        float durability = Mathf.Clamp01(-mobility);
+        float x = Mathf.Clamp(durability - mobility, -1f, 1f);
+
+        // Y‑axis: Power Economy ↔ Weapon Platform
+        // Long engagement distance → prefers range/accuracy → weapon platform
+        // Close distance → prefers tanking/regen → power economy
+        float weaponPlatform = Mathf.Clamp01(p.normEngagementDistance);
+        float powerEconomy = Mathf.Clamp01(-p.normEngagementDistance);
+        float y = Mathf.Clamp(powerEconomy - weaponPlatform, -1f, 1f);
+
+        // Z‑axis: Stability ↔ Aggression
+        // High entropy → aggressive
+        // Low entropy → stable
+        float aggression = Mathf.Clamp01(p.normEntropy);
+        float stability = Mathf.Clamp01(-p.normEntropy);
+        float z = Mathf.Clamp(stability - aggression, -1f, 1f);
+
+        return new Vector3(x, y, z);
+    }
+
 
     #region Weapon Delta Properties
     /*

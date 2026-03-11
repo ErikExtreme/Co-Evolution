@@ -16,7 +16,16 @@ public class EvolutionManager : MonoBehaviour
     void Start()
     {
         weapons = Seeding.RandomWeaponSeed(initalPopulationSize).ToList();
-        shipModules = Seeding.RandomShipSeed(initalPopulationSize).ToList();
+        foreach (var weaponGenome in weapons)
+        {
+            WeaponManager.Instance.AddWeapon(weaponGenome, new WeaponStatsTracker());
+        }
+
+        shipModules = Seeding.RandomShipSeed(initalPopulationSize).ToList(); 
+        foreach (var moduleGenome in shipModules)
+        {
+            ModuleManager.Instance.AddModule(moduleGenome, new ModuleStatsTracker());
+        }
     }
 
     public (List<WeaponGenome> weapons, List<ShipGenome> modules) Evolve()

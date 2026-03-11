@@ -22,7 +22,7 @@ public class ModuleManager : MonoBehaviour
             if (module.ship_Genome.id == id) return module;
         }
 
-        Debug.LogError("Could not find weapon with id: " + id);
+        Debug.LogError("Could not find module with id: " + id);
         return null;
     }
     public void AddModule(ShipGenome shipGenome, ModuleStatsTracker moduleStatsTracker)

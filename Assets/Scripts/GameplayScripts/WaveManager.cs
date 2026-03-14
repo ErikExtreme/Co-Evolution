@@ -12,7 +12,7 @@ public class WaveManager : MonoBehaviour
 
     List<GameObject> enemiesLeftInWave;
 
-    [SerializeField] GameObject enemyPrefab;
+    [SerializeField] List<GameObject> enemyPrefabs;
 
     Camera sceneCamera;
 
@@ -50,7 +50,9 @@ public class WaveManager : MonoBehaviour
         for (int i = 0; i < enemiesInWave; i++)
         {
             Vector2 spawnPosition = RandomPointOutsideScreen(4);
-            GameObject enemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, transform);
+            int enemyType = Random.Range(0, enemyPrefabs.Count);
+
+            GameObject enemy = Instantiate(enemyPrefabs[enemyType], spawnPosition, Quaternion.identity, transform);
             enemiesLeftInWave.Add(enemy);
         }
 

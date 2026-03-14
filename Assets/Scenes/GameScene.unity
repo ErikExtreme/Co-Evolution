@@ -3542,7 +3542,8 @@ MonoBehaviour:
   shipConstructionCanvas: {fileID: 1809847684}
   waveDisplayText: {fileID: 2022970820}
   enemiesLeftText: {fileID: 122876024}
-  enemyPrefab: {fileID: 6602281869372471137, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
+  enemyPrefabs:
+  - {fileID: 6602281869372471137, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
   initialEnemies: 1
   enemyAmountIncrease: 2
 --- !u!1001 &359068935

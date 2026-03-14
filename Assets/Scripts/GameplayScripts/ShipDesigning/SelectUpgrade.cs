@@ -2,19 +2,13 @@ using UnityEngine;
 
 public class SelectUpgrade : MonoBehaviour
 {
-    UpgradeSelectionManager upgradeSelectionManager;
+    public UpgradeSelectionManager upgradeSelectionManager;
 
-    void Start()
+    public void SelectThis(bool isWeapon)
     {
-        
-    }
-
-    void Update()
-    {
-        
-    }
-    public void SelectThis()
-    {
-
+        if (isWeapon)
+            upgradeSelectionManager.AddWeapon(transform.GetComponent<UIWeapon>());
+        else
+            upgradeSelectionManager.AddModule(transform.GetComponent<UIShipModule>());
     }
 }

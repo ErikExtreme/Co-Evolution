@@ -6,10 +6,12 @@ public class UpgradeSelectionManager : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] EvolutionManager evolutionManager;
-    [SerializeField] Canvas constructionCanvas;
     [SerializeField] Transform weaponSelectionParent;
     [SerializeField] Transform moduleSelectionParent;
     [SerializeField] Text statsTextBox;
+
+    [SerializeField] Canvas constructionCanvas;
+    [SerializeField] Inventory inventoryScript;
 
     [Header("Prefabs")]
     [SerializeField] GameObject uiWeaponPrefab;
@@ -18,17 +20,12 @@ public class UpgradeSelectionManager : MonoBehaviour
     [Header("Variables")]
     [SerializeField] int availableWeapons = 5;
     [SerializeField] int availableModules = 5;
-    [SerializeField] int weaponSelectionAmount = 1;
-    [SerializeField] int moduleSelectionAmount = 1;
+    [SerializeField] public int weaponSelectionAmount = 1;
+    [SerializeField] public int moduleSelectionAmount = 1;
 
-    void Update()
-    {
-        if(moduleSelectionAmount<=0 && moduleSelectionAmount <= 0)
-        {
-            constructionCanvas.gameObject.SetActive(true);
-            gameObject.SetActive(false);
-        }    
-    }
+    private int selectedWeapons = 0;
+    private int selectedModules = 0;
+
     public void GetUpgrades()
     {
         foreach (Transform child in weaponSelectionParent)
@@ -42,7 +39,7 @@ public class UpgradeSelectionManager : MonoBehaviour
 
 
         (List<WeaponGenome> weapons, List<ShipGenome> modules) upgrades = evolutionManager.Evolve();
-
+        
         for (int i = 0; i < availableWeapons; i++)
         {
             GameObject weaponInstance = Instantiate(uiWeaponPrefab, weaponSelectionParent);
@@ -51,6 +48,8 @@ public class UpgradeSelectionManager : MonoBehaviour
             WeaponStatsTracker weaponStatsTracker = new WeaponStatsTracker();
             UIWeapon weaponScript = weaponInstance.GetComponent<UIWeapon>();
             weaponScript.Initialize(upgrades.weapons[i], weaponStatsTracker, statsTextBox);
+
+            weaponInstance.GetComponent<SelectUpgrade>().upgradeSelectionManager = this;
         }
         for (int i = 0; i < availableModules; i++)
         {
@@ -60,6 +59,44 @@ public class UpgradeSelectionManager : MonoBehaviour
             ModuleStatsTracker moduleStatsTracker = new ModuleStatsTracker();
             UIShipModule moduleScript = moduleInstance.GetComponent<UIShipModule>();
             moduleScript.Initialize(upgrades.modules[i], moduleStatsTracker, statsTextBox);
+
+            moduleInstance.GetComponent<SelectUpgrade>().upgradeSelectionManager = this;
         }
+    }
+
+    public void AddWeapon(UIWeapon weapon)
+    {
+        if (selectedWeapons >= weaponSelectionAmount)
+            return;
+        selectedWeapons++;
+
+        inventoryScript.AddWeapon(weapon.weaponGenome, weapon.weaponStatsTracker);
+        Destroy(weapon.gameObject);
+
+        IsSelectionDone();
+    }
+    public void AddModule(UIShipModule module)
+    {
+        if (selectedModules >= moduleSelectionAmount)
+            return;
+        selectedModules++;
+
+        inventoryScript.AddModule(module.shipGenome, module.moduleStatsTracker);
+        Destroy(module.gameObject);
+
+        IsSelectionDone();
+    }
+    private void IsSelectionDone()
+    {
+        if (selectedWeapons < weaponSelectionAmount)
+            return;
+        if (selectedModules < moduleSelectionAmount)
+            return;
+
+        selectedWeapons = 0;
+        selectedModules = 0;
+
+        constructionCanvas.gameObject.SetActive(true);
+        gameObject.SetActive(false);
     }
 }

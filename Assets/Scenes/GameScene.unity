@@ -3544,8 +3544,8 @@ MonoBehaviour:
   enemiesLeftText: {fileID: 122876024}
   enemyPrefabs:
   - {fileID: 6602281869372471137, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
-  initialEnemies: 1
-  enemyAmountIncrease: 2
+  initialEnemies: 3
+  enemyAmountMultiplier: 1.25
 --- !u!1001 &359068935
 PrefabInstance:
   m_ObjectHideFlags: 0

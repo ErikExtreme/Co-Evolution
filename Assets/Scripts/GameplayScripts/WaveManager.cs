@@ -16,10 +16,10 @@ public class WaveManager : MonoBehaviour
 
     Camera sceneCamera;
 
-    [SerializeField] int initialEnemies = 1;
-    [SerializeField] int enemyAmountIncrease = 1;
+    [SerializeField] int initialEnemies = 3;
+    [SerializeField] float enemyAmountMultiplier = 1.2f;
     private int currentWave = 1;
-    private int enemiesInWave { get { return initialEnemies + enemyAmountIncrease * (currentWave - 1); } }
+    private int enemiesInWave { get { return Mathf.CeilToInt( initialEnemies * Mathf.Pow(enemyAmountMultiplier, (currentWave - 1))); } }
     bool wavesPaused = true;
     void Start()
     {

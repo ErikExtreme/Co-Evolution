@@ -7,6 +7,7 @@ public class WaveManager : MonoBehaviour
 {
     [SerializeField] Canvas upgradeSelectionCanvas;
     [SerializeField] Canvas shipConstructionCanvas;
+    [SerializeField] Canvas gameplayCanvas;
     [SerializeField] Text waveDisplayText;
     [SerializeField] Text enemiesLeftText;
 
@@ -19,7 +20,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] int initialEnemies = 3;
     [SerializeField] float enemyAmountMultiplier = 1.2f;
     private int currentWave = 1;
-    private int enemiesInWave { get { return Mathf.CeilToInt( initialEnemies * Mathf.Pow(enemyAmountMultiplier, (currentWave - 1))); } }
+    private int enemiesInWave { get { return Mathf.CeilToInt(initialEnemies * Mathf.Pow(enemyAmountMultiplier, (currentWave - 1))); } }
     bool wavesPaused = true;
     void Start()
     {
@@ -39,6 +40,7 @@ public class WaveManager : MonoBehaviour
         wavesPaused = true;
         currentWave++;
 
+        gameplayCanvas.gameObject.SetActive(false);
         upgradeSelectionCanvas.gameObject.SetActive(true);
         upgradeSelectionCanvas.GetComponent<UpgradeSelectionManager>().GetUpgrades();
 
@@ -47,6 +49,8 @@ public class WaveManager : MonoBehaviour
     }
     public void StartWave()
     {
+        gameplayCanvas.gameObject.SetActive(true);
+
         for (int i = 0; i < enemiesInWave; i++)
         {
             Vector2 spawnPosition = RandomPointOutsideScreen(4);

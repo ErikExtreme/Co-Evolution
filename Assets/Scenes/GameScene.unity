@@ -3540,6 +3540,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
   upgradeSelectionCanvas: {fileID: 40335384}
   shipConstructionCanvas: {fileID: 1809847684}
+  gameplayCanvas: {fileID: 801267080}
   waveDisplayText: {fileID: 2022970820}
   enemiesLeftText: {fileID: 122876024}
   enemyPrefabs:
@@ -13623,7 +13624,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipBlueprint
   waveManager: {fileID: 351209991}
   weaponPrefab: {fileID: 8052139905561744480, guid: e7aa28ad7bb09664884bb7842a550fb8, type: 3}
-  canvas: {fileID: 1809847684}
+  constructionCanvas: {fileID: 1809847684}
   gridLayoutGroup: {fileID: 1776092522}
   moduleListSize: 5
   maxWeaponGridSize: 10
@@ -13756,7 +13757,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EvolutionManager
   initalPopulationSize: 15
-  burstPopSize: 5
+  burstPopSize: 50
   generations: 5
 --- !u!4 &1719151130
 Transform:
@@ -16547,6 +16548,6 @@ SceneRoots:
   - {fileID: 1809847685}
   - {fileID: 40335385}
   - {fileID: 1135286556}
+  - {fileID: 801267081}
   - {fileID: 1699913376}
   - {fileID: 65537243}
-  - {fileID: 801267081}

@@ -11,7 +11,7 @@ public class ShipBlueprint : MonoBehaviour
 
     [SerializeField] WaveManager waveManager;
     [SerializeField] GameObject weaponPrefab;
-    [SerializeField] Canvas canvas;
+    [SerializeField] Canvas constructionCanvas;
     [SerializeField] RectTransform gridLayoutGroup;
 
     [SerializeField] private int moduleListSize = 5;
@@ -128,7 +128,7 @@ public class ShipBlueprint : MonoBehaviour
         gameObject.GetComponent<ShipDroneManager>().SetStats(shipDroneStats);
 
 
-        canvas.gameObject.SetActive(false);
+        constructionCanvas.gameObject.SetActive(false);
         waveManager.StartWave();
     }
 }

@@ -52,23 +52,6 @@ public class ShipHealth : MonoBehaviour
                 Power += powerRegen;
         }
     }
-    public void SetStats(ShipCoreStats shipCoreStats)
-    {
-        //Stats
-        HullHP = shipCoreStats.hullHP;
-        armor = shipCoreStats.armor;
-        ShieldCapacity = shipCoreStats.shieldCapacity;
-        shieldRegen = shipCoreStats.shieldRegen;
-        PowerCapacity = shipCoreStats.powerCapacity;
-        powerRegen = shipCoreStats.powerRegen;
-
-        evasion = shipCoreStats.evasion;
-
-        //Current, shouldn't necessarly be set here, depends on design
-        Health = HullHP;
-        Shield = ShieldCapacity;
-        Power = PowerCapacity;
-    }
 
     public void TakeDamage(int damage)
     {
@@ -113,6 +96,6 @@ public class ShipHealth : MonoBehaviour
     }
     protected virtual void OutOfHealth()
     {
-        Debug.Log("RAN OUT OF HEALTH");//lose in some way
+        Debug.LogWarning("Ran out of health, Death not implemented");
     }
 }

@@ -88,7 +88,7 @@ public class ShipBlueprint : MonoBehaviour
         }
         transform.GetChild(0).transform.localScale = new Vector2(currentGridWidth * 1.06f, currentGridHeight * 1.06f);
 
-        ShipHealth shipHealthScript = gameObject.GetComponent<ShipHealth>();
+        PlayerHealth shipHealthScript = gameObject.GetComponent<PlayerHealth>();
 
         for (int vert = 0; vert < CurrentGridHeight; vert++)
             for (int hori = 0; hori < CurrentGridWidth; hori++)

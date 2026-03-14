@@ -40,7 +40,7 @@ public class WaveManager : MonoBehaviour
         currentWave++;
 
         upgradeSelectionCanvas.gameObject.SetActive(true);
-        upgradeSelectionCanvas.GetComponent<UpgradeSelection>().GetUpgrades();
+        upgradeSelectionCanvas.GetComponent<UpgradeSelectionManager>().GetUpgrades();
 
 
         //shipConstructionCanvas.gameObject.SetActive(true);

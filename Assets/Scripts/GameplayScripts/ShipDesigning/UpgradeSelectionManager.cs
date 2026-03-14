@@ -2,28 +2,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UpgradeSelection : MonoBehaviour
+public class UpgradeSelectionManager : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] EvolutionManager evolutionManager;
+    [SerializeField] Canvas constructionCanvas;
     [SerializeField] Transform weaponSelectionParent;
     [SerializeField] Transform moduleSelectionParent;
     [SerializeField] Text statsTextBox;
 
+    [Header("Prefabs")]
     [SerializeField] GameObject uiWeaponPrefab;
     [SerializeField] GameObject uiModulePrefab;
 
-    [SerializeField] int upgradeAmount = 5;
+    [Header("Variables")]
+    [SerializeField] int availableWeapons = 5;
+    [SerializeField] int availableModules = 5;
+    [SerializeField] int weaponSelectionAmount = 1;
+    [SerializeField] int moduleSelectionAmount = 1;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
-
+        if(moduleSelectionAmount<=0 && moduleSelectionAmount <= 0)
+        {
+            constructionCanvas.gameObject.SetActive(true);
+            gameObject.SetActive(false);
+        }    
     }
     public void GetUpgrades()
     {
@@ -39,7 +43,7 @@ public class UpgradeSelection : MonoBehaviour
 
         (List<WeaponGenome> weapons, List<ShipGenome> modules) upgrades = evolutionManager.Evolve();
 
-        for (int i = 0; i < upgradeAmount; i++)
+        for (int i = 0; i < availableWeapons; i++)
         {
             GameObject weaponInstance = Instantiate(uiWeaponPrefab, weaponSelectionParent);
             upgrades.weapons[i].id = WeaponGenome.GetNextWeaponId();
@@ -47,8 +51,9 @@ public class UpgradeSelection : MonoBehaviour
             WeaponStatsTracker weaponStatsTracker = new WeaponStatsTracker();
             UIWeapon weaponScript = weaponInstance.GetComponent<UIWeapon>();
             weaponScript.Initialize(upgrades.weapons[i], weaponStatsTracker, statsTextBox);
-
-
+        }
+        for (int i = 0; i < availableModules; i++)
+        {
             GameObject moduleInstance = Instantiate(uiModulePrefab, moduleSelectionParent);
             upgrades.modules[i].id = ShipGenome.GetNextShipId();
 

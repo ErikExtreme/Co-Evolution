@@ -347,16 +347,20 @@ MonoBehaviour:
   m_GameObject: {fileID: 40335381}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 966d96eee803f924c9b509a714604455, type: 3}
+  m_Script: {fileID: 11500000, guid: 9262316a2ae2df5479aae65075a802a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UpgradeSelection
   evolutionManager: {fileID: 1719151129}
+  constructionCanvas: {fileID: 1809847684}
   weaponSelectionParent: {fileID: 53418366}
   moduleSelectionParent: {fileID: 387854163}
   statsTextBox: {fileID: 1163301816}
-  uiWeaponPrefab: {fileID: 3263046220863769382, guid: 7e26c89484f2721498015cdafb15c872, type: 3}
-  uiModulePrefab: {fileID: 785426229192667523, guid: 623122d3d63090f49991ba5126fb0f4f, type: 3}
-  upgradeAmount: 5
+  uiWeaponPrefab: {fileID: 3263046220863769382, guid: af889349a39e35d4eb4928e68dbc87e2, type: 3}
+  uiModulePrefab: {fileID: 785426229192667523, guid: f18885977f2f8d147a62f2630c87b77c, type: 3}
+  availableWeapons: 5
+  availableModules: 5
+  weaponSelectionAmount: 1
+  moduleSelectionAmount: 1
 --- !u!1 &53418365
 GameObject:
   m_ObjectHideFlags: 0
@@ -15960,7 +15964,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 069e626895542624cb81c900b2d5ff4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponManager
-  weapons: []
   inventory: {fileID: 2103772010}
 --- !u!114 &2045149459
 MonoBehaviour:
@@ -15974,7 +15977,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 17b18ad62a164144dbe0c195d9b8002a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ModuleManager
-  modules: []
   inventory: {fileID: 2103772010}
 --- !u!114 &2045149460
 MonoBehaviour:

@@ -55,7 +55,7 @@ public class ShipBlueprint : MonoBehaviour
                 gridLayoutGroup.GetChild(index).gameObject.SetActive(shouldBeActive);
             }
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75 + 26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
-        gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, currentGridHeight * 75 + 26);//Hard coded, 75 = the height of a cell, 26 = random padding the layoutgroup has
+        gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, CurrentGridHeight * 75 + 26);//Hard coded, 75 = the height of a cell, 26 = random padding the layoutgroup has
     }
     public void RemoveWeapon(int horiPos, int vertPos)
     {

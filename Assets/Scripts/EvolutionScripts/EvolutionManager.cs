@@ -49,8 +49,8 @@ public class EvolutionManager : MonoBehaviour
         }
 
         // 3. Clone the top X from the global population
-        var weaponPop = weapons.OrderByDescending(g => g.fitness).Take(burstPopSize).Select(g => g.Clone()).ToList();
-        var shipPop = shipModules.OrderByDescending(g => g.fitness).Take(burstPopSize).Select(g => g.Clone()).ToList();
+        var weaponPop = weapons.OrderByDescending(g => g.fitness).Take(burstPopSize).Select(g => g.CloneExact()).ToList();
+        var shipPop = shipModules.OrderByDescending(g => g.fitness).Take(burstPopSize).Select(g => g.CloneExact()).ToList();
 
         // 4. Run the Evolutionary Loop
         for (var gen = 0; gen < generations; gen++)
@@ -103,7 +103,7 @@ public class EvolutionManager : MonoBehaviour
                 best = candidate;
         }
 
-        return best.Clone();
+        return best.CloneExact();
     }
 
     private ShipGenome SelectParent(List<ShipGenome> genomes)
@@ -118,7 +118,7 @@ public class EvolutionManager : MonoBehaviour
                 best = candidate;
         }
 
-        return best.Clone();
+        return best.CloneExact();
     }
 
     private Vector3 ComputeMutationDirection(WeaponGenome parent, List<WeaponGenome> population)
@@ -179,7 +179,7 @@ public class EvolutionManager : MonoBehaviour
 
     private WeaponGenome AxisAlignedMutation(WeaponGenome genome, Vector3 dir)
     {
-        WeaponGenome g = genome.Clone();
+        WeaponGenome g = genome.CloneForEvo();
         const float pct = 0.05f; // 5 percent mutation
 
         // --- Helper: mutate float gene by percentage ---
@@ -269,7 +269,7 @@ public class EvolutionManager : MonoBehaviour
 
     private ShipGenome AxisAlignedMutation(ShipGenome genome, Vector3 dir)
     {
-        ShipGenome g = genome.Clone();
+        ShipGenome g = genome.CloneForEvo();
         const float pct = 0.05f; // 5 percent mutation per step
 
         // --- Helper: mutate float gene by percentage ---
@@ -378,7 +378,7 @@ public class EvolutionManager : MonoBehaviour
                 best = genomes[i];
         }
 
-        return best.Clone();
+        return best.CloneExact();
     }
 
     private ShipGenome GetElite(List<ShipGenome> genomes)
@@ -391,6 +391,6 @@ public class EvolutionManager : MonoBehaviour
                 best = genomes[i];
         }
 
-        return best.Clone();
+        return best.CloneExact();
     }
 }

@@ -3,8 +3,14 @@ using UnityEngine;
 public class WeaponGenome
 {
     public int id;
+    public int parentId;
+
     public float fitness;
     public Vector3 mapping = Vector3.zero;
+
+    public float statScore;
+    public float trackerScore;
+    public float alignmentScore;
 
     // Combat Profile
     public int baseDamage;
@@ -33,42 +39,78 @@ public class WeaponGenome
     public float aoeRadius;
     //public float piercingDepth;
 
-    public WeaponGenome Clone() => new WeaponGenome(this);
-
     public static int nextWeaponId = 0;
     public static int GetNextWeaponId() => nextWeaponId++;
 
-    public WeaponGenome(WeaponGenome other)
+    public WeaponGenome CloneForEvo()
     {
-        id = 0;
-        fitness = other.fitness;
-        mapping = other.mapping;
-        baseDamage = other.baseDamage;
-        burstSize = other.burstSize;
-        fireRate = other.fireRate;
-        cooldownTime = other.cooldownTime;
-        projectileSpeed = other.projectileSpeed;
-        accuracy = other.accuracy;
-        spreadAngle = other.spreadAngle;
-        range = other.range;
-        powerCost = other.powerCost;
-        heatPerShot = other.heatPerShot;
-        heatDissipation = other.heatDissipation;
-        chargeUpTime = other.chargeUpTime;
-        tileFootprint = other.tileFootprint;
-        tileAffinity = other.tileAffinity;
-        statusEffectStrength = other.statusEffectStrength;
-        aoeRadius = other.aoeRadius;
+        WeaponGenome g = new WeaponGenome(); 
+        g.id = GetNextWeaponId(); 
+        g.parentId = this.id;
+
+        g.baseDamage = baseDamage;
+        g.burstSize = burstSize;
+        g.fireRate = fireRate;
+        g.cooldownTime = cooldownTime;
+        g.projectileSpeed = projectileSpeed;
+        g.accuracy = accuracy;
+        g.spreadAngle = spreadAngle;
+        g.range = range;
+        g.powerCost = powerCost;
+        g.heatPerShot = heatPerShot;
+        g.heatDissipation = heatDissipation;
+        g.chargeUpTime = chargeUpTime;
+        g.tileFootprint = tileFootprint;
+        g.tileAffinity = tileAffinity;
+        g.statusEffectStrength = statusEffectStrength;
+        g.aoeRadius = aoeRadius;
+
+        return g;
     }
 
-    public WeaponGenome() { }
+    public WeaponGenome CloneExact()
+    {
+        WeaponGenome g = new WeaponGenome(); 
+        g.id = this.id; 
+        g.parentId = this.parentId; 
+        g.fitness = this.fitness; 
+        g.mapping = this.mapping;
+        g.statScore = this.statScore;
+        g.trackerScore = this.trackerScore;
+        g.alignmentScore = this.alignmentScore;
+
+        g.baseDamage = baseDamage;
+        g.burstSize = burstSize;
+        g.fireRate = fireRate;
+        g.cooldownTime = cooldownTime;
+        g.projectileSpeed = projectileSpeed;
+        g.accuracy = accuracy;
+        g.spreadAngle = spreadAngle;
+        g.range = range;
+        g.powerCost = powerCost;
+        g.heatPerShot = heatPerShot;
+        g.heatDissipation = heatDissipation;
+        g.chargeUpTime = chargeUpTime;
+        g.tileFootprint = tileFootprint;
+        g.tileAffinity = tileAffinity;
+        g.statusEffectStrength = statusEffectStrength;
+        g.aoeRadius = aoeRadius;
+
+        return g;
+    }
 }
 
 public class ShipGenome
 {
     public int id;
+    public int parentId;
+
     public float fitness;
     public Vector3 mapping = Vector3.zero;
+
+    public float statScore;
+    public float trackerScore;
+    public float alignmentScore;
 
     // Core Systems
     public int hullHP;
@@ -104,35 +146,67 @@ public class ShipGenome
     public UtilityTag utilityBonusTag;
      */
 
-    public ShipGenome Clone() => new ShipGenome(this);
-
     public static int nextShipId = 0;
     public static int GetNextShipId() => nextShipId++;
 
-    public ShipGenome(ShipGenome other)
+    public ShipGenome CloneForEvo()
     {
-        id = 0;
-        fitness = other.fitness;
-        mapping = other.mapping;
-        hullHP = other.hullHP;
-        armor = other.armor;
-        shieldCapacity = other.shieldCapacity;
-        shieldRegen = other.shieldRegen;
-        powerCapacity = other.powerCapacity;
-        powerRegen = other.powerRegen;
-        speed = other.speed;
-        turnRate = other.turnRate;
-        evasion = other.evasion;
-        mass = other.mass;
-        inertia = other.inertia;
-        gridWidth = other.gridWidth;
-        gridHeight = other.gridHeight;
-        specialTileDensity = other.specialTileDensity;
-        droneCount = other.droneCount;
-        droneSpeed = other.droneSpeed;
-        droneDurability = other.droneDurability;
-        droneAggression = other.droneAggression;
+        ShipGenome s = new ShipGenome();
+        s.id = GetNextShipId();
+        s.parentId = this.id;
+
+        s.hullHP = hullHP;
+        s.armor = armor;
+        s.shieldCapacity = shieldCapacity;
+        s.shieldRegen = shieldRegen;
+        s.powerCapacity = powerCapacity;
+        s.powerRegen = powerRegen;
+        s.speed = speed;
+        s.turnRate = turnRate;
+        s.evasion = evasion;
+        s.mass = mass;
+        s.inertia = inertia;
+        s.gridWidth = gridWidth;
+        s.gridHeight = gridHeight;
+        s.specialTileDensity = specialTileDensity;
+        s.droneCount = droneCount;
+        s.droneSpeed = droneSpeed;
+        s.droneDurability = droneDurability;
+        s.droneAggression = droneAggression;
+
+        return s;
     }
 
-    public ShipGenome() { }
+    public ShipGenome CloneExact()
+    {
+        ShipGenome s = new ShipGenome();
+        s.id = this.id;
+        s.parentId = this.parentId;
+        s.fitness = this.fitness;
+        s.mapping = this.mapping;
+        s.statScore = this.statScore;
+        s.trackerScore = this.trackerScore;
+        s.alignmentScore = this.alignmentScore;
+
+        s.hullHP = hullHP;
+        s.armor = armor;
+        s.shieldCapacity = shieldCapacity;
+        s.shieldRegen = shieldRegen;
+        s.powerCapacity = powerCapacity;
+        s.powerRegen = powerRegen;
+        s.speed = speed;
+        s.turnRate = turnRate;
+        s.evasion = evasion;
+        s.mass = mass;
+        s.inertia = inertia;
+        s.gridWidth = gridWidth;
+        s.gridHeight = gridHeight;
+        s.specialTileDensity = specialTileDensity;
+        s.droneCount = droneCount;
+        s.droneSpeed = droneSpeed;
+        s.droneDurability = droneDurability;
+        s.droneAggression = droneAggression;
+
+        return s;
+    }
 }

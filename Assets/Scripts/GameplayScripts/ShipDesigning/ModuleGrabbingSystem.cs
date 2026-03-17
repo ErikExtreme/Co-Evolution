@@ -124,6 +124,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
 
         GameObject slotInstance = Instantiate(emptySlotPrefab, grabbedObject.parent);
         slotInstance.transform.SetSiblingIndex(siblingIndex);
+
         grabbedObject.SetParent(canvas.transform);
         grabbedObject.transform.localScale = Vector2.one;
 
@@ -135,6 +136,9 @@ public class ModuleGrabbingSystem : MonoBehaviour
             shipBlueprint.RemoveWeapon(horiPos, vertPos);
 
             uiWeapon.isActive = false;
+
+            bool boostActive = shipBlueprint.weaponBoosts[horiPos, vertPos] != WeaponBoost.None;
+            slotInstance.transform.GetChild(0).gameObject.SetActive(boostActive);
         }
         if (grabbed_Object_Transform.TryGetComponent<UIShipModule>(out var uiShipModule))
         {

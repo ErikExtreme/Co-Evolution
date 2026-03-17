@@ -3342,6 +3342,41 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 7959478621820563504, guid: 22b2dc48090bd004dbf740f2e2929872, type: 3}
   m_PrefabInstance: {fileID: 8978394362311595393}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &340057078
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 340057079}
+  m_Layer: 5
+  m_Name: BoostMarkers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &340057079
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340057078}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1809847685}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &347268119
 GameObject:
   m_ObjectHideFlags: 0
@@ -13836,6 +13871,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipBlueprint
   waveManager: {fileID: 351209991}
   weaponPrefab: {fileID: 8052139905561744480, guid: e7aa28ad7bb09664884bb7842a550fb8, type: 3}
+  boostMarkerPrefab: {fileID: 6724617543036507939, guid: 325abcbd71667284b8f18561c1518905, type: 3}
   constructionCanvas: {fileID: 1809847684}
   gridLayoutGroup: {fileID: 1776092522}
   moduleListSize: 5
@@ -14628,6 +14664,7 @@ RectTransform:
   - {fileID: 736372091}
   - {fileID: 885636648}
   - {fileID: 1861265452}
+  - {fileID: 340057079}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}

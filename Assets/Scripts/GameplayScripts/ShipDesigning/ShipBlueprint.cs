@@ -8,7 +8,7 @@ public class ShipBlueprint : MonoBehaviour
 {
     (WeaponGenome genome, WeaponStatsTracker tracker)[,] weaponsArray;
     (ShipGenome genome, ModuleStatsTracker tracker)[] modulesArray;
-    WeaponBoost[,] weaponBoosts;
+    public WeaponBoost[,] weaponBoosts;
 
     [SerializeField] WaveManager waveManager;
     [SerializeField] GameObject weaponPrefab;
@@ -54,7 +54,12 @@ public class ShipBlueprint : MonoBehaviour
             {
                 bool shouldBeActive = i < CurrentGridWidth && j < CurrentGridHeight;
                 int index = i + j * MaxWeaponGridSize;
-                gridLayoutGroup.GetChild(index).gameObject.SetActive(shouldBeActive);
+
+                GameObject cell = gridLayoutGroup.GetChild(index).gameObject;
+                cell.SetActive(shouldBeActive);
+
+                bool boostActive = weaponBoosts[i, j] != WeaponBoost.None;
+                cell.transform.GetChild(0).gameObject.SetActive(boostActive);
             }
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75 + 26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, CurrentGridHeight * 75 + 26);//Hard coded, 75 = the height of a cell, 26 = random padding the layoutgroup has

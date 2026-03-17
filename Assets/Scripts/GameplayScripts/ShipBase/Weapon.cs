@@ -27,7 +27,7 @@ public abstract class Weapon : MonoBehaviour
     public WeaponBoost activeBoost;
     //Values for boosts (standalone, all additive)
     int damageBoostAdditive = 10;
-    float burstRateBoost = 2;
+    float burstRateBoost = 20;
     float spreadAngleBoost = 10;
     int heatBoost = 5;
     //Values for boosts (Buff + debuff, multiplicative)
@@ -127,7 +127,7 @@ public abstract class Weapon : MonoBehaviour
             fireRate += burstRateBoost;
         if (activeBoost == WeaponBoost.BiggerAOELessBurstRate)
             fireRate *= burstRatePenalty;
-        shoot_Timer = 1 / fireRate;
+        shoot_Timer = 1 / Mathf.Max(fireRate, 0.001f);
 
         if (shipHealthScript.ConsumePower(weapon_Genome.powerCost))
             bullets_Left_In_Burst = weapon_Genome.burstSize;

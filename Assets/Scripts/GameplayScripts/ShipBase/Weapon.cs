@@ -24,6 +24,18 @@ public abstract class Weapon : MonoBehaviour
 
     private Transform target;
 
+    private WeaponBoost activeBoost;
+    //Values for boosts (standalone, all additive)
+    int damageBoostAdditive = 10;
+    float burstRateBoost = 2;
+    float spreadAngleBoost = 10;
+    int heatBoost = 5;
+    //Values for boosts (Buff + debuff, multiplicative)
+    float damageBoostMultiplier = 2;
+    float heatPenalty = 2;
+    float aoeRangeBoost = 1.5f;
+    float burstRatePenalty = 0.66f;
+
     void Start()
     {
         /*weapon_Genome = new WeaponGenome();
@@ -109,7 +121,13 @@ public abstract class Weapon : MonoBehaviour
         shoot_Timer -= Time.deltaTime;
         if (shoot_Timer > 0)
             return;
-        shoot_Timer = 1 / weapon_Genome.fireRate;
+
+        float fireRate = weapon_Genome.fireRate;
+        if (activeBoost == WeaponBoost.BurstRate)
+            fireRate += burstRateBoost;
+        if (activeBoost == WeaponBoost.BiggerAOELessBurstRate)
+            fireRate *= burstRatePenalty;
+        shoot_Timer = 1 / fireRate;
 
         if (shipHealthScript.ConsumePower(weapon_Genome.powerCost))
             bullets_Left_In_Burst = weapon_Genome.burstSize;
@@ -119,19 +137,47 @@ public abstract class Weapon : MonoBehaviour
         Vector2 targetDirection = ((Vector2)target.position - (Vector2)transform.position).normalized;
         float targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 90f;
 
-        float spreadAngle = Random.Range(-weapon_Genome.spreadAngle, weapon_Genome.spreadAngle);
+        float possibleAngle = weapon_Genome.spreadAngle;
+        if (activeBoost == WeaponBoost.Accuracy)
+            possibleAngle = Mathf.Max(possibleAngle - spreadAngleBoost, 0);
+        float spreadAngle = Random.Range(-possibleAngle, possibleAngle);
         Quaternion rotation = Quaternion.Euler(0, 0, targetAngle + spreadAngle);
 
 
         GameObject projectile_Instance = Instantiate(projectilePrefab, transform.position, rotation);
-        projectile_Instance.GetComponent<Projectile>().SetInitialValues(weapon_Genome.baseDamage, weapon_Genome.projectileSpeed, weapon_Genome.range, weapon_Genome.aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag);
+        int damage = weapon_Genome.baseDamage;
+        float aoeRadius = weapon_Genome.aoeRadius;
+        if (activeBoost == WeaponBoost.Damage)
+            damage += Mathf.RoundToInt(damageBoostAdditive);
+        if (activeBoost == WeaponBoost.MoreDamageMoreHeat)
+            damage = Mathf.RoundToInt(damage * damageBoostMultiplier);
+        if (activeBoost == WeaponBoost.BiggerAOELessBurstRate)
+            aoeRadius *= aoeRangeBoost;
+
+        projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, weapon_Genome.projectileSpeed, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag);
 
 
         bullets_Left_In_Burst--;
         cooldown_Timer = weapon_Genome.cooldownTime;
-        currentHeat += weapon_Genome.heatPerShot;
+        int heatIncrease = weapon_Genome.heatPerShot;
+        if (activeBoost == WeaponBoost.LowerHeatGeneration)
+            heatIncrease -= heatBoost;
+        if (activeBoost == WeaponBoost.MoreDamageMoreHeat)
+            heatIncrease = Mathf.RoundToInt(heatIncrease * heatPenalty);
+        currentHeat += heatIncrease;
 
         //Rotates weapon to point in shooting direction
         transform.rotation = Quaternion.Euler(0, 0, targetAngle);
     }
+}
+
+enum WeaponBoost
+{
+    None,
+    Damage,
+    BurstRate,
+    Accuracy,
+    LowerHeatGeneration,
+    MoreDamageMoreHeat,
+    BiggerAOELessBurstRate
 }

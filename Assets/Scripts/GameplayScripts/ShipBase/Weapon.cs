@@ -24,7 +24,7 @@ public abstract class Weapon : MonoBehaviour
 
     private Transform target;
 
-    private WeaponBoost activeBoost;
+    public WeaponBoost activeBoost;
     //Values for boosts (standalone, all additive)
     int damageBoostAdditive = 10;
     float burstRateBoost = 2;
@@ -171,7 +171,7 @@ public abstract class Weapon : MonoBehaviour
     }
 }
 
-enum WeaponBoost
+public enum WeaponBoost
 {
     None,
     Damage,

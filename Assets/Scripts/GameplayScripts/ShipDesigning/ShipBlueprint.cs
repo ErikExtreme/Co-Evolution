@@ -8,7 +8,7 @@ public class ShipBlueprint : MonoBehaviour
 {
     (WeaponGenome genome, WeaponStatsTracker tracker)[,] weaponsArray;
     (ShipGenome genome, ModuleStatsTracker tracker)[] modulesArray;
-    WeaponBoost[,] boostedWeaponSlots;
+    WeaponBoost[,] weaponBoosts;
 
     [SerializeField] WaveManager waveManager;
     [SerializeField] GameObject weaponPrefab;
@@ -28,7 +28,7 @@ public class ShipBlueprint : MonoBehaviour
     {
         weaponsArray = new (WeaponGenome genome, WeaponStatsTracker tracker)[maxWeaponGridSize, maxWeaponGridSize];
         modulesArray = new (ShipGenome genome, ModuleStatsTracker tracker)[moduleListSize];
-        boostedWeaponSlots = new WeaponBoost[maxWeaponGridSize, maxWeaponGridSize];
+        weaponBoosts = new WeaponBoost[maxWeaponGridSize, maxWeaponGridSize];
     }
 
     public void SetWeapon(WeaponGenome genome, WeaponStatsTracker tracker, int horiPos, int vertPos)
@@ -101,11 +101,9 @@ public class ShipBlueprint : MonoBehaviour
                 GameObject cellInstance = Instantiate(weaponPrefab, transform, false);
                 Weapon weaponScript = cellInstance.GetComponent<Weapon>();
                 weaponScript.weapon_Genome = weaponsArray[hori, vert].genome;
-                weaponScript.shipHealthScript = shipHealthScript;//Separate out energy from health script?
                 weaponScript.tracker = weaponsArray[hori, vert].tracker;
-
-                if (boostedWeaponSlots[hori, vert] != WeaponBoost.None)
-                    weaponScript.activeBoost = boostedWeaponSlots[hori, vert];
+                weaponScript.shipHealthScript = shipHealthScript;//Separate out energy from health script?
+                weaponScript.activeBoost = weaponBoosts[hori, vert];
 
                 Vector2 originOffset = new Vector2(CurrentGridWidth - 1, CurrentGridHeight - 1) / 2f;
                 Vector2 position = (new Vector2(hori, CurrentGridHeight - 1 - vert) - originOffset);

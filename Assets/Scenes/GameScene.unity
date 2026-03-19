@@ -1381,6 +1381,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7581799396004403518, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
+      propertyPath: enemyMass
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7581799396004403518, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
+      propertyPath: enemyInertia
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -13871,7 +13879,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipBlueprint
   waveManager: {fileID: 351209991}
   weaponPrefab: {fileID: 8052139905561744480, guid: e7aa28ad7bb09664884bb7842a550fb8, type: 3}
-  boostMarkerPrefab: {fileID: 6724617543036507939, guid: 325abcbd71667284b8f18561c1518905, type: 3}
   constructionCanvas: {fileID: 1809847684}
   gridLayoutGroup: {fileID: 1776092522}
   moduleListSize: 5

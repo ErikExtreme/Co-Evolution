@@ -23,6 +23,9 @@ public class EnemyMovement : ShipMovement
         base.mass = enemyMass;
         base.inertia = enemyInertia;
         base.angularDamping = enemyAngularDamping;
+
+        rigidbodyThis.mass = enemyMass;
+        rigidbodyThis.inertia = enemyInertia;
     }
     // Update is called once per frame
     void FixedUpdate()

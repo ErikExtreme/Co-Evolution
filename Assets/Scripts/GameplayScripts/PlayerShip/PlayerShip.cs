@@ -89,5 +89,8 @@ public class PlayerShip : ShipMovement
         turnRate = shipMobilityStats.turnRate;
         mass = shipMobilityStats.mass;
         inertia = shipMobilityStats.inertia;
+
+        rigidbodyThis.mass = mass;
+        rigidbodyThis.inertia = inertia;
     }
 }

@@ -124,6 +124,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
 
         GameObject slotInstance = Instantiate(emptySlotPrefab, grabbedObject.parent);
         slotInstance.transform.SetSiblingIndex(siblingIndex);
+        slotInstance.transform.localScale = new Vector2(0.73482f, 0.73482f);
 
         grabbedObject.SetParent(canvas.transform);
         grabbedObject.transform.localScale = Vector2.one;

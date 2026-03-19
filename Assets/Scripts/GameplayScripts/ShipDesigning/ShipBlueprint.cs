@@ -19,7 +19,10 @@ public class ShipBlueprint : MonoBehaviour
     [SerializeField] private int maxWeaponGridSize = 10;
     private int currentGridWidth;
     private int currentGridHeight;
+
     private float totalSpecialDensity;
+    private int hashingSeed;
+
     public int ModuleListSize => moduleListSize;
     public int MaxWeaponGridSize => maxWeaponGridSize;
     public int CurrentGridWidth => Math.Clamp(currentGridWidth, 0, maxWeaponGridSize);
@@ -30,6 +33,8 @@ public class ShipBlueprint : MonoBehaviour
         weaponsArray = new (WeaponGenome genome, WeaponStatsTracker tracker)[maxWeaponGridSize, maxWeaponGridSize];
         modulesArray = new (ShipGenome genome, ModuleStatsTracker tracker)[moduleListSize];
         weaponBoosts = new WeaponBoost[maxWeaponGridSize, maxWeaponGridSize];
+
+        hashingSeed = (int)System.DateTime.Now.Ticks;
     }
 
     public void SetWeapon(WeaponGenome genome, WeaponStatsTracker tracker, int horiPos, int vertPos)
@@ -161,7 +166,7 @@ public class ShipBlueprint : MonoBehaviour
     private void ToggleBoost(int xPos, int yPos, GameObject cell)
     {
         //Gets if cell should have boost
-        int hash = HashCell(xPos + 1, yPos + 1, 1);//+1 cause it stats at 0   1 cause seeds not implemented
+        int hash = HashCell(xPos + 1, yPos + 1, hashingSeed);//+1 cause it stats at 0   1 cause seeds not implemented
         float range = ((float)hash / int.MaxValue) * 5 * 5;//0-25 range, cause density is 0-5 in genome and there are up to 5 modules
         if (range <= totalSpecialDensity)
             weaponBoosts[xPos, yPos] = WeaponBoost.Damage;

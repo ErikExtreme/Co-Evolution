@@ -19,6 +19,7 @@ public class ShipBlueprint : MonoBehaviour
     [SerializeField] private int maxWeaponGridSize = 10;
     private int currentGridWidth;
     private int currentGridHeight;
+    private float totalSpecialDensity;
     public int ModuleListSize => moduleListSize;
     public int MaxWeaponGridSize => maxWeaponGridSize;
     public int CurrentGridWidth => Math.Clamp(currentGridWidth, 0, maxWeaponGridSize);
@@ -48,6 +49,7 @@ public class ShipBlueprint : MonoBehaviour
 
         currentGridWidth += genome.gridWidth;
         currentGridHeight += genome.gridHeight;
+        totalSpecialDensity += genome.specialTileDensity;
 
         for (int i = 0; i < MaxWeaponGridSize; i++)
             for (int j = 0; j < MaxWeaponGridSize; j++)
@@ -58,8 +60,7 @@ public class ShipBlueprint : MonoBehaviour
                 GameObject cell = gridLayoutGroup.GetChild(index).gameObject;
                 cell.SetActive(shouldBeActive);
 
-                bool boostActive = weaponBoosts[i, j] != WeaponBoost.None;
-                cell.transform.GetChild(0).gameObject.SetActive(boostActive);
+                ToggleBoost(i, j, cell);
             }
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75 + 26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, CurrentGridHeight * 75 + 26);//Hard coded, 75 = the height of a cell, 26 = random padding the layoutgroup has
@@ -73,6 +74,7 @@ public class ShipBlueprint : MonoBehaviour
     {
         currentGridWidth -= modulesArray[pos].genome.gridWidth;
         currentGridHeight -= modulesArray[pos].genome.gridHeight;
+        totalSpecialDensity -= modulesArray[pos].genome.specialTileDensity;
 
         modulesArray[pos].genome = null;
         modulesArray[pos].tracker = null;
@@ -82,7 +84,11 @@ public class ShipBlueprint : MonoBehaviour
             {
                 bool shouldBeActive = i < CurrentGridWidth && j < CurrentGridHeight;
                 int index = i + j * MaxWeaponGridSize;
-                gridLayoutGroup.GetChild(index).gameObject.SetActive(shouldBeActive);
+
+                GameObject cell = gridLayoutGroup.GetChild(index).gameObject;
+                cell.SetActive(shouldBeActive);
+
+                ToggleBoost(i, j, cell);
             }
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75 + 26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
     }
@@ -138,6 +144,33 @@ public class ShipBlueprint : MonoBehaviour
 
         constructionCanvas.gameObject.SetActive(false);
         waveManager.StartWave();
+    }
+
+    private int HashCell(int x, int y, int seed)
+    {
+        int hash = seed;
+        hash ^= x * 53070869;
+        hash ^= y * 25314043;
+
+        hash ^= hash >> 13;
+        hash *= 98291261;
+        hash ^= hash >> 16;
+        return hash;
+
+    }
+    private void ToggleBoost(int xPos, int yPos, GameObject cell)
+    {
+        //Gets if cell should have boost
+        int hash = HashCell(xPos + 1, yPos + 1, 1);//+1 cause it stats at 0   1 cause seeds not implemented
+        float range = ((float)hash / int.MaxValue) * 5 * 5;//0-25 range, cause density is 0-5 in genome and there are up to 5 modules
+        if (range <= totalSpecialDensity)
+            weaponBoosts[xPos, yPos] = WeaponBoost.Damage;
+        else
+            weaponBoosts[xPos, yPos] = WeaponBoost.None;
+
+        //Visualy show potential boost
+        bool boostActive = weaponBoosts[xPos, yPos] != WeaponBoost.None;
+        cell.transform.GetChild(0).gameObject.SetActive(boostActive);
     }
 }
 public class ShipCoreStats

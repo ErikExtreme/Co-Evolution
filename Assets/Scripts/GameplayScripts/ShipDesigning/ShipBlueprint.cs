@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.UIElements;
 
 public class ShipBlueprint : MonoBehaviour
 {
@@ -22,6 +21,7 @@ public class ShipBlueprint : MonoBehaviour
 
     private float totalSpecialDensity;
     private int hashingSeed;
+    private int boostTypeAmount = Enum.GetValues(typeof(WeaponBoost)).Length;
 
     public int ModuleListSize => moduleListSize;
     public int MaxWeaponGridSize => maxWeaponGridSize;
@@ -169,13 +169,48 @@ public class ShipBlueprint : MonoBehaviour
         int hash = HashCell(xPos + 1, yPos + 1, hashingSeed);//+1 cause it stats at 0
         float range = ((float)hash / int.MaxValue) * 5 * 5;//0-25 range, cause density is 0-5 in genome and there are up to 5 modules
         if (range <= totalSpecialDensity)
-            weaponBoosts[xPos, yPos] = WeaponBoost.Damage;
+        {
+            float range2 = range / totalSpecialDensity;//turn into 0-1 range with totalSpecialDensity as max
+            range2 = Mathf.Clamp(range2, 0, 0.9999f);
+            int index = 1 + Mathf.FloorToInt(range2 * (boostTypeAmount - 1));
+            weaponBoosts[xPos, yPos] = (WeaponBoost)index;
+        }
         else
             weaponBoosts[xPos, yPos] = WeaponBoost.None;
 
+
         //Visualy show potential boost
         bool boostActive = weaponBoosts[xPos, yPos] != WeaponBoost.None;
+
         cell.transform.GetChild(0).gameObject.SetActive(boostActive);
+        Color boostColor = cell.transform.GetChild(0).GetComponent<Image>().color;
+        switch (weaponBoosts[xPos, yPos])
+        {
+            case WeaponBoost.None:
+                break;
+            case WeaponBoost.Damage:
+                boostColor = Color.red;
+                break;
+            case WeaponBoost.BurstRate:
+                boostColor = Color.yellow;
+                break;
+            case WeaponBoost.Accuracy:
+                boostColor = Color.green;
+                break;
+            case WeaponBoost.LowerHeatGeneration:
+                boostColor = Color.blue;
+                break;
+            case WeaponBoost.MoreDamageMoreHeat:
+                boostColor = Color.darkRed;
+                break;
+            case WeaponBoost.BiggerAOELessBurstRate:
+                boostColor = Color.purple;
+                break;
+            default:
+                break;
+        }
+        boostColor.a = 0.7f;
+        cell.transform.GetChild(0).GetComponent<Image>().color = boostColor;
     }
 }
 public class ShipCoreStats

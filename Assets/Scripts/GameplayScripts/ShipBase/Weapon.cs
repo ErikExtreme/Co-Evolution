@@ -137,12 +137,17 @@ public abstract class Weapon : MonoBehaviour
         Vector2 targetDirection = ((Vector2)target.position - (Vector2)transform.position).normalized;
         float targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 90f;
 
-        float possibleAngle = weapon_Genome.spreadAngle;
-        if (activeBoost == WeaponBoost.Accuracy)
-            possibleAngle = Mathf.Max(possibleAngle - spreadAngleBoost, 0);
-        float spreadAngle = Random.Range(-possibleAngle, possibleAngle);
-        Quaternion rotation = Quaternion.Euler(0, 0, targetAngle + spreadAngle);
-
+        Quaternion rotation;
+        if (Random.value >= weapon_Genome.accuracy)
+        {
+            float possibleAngle = weapon_Genome.spreadAngle;
+            if (activeBoost == WeaponBoost.Accuracy)
+                possibleAngle = Mathf.Max(possibleAngle - spreadAngleBoost, 0);
+            float spreadAngle = Random.Range(-possibleAngle, possibleAngle);
+            rotation = Quaternion.Euler(0, 0, targetAngle + spreadAngle);
+        }
+        else
+            rotation = Quaternion.Euler(0, 0, targetAngle);
 
         GameObject projectile_Instance = Instantiate(projectilePrefab, transform.position, rotation);
         int damage = weapon_Genome.baseDamage;

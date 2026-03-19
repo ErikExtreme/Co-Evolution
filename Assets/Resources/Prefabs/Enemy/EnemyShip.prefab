@@ -647,7 +647,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 962889965124784174, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
       propertyPath: accuracy
-      value: 1
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 962889965124784174, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
       propertyPath: baseDamage

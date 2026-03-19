@@ -39,8 +39,8 @@ public class PlayerBehaviorSnapshot
 [System.Serializable]
 public class WeaponGenomeLog
 {
-    public long id;
-    public long parentId;
+    public int id;
+    public int parentId;
 
     public float fitness;
     public float statScore;
@@ -74,8 +74,8 @@ public class WeaponGenomeLog
 [System.Serializable]
 public class ShipGenomeLog
 {
-    public long id;
-    public long parentId;
+    public int id;
+    public int parentId;
 
     public float fitness;
     public float statScore;
@@ -176,13 +176,13 @@ public static class EvolutionLogger
             trackerScore = g.trackerScore,
             alignmentScore = g.alignmentScore,
 
-            axis = Mapping.MapGenome(g),
+            axis = g.mapping != Vector3.zero ? g.mapping : Mapping.MapGenome(g),
             mutationDirection = dir,
 
-            timeEquipped = t.timeEquipped,
-            damageDealt = t.damageDealt,
-            kills = t.kills,
-            avgEffectiveRange = t.avgEffectiveRange,
+            timeEquipped = t?.timeEquipped ?? 0f,
+            damageDealt = t?.damageDealt ?? 0f,
+            kills = t?.kills ?? 0,
+            avgEffectiveRange = t?.avgEffectiveRange ?? 0f,
 
             baseDamage = g.baseDamage,
             burstSize = g.burstSize,
@@ -218,13 +218,13 @@ public static class EvolutionLogger
             trackerScore = g.trackerScore,
             alignmentScore = g.alignmentScore,
 
-            axis = Mapping.MapGenome(g),
+            axis = g.mapping != Vector3.zero ? g.mapping : Mapping.MapGenome(g),
             mutationDirection = dir,
 
-            timeEquipped = t.timeEquipped,
-            damageAvoided = t.damageAvoided,
-            powerSaved = t.powerSaved,
-            heatReduced = t.heatReduced,
+            timeEquipped = t?.timeEquipped ?? 0f,
+            damageAvoided = t?.damageAvoided ?? 0f,
+            powerSaved = t?.powerSaved ?? 0f,
+            heatReduced = t?.heatReduced ?? 0f,
 
             hullHP = g.hullHP,
             armor = g.armor,

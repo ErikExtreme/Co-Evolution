@@ -12,9 +12,12 @@ public class EvolutionManager : MonoBehaviour
     public List<WeaponGenome> weapons;
     public List<ShipGenome> shipModules;
 
+    public EvolutionLog evolutionLog;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        evolutionLog = EvolutionLogger.CreateNewSession(PlayerBehaviorTracker.Instance);
         weapons = Seeding.RandomWeaponSeed(initalPopulationSize).ToList();
         shipModules = Seeding.RandomShipSeed(initalPopulationSize).ToList();
     }
@@ -58,11 +61,17 @@ public class EvolutionManager : MonoBehaviour
             var nextGenW = new List<WeaponGenome>();
             var nextGenS = new List<ShipGenome>();
 
+            var mutationDirsW = new List<Vector3>();
+            var mutationDirsS = new List<Vector3>();
+
             // 4a. Elitism
             var eliteW = GetElite(weaponPop);
             nextGenW.Add(eliteW);
+            mutationDirsW.Add(Vector3.zero);
+
             var eliteS = GetElite(shipPop);
             nextGenS.Add(eliteS);
+            mutationDirsS.Add(Vector3.zero);
 
             // 4b. Fill rest of Population
             while (nextGenW.Count < burstPopSize)
@@ -70,17 +79,25 @@ public class EvolutionManager : MonoBehaviour
                 var parent = SelectParent(weaponPop);
                 var dir = ComputeMutationDirection(parent, weaponPop);
                 var child = AxisAlignedMutation(parent, dir);
+
                 child.fitness = Fitness.CooperativeFitness(child, shipPop, playerTracker);
+
                 nextGenW.Add(child);
+                mutationDirsW.Add(dir);
             }
             while (nextGenS.Count < burstPopSize)
             {
                 var parent = SelectParent(shipPop);
                 var dir = ComputeMutationDirection(parent, shipPop);
                 var child = AxisAlignedMutation(parent, dir);
+
                 child.fitness = Fitness.CooperativeFitness(child, weaponPop, playerTracker);
+
                 nextGenS.Add(child);
+                mutationDirsS.Add(dir);
             }
+
+            EvolutionLogger.RecordGeneration(evolutionLog, gen, nextGenW, mutationDirsW, nextGenS, mutationDirsS);
 
             weaponPop = nextGenW;
             shipPop = nextGenS;

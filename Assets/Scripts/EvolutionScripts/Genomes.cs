@@ -62,6 +62,7 @@ public class WeaponGenome
         g.chargeUpTime = chargeUpTime;
         g.tileFootprint = tileFootprint;
         g.tileAffinity = tileAffinity;
+        g.statusEffectType = statusEffectType;
         g.statusEffectStrength = statusEffectStrength;
         g.aoeRadius = aoeRadius;
 
@@ -93,6 +94,7 @@ public class WeaponGenome
         g.chargeUpTime = chargeUpTime;
         g.tileFootprint = tileFootprint;
         g.tileAffinity = tileAffinity;
+        g.statusEffectType = statusEffectType;
         g.statusEffectStrength = statusEffectStrength;
         g.aoeRadius = aoeRadius;
 

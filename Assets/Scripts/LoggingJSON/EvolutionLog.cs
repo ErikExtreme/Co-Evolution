@@ -67,6 +67,7 @@ public class WeaponGenomeLog
     public int heatPerShot;
     public float heatDissipation;
     public float chargeUpTime;
+    public EffectType statusEffectType;
     public float statusEffectStrength;
     public float aoeRadius;
 }
@@ -162,8 +163,8 @@ public static class EvolutionLogger
     private static WeaponGenomeLog CreateWeaponLogEntry(WeaponGenome g, Vector3 dir)
     {
         WeaponStatsTracker t = null; 
-        Weapon weapon = WeaponManager.Instance.GetWeapon(g.id); 
-        if (weapon != null) 
+        var weapon = WeaponManager.Instance.GetWeapon(g.id); 
+        if (weapon.tracker != null) 
             t = weapon.tracker;
 
         return new WeaponGenomeLog
@@ -196,6 +197,7 @@ public static class EvolutionLogger
             heatPerShot = g.heatPerShot,
             heatDissipation = g.heatDissipation,
             chargeUpTime = g.chargeUpTime,
+            statusEffectType = g.statusEffectType,
             statusEffectStrength = g.statusEffectStrength,
             aoeRadius = g.aoeRadius
         };
@@ -204,8 +206,8 @@ public static class EvolutionLogger
     private static ShipGenomeLog CreateShipLogEntry(ShipGenome g, Vector3 dir)
     {
         ModuleStatsTracker t = null; 
-        Module module = ModuleManager.Instance.GetModule(g.id); 
-        if (module != null) 
+        var module = ModuleManager.Instance.GetModule(g.id); 
+        if (module.tracker != null) 
             t = module.tracker;
 
         return new ShipGenomeLog

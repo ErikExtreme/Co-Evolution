@@ -12,9 +12,12 @@ public class EvolutionManager : MonoBehaviour
     public List<WeaponGenome> weapons;
     public List<ShipGenome> shipModules;
 
+    public EvolutionLog evolutionLog;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        evolutionLog = EvolutionLogger.CreateNewSession(PlayerBehaviorTracker.Instance);
         weapons = Seeding.RandomWeaponSeed(initalPopulationSize).ToList();
         foreach (var weaponGenome in weapons)
         {
@@ -58,8 +61,8 @@ public class EvolutionManager : MonoBehaviour
         }
 
         // 3. Clone the top X from the global population
-        var weaponPop = weapons.OrderByDescending(g => g.fitness).Take(burstPopSize).Select(g => g.Clone()).ToList();
-        var shipPop = shipModules.OrderByDescending(g => g.fitness).Take(burstPopSize).Select(g => g.Clone()).ToList();
+        var weaponPop = weapons.OrderByDescending(g => g.fitness).Take(burstPopSize).Select(g => g.CloneExact()).ToList();
+        var shipPop = shipModules.OrderByDescending(g => g.fitness).Take(burstPopSize).Select(g => g.CloneExact()).ToList();
 
         // 4. Run the Evolutionary Loop
         for (var gen = 0; gen < generations; gen++)
@@ -67,11 +70,17 @@ public class EvolutionManager : MonoBehaviour
             var nextGenW = new List<WeaponGenome>();
             var nextGenS = new List<ShipGenome>();
 
+            var mutationDirsW = new List<Vector3>();
+            var mutationDirsS = new List<Vector3>();
+
             // 4a. Elitism
             var eliteW = GetElite(weaponPop);
             nextGenW.Add(eliteW);
+            mutationDirsW.Add(Vector3.zero);
+
             var eliteS = GetElite(shipPop);
             nextGenS.Add(eliteS);
+            mutationDirsS.Add(Vector3.zero);
 
             // 4b. Fill rest of Population
             while (nextGenW.Count < burstPopSize)
@@ -79,17 +88,25 @@ public class EvolutionManager : MonoBehaviour
                 var parent = SelectParent(weaponPop);
                 var dir = ComputeMutationDirection(parent, weaponPop);
                 var child = AxisAlignedMutation(parent, dir);
+
                 child.fitness = Fitness.CooperativeFitness(child, shipPop, playerTracker);
+
                 nextGenW.Add(child);
+                mutationDirsW.Add(dir);
             }
             while (nextGenS.Count < burstPopSize)
             {
                 var parent = SelectParent(shipPop);
                 var dir = ComputeMutationDirection(parent, shipPop);
                 var child = AxisAlignedMutation(parent, dir);
+
                 child.fitness = Fitness.CooperativeFitness(child, weaponPop, playerTracker);
+
                 nextGenS.Add(child);
+                mutationDirsS.Add(dir);
             }
+
+            EvolutionLogger.RecordGeneration(evolutionLog, gen, nextGenW, mutationDirsW, nextGenS, mutationDirsS);
 
             weaponPop = nextGenW;
             shipPop = nextGenS;
@@ -112,7 +129,7 @@ public class EvolutionManager : MonoBehaviour
                 best = candidate;
         }
 
-        return best.Clone();
+        return best.CloneExact();
     }
 
     private ShipGenome SelectParent(List<ShipGenome> genomes)
@@ -127,7 +144,7 @@ public class EvolutionManager : MonoBehaviour
                 best = candidate;
         }
 
-        return best.Clone();
+        return best.CloneExact();
     }
 
     private Vector3 ComputeMutationDirection(WeaponGenome parent, List<WeaponGenome> population)
@@ -188,7 +205,7 @@ public class EvolutionManager : MonoBehaviour
 
     private WeaponGenome AxisAlignedMutation(WeaponGenome genome, Vector3 dir)
     {
-        WeaponGenome g = genome.Clone();
+        WeaponGenome g = genome.CloneForEvo();
         const float pct = 0.05f; // 5 percent mutation
 
         // --- Helper: mutate float gene by percentage ---
@@ -278,7 +295,7 @@ public class EvolutionManager : MonoBehaviour
 
     private ShipGenome AxisAlignedMutation(ShipGenome genome, Vector3 dir)
     {
-        ShipGenome g = genome.Clone();
+        ShipGenome g = genome.CloneForEvo();
         const float pct = 0.05f; // 5 percent mutation per step
 
         // --- Helper: mutate float gene by percentage ---
@@ -387,7 +404,7 @@ public class EvolutionManager : MonoBehaviour
                 best = genomes[i];
         }
 
-        return best.Clone();
+        return best.CloneExact();
     }
 
     private ShipGenome GetElite(List<ShipGenome> genomes)
@@ -400,6 +417,6 @@ public class EvolutionManager : MonoBehaviour
                 best = genomes[i];
         }
 
-        return best.Clone();
+        return best.CloneExact();
     }
 }

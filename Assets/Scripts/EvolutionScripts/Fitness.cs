@@ -75,6 +75,11 @@ public static class Fitness
             (trackerScore * 0.4f) +
             (alignmentScore * 0.2f);
 
+        // Store components inside genome
+        g.statScore = statScore;
+        g.trackerScore = trackerScore;
+        g.alignmentScore = alignmentScore;
+
         return Mathf.Clamp01(fitness);
     }
 
@@ -101,6 +106,11 @@ public static class Fitness
             (statScore * 0.4f) +
             (trackerScore * 0.4f) +
             (alignmentScore * 0.2f);
+
+        // Store components inside genome
+        g.statScore = statScore; 
+        g.trackerScore = trackerScore; 
+        g.alignmentScore = alignmentScore;
 
         return Mathf.Clamp01(fitness);
     }
@@ -139,8 +149,8 @@ public static class Fitness
         const float alpha = 0.7f;
         const float beta = 0.3f;
 
-        //return alpha * synergy + beta * playerAlign;
-        return synergy; // for the synergy test
+        return alpha * synergy + beta * playerAlign;
+        //return synergy; // for the synergy test
     }
 
     public static float CooperativeFitness(ShipGenome offspring, List<WeaponGenome> weaponPopulation, PlayerBehaviorTracker player)
@@ -177,7 +187,7 @@ public static class Fitness
         const float alpha = 0.7f;
         const float beta = 0.3f;
 
-        //return alpha * synergy + beta * playerAlign;
-        return synergy; // for the synergy test
+        return alpha * synergy + beta * playerAlign;
+        //return synergy; // for the synergy test
     }
 }

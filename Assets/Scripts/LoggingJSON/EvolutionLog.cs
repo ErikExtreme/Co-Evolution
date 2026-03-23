@@ -4,11 +4,27 @@ using System.IO;
 using UnityEngine;
 
 [System.Serializable]
-public class EvolutionLog
+public class SessionLog
 {
     public string sessionId;
     public string timestamp;
+
+    // One entry per Evolve() call
+    public List<EvolveRecording> recordings = new List<EvolveRecording>();
+}
+
+[System.Serializable]
+public class EvolveRecording
+{
+    public int evolveIndex;
+
     public PlayerBehaviorSnapshot playerBehavior;
+
+    // Global population BEFORE evolution
+    public List<WeaponGenomeLog> globalWeapons = new List<WeaponGenomeLog>();
+    public List<ShipGenomeLog> globalShips = new List<ShipGenomeLog>();
+
+    // All generations of the burst evolution
     public List<GenerationLog> generations = new List<GenerationLog>();
 }
 
@@ -50,11 +66,6 @@ public class WeaponGenomeLog
     public Vector3 axis;
     public Vector3 mutationDirection;
 
-    public float timeEquipped;
-    public float damageDealt;
-    public int kills;
-    public float avgEffectiveRange;
-
     public int baseDamage;
     public int burstSize;
     public float fireRate;
@@ -70,6 +81,12 @@ public class WeaponGenomeLog
     public EffectType statusEffectType;
     public float statusEffectStrength;
     public float aoeRadius;
+
+    // Tracker data (only meaningful for global population)
+    public float timeEquipped;
+    public float damageDealt;
+    public int kills;
+    public float avgEffectiveRange;
 }
 
 [System.Serializable]
@@ -85,11 +102,6 @@ public class ShipGenomeLog
 
     public Vector3 axis;
     public Vector3 mutationDirection;
-
-    public float timeEquipped;
-    public float damageAvoided;
-    public float powerSaved;
-    public float heatReduced;
 
     public int hullHP;
     public int armor;
@@ -109,17 +121,24 @@ public class ShipGenomeLog
     public float droneSpeed;
     public int droneDurability;
     public float droneAggression;
+
+    // Tracker data (only meaningful for global population)
+    public float timeEquipped;
+    public float damageAvoided;
+    public float powerSaved;
+    public float heatReduced;
 }
 
 public static class EvolutionLogger
 {
-    public static EvolutionLog CreateNewSession(PlayerBehaviorTracker p)
+    // Create a new session log
+    public static SessionLog CreateNewSession()
     {
-        EvolutionLog log = new EvolutionLog();
-        log.sessionId = Guid.NewGuid().ToString();
-        log.timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss");
-        log.playerBehavior = SnapshotPlayerBehavior(p);
-        return log;
+        return new SessionLog
+        {
+            sessionId = Guid.NewGuid().ToString(),
+            timestamp = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss")
+        };
     }
 
     public static PlayerBehaviorSnapshot SnapshotPlayerBehavior(PlayerBehaviorTracker p)
@@ -140,8 +159,35 @@ public static class EvolutionLogger
         };
     }
 
+    // Create a new recording for one Evolve() call
+    public static EvolveRecording BeginRecording(SessionLog session, int evolveIndex, PlayerBehaviorTracker p)
+    {
+        var rec = new EvolveRecording
+        {
+            evolveIndex = evolveIndex,
+            playerBehavior = SnapshotPlayerBehavior(p)
+        };
+
+        session.recordings.Add(rec);
+        return rec;
+    }
+
+    // Record the global population BEFORE evolution
+    public static void RecordGlobalPopulation(
+        EvolveRecording rec,
+        List<WeaponGenome> weapons,
+        List<ShipGenome> ships)
+    {
+        foreach (var w in weapons)
+            rec.globalWeapons.Add(CreateWeaponLogEntry(w, Vector3.zero, includeTracker: true));
+
+        foreach (var s in ships)
+            rec.globalShips.Add(CreateShipLogEntry(s, Vector3.zero, includeTracker: true));
+    }
+
+    // Record one generation of the burst evolution
     public static void RecordGeneration(
-        EvolutionLog log,
+        EvolveRecording rec,
         int generationIndex,
         List<WeaponGenome> weapons,
         List<Vector3> mutationDirsW,
@@ -152,20 +198,22 @@ public static class EvolutionLogger
         gen.generationIndex = generationIndex;
 
         for (int i = 0; i < weapons.Count; i++)
-            gen.weaponGenomes.Add(CreateWeaponLogEntry(weapons[i], mutationDirsW[i]));
+            gen.weaponGenomes.Add(CreateWeaponLogEntry(weapons[i], mutationDirsW[i], includeTracker: false));
 
         for (int i = 0; i < ships.Count; i++)
-            gen.shipGenomes.Add(CreateShipLogEntry(ships[i], mutationDirsS[i]));
+            gen.shipGenomes.Add(CreateShipLogEntry(ships[i], mutationDirsS[i], includeTracker: false));
 
-        log.generations.Add(gen);
+        rec.generations.Add(gen);
     }
 
-    private static WeaponGenomeLog CreateWeaponLogEntry(WeaponGenome g, Vector3 dir)
+    private static WeaponGenomeLog CreateWeaponLogEntry(WeaponGenome g, Vector3 dir, bool includeTracker)
     {
-        WeaponStatsTracker t = null; 
-        var weapon = WeaponManager.Instance.GetWeapon(g.id); 
-        if (weapon.tracker != null) 
+        WeaponStatsTracker t = null;
+        if (includeTracker)
+        {
+            var weapon = WeaponManager.Instance.GetWeapon(g.id);
             t = weapon.tracker;
+        }
 
         return new WeaponGenomeLog
         {
@@ -179,11 +227,6 @@ public static class EvolutionLogger
 
             axis = g.mapping != Vector3.zero ? g.mapping : Mapping.MapGenome(g),
             mutationDirection = dir,
-
-            timeEquipped = t?.timeEquipped ?? 0f,
-            damageDealt = t?.damageDealt ?? 0f,
-            kills = t?.kills ?? 0,
-            avgEffectiveRange = t?.avgEffectiveRange ?? 0f,
 
             baseDamage = g.baseDamage,
             burstSize = g.burstSize,
@@ -199,16 +242,23 @@ public static class EvolutionLogger
             chargeUpTime = g.chargeUpTime,
             statusEffectType = g.statusEffectType,
             statusEffectStrength = g.statusEffectStrength,
-            aoeRadius = g.aoeRadius
+            aoeRadius = g.aoeRadius,
+
+            timeEquipped = includeTracker ? t?.timeEquipped ?? 0f : 0f,
+            damageDealt = includeTracker ? t?.damageDealt ?? 0f : 0f,
+            kills = includeTracker ? t?.kills ?? 0 : 0,
+            avgEffectiveRange = includeTracker ? t?.avgEffectiveRange ?? 0f : 0f
         };
     }
 
-    private static ShipGenomeLog CreateShipLogEntry(ShipGenome g, Vector3 dir)
+    private static ShipGenomeLog CreateShipLogEntry(ShipGenome g, Vector3 dir, bool includeTracker)
     {
-        ModuleStatsTracker t = null; 
-        var module = ModuleManager.Instance.GetModule(g.id); 
-        if (module.tracker != null) 
+        ModuleStatsTracker t = null;
+        if (includeTracker)
+        {
+            var module = ModuleManager.Instance.GetModule(g.id);
             t = module.tracker;
+        }
 
         return new ShipGenomeLog
         {
@@ -222,11 +272,6 @@ public static class EvolutionLogger
 
             axis = g.mapping != Vector3.zero ? g.mapping : Mapping.MapGenome(g),
             mutationDirection = dir,
-
-            timeEquipped = t?.timeEquipped ?? 0f,
-            damageAvoided = t?.damageAvoided ?? 0f,
-            powerSaved = t?.powerSaved ?? 0f,
-            heatReduced = t?.heatReduced ?? 0f,
 
             hullHP = g.hullHP,
             armor = g.armor,
@@ -245,19 +290,24 @@ public static class EvolutionLogger
             droneCount = g.droneCount,
             droneSpeed = g.droneSpeed,
             droneDurability = g.droneDurability,
-            droneAggression = g.droneAggression
+            droneAggression = g.droneAggression,
+
+            timeEquipped = includeTracker ? t?.timeEquipped ?? 0f : 0f,
+            damageAvoided = includeTracker ? t?.damageAvoided ?? 0f : 0f,
+            powerSaved = includeTracker ? t?.powerSaved ?? 0f : 0f,
+            heatReduced = includeTracker ? t?.heatReduced ?? 0f : 0f
         };
     }
 
-    public static void SaveLog(EvolutionLog log, string filePath)
+    public static void SaveLog(SessionLog log, string filePath)
     {
         string json = JsonUtility.ToJson(log, true);
         File.WriteAllText(filePath, json);
     }
 
-    public static EvolutionLog LoadLog(string filePath)
+    public static SessionLog LoadLog(string filePath)
     {
         string json = File.ReadAllText(filePath);
-        return JsonUtility.FromJson<EvolutionLog>(json);
+        return JsonUtility.FromJson<SessionLog>(json);
     }
 }

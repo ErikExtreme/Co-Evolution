@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
 using static GlobalSettings;
@@ -12,12 +13,13 @@ public class EvolutionManager : MonoBehaviour
     public List<WeaponGenome> weapons;
     public List<ShipGenome> shipModules;
 
-    public EvolutionLog evolutionLog;
+    public SessionLog sessionLog;
+    private int evolveIndex = -1;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        evolutionLog = EvolutionLogger.CreateNewSession(PlayerBehaviorTracker.Instance);
+        sessionLog = EvolutionLogger.CreateNewSession();
         weapons = Seeding.RandomWeaponSeed(initalPopulationSize).ToList();
         foreach (var weaponGenome in weapons)
         {
@@ -31,10 +33,27 @@ public class EvolutionManager : MonoBehaviour
         }
     }
 
+    private void OnApplicationQuit()
+    {
+        if (sessionLog != null) 
+        {
+            // Called once per session
+            string logFolder = Path.Combine(Application.persistentDataPath, "EvolutionLogs");
+            Directory.CreateDirectory(logFolder);
+
+            string logFilePath = Path.Combine(logFolder, "evo_" + sessionLog.sessionId + ".json");
+
+            // Called whenever you want to save
+            EvolutionLogger.SaveLog(sessionLog, logFilePath);
+        }
+    }
+
     public (List<WeaponGenome> weapons, List<ShipGenome> modules) Evolve()
     {
         // 1. Get Player Tracker
         PlayerBehaviorTracker playerTracker = PlayerBehaviorTracker.Instance;
+
+        var rec = EvolutionLogger.BeginRecording(sessionLog, evolveIndex++, playerTracker);
 
         // 2. Calculate Individual Fitness for all Weapons and Ship Modules
         foreach (var w in weapons)
@@ -59,6 +78,8 @@ public class EvolutionManager : MonoBehaviour
             }
             s.fitness = Fitness.IndividualFitness(s, module.tracker, playerTracker);
         }
+
+        EvolutionLogger.RecordGlobalPopulation(rec, weapons, shipModules);
 
         // 3. Clone the top X from the global population
         var weaponPop = weapons.OrderByDescending(g => g.fitness).Take(burstPopSize).Select(g => g.CloneExact()).ToList();
@@ -106,7 +127,7 @@ public class EvolutionManager : MonoBehaviour
                 mutationDirsS.Add(dir);
             }
 
-            EvolutionLogger.RecordGeneration(evolutionLog, gen, nextGenW, mutationDirsW, nextGenS, mutationDirsS);
+            EvolutionLogger.RecordGeneration(rec, gen, nextGenW, mutationDirsW, nextGenS, mutationDirsS);
 
             weaponPop = nextGenW;
             shipPop = nextGenS;

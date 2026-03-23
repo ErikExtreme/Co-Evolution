@@ -43,7 +43,7 @@ public class UpgradeSelectionManager : MonoBehaviour
         for (int i = 0; i < availableWeapons; i++)
         {
             GameObject weaponInstance = Instantiate(uiWeaponPrefab, weaponSelectionParent);
-            upgrades.weapons[i].id = WeaponGenome.GetNextWeaponId();
+            //upgrades.weapons[i].id = WeaponGenome.GetNextWeaponId();
 
             WeaponStatsTracker weaponStatsTracker = new WeaponStatsTracker();
             UIWeapon weaponScript = weaponInstance.GetComponent<UIWeapon>();
@@ -54,7 +54,7 @@ public class UpgradeSelectionManager : MonoBehaviour
         for (int i = 0; i < availableModules; i++)
         {
             GameObject moduleInstance = Instantiate(uiModulePrefab, moduleSelectionParent);
-            upgrades.modules[i].id = ShipGenome.GetNextShipId();
+            //upgrades.modules[i].id = ShipGenome.GetNextShipId();
 
             ModuleStatsTracker moduleStatsTracker = new ModuleStatsTracker();
             UIShipModule moduleScript = moduleInstance.GetComponent<UIShipModule>();

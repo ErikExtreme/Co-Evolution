@@ -290,6 +290,24 @@ public class EvolutionManager : MonoBehaviour
             g.chargeUpTime = MutateFloat(g.chargeUpTime, WEAPON_CHARGEUPTIME_MIN, WEAPON_CHARGEUPTIME_MAX, +1);
         }
 
+        // --- Categorical mutation for StatusEffectType ---
+        const float statusMutationChance = 0.02f; // 2%
+
+        if (Random.value < statusMutationChance)
+        {
+            // Pick a different status effect than the current one
+            var values = (EffectType[])System.Enum.GetValues(typeof(EffectType));
+            EffectType newType;
+
+            do
+            {
+                newType = values[Random.Range(0, values.Length)];
+            }
+            while (newType == g.statusEffectType);
+
+            g.statusEffectType = newType;
+        }
+
         return g;
     }
 

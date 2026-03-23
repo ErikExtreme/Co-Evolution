@@ -1,4 +1,7 @@
+using System;
+using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public static class GlobalSettings
 {
@@ -166,7 +169,10 @@ public static class GlobalSettings
             tileFootprint = new Vector2(Random.Range(WEAPON_TILEFOOTPRINT_X_MIN, WEAPON_TILEFOOTPRINT_X_MAX),
                             Random.Range(WEAPON_TILEFOOTPRINT_Y_MIN, WEAPON_TILEFOOTPRINT_Y_MAX)),
             tileAffinity = new Vector2(Random.Range(WEAPON_TILEAFFINITY_X_MIN, WEAPON_TILEAFFINITY_X_MAX),
-                            Random.Range(WEAPON_TILEAFFINITY_Y_MIN, WEAPON_TILEAFFINITY_Y_MAX))
+                            Random.Range(WEAPON_TILEAFFINITY_Y_MIN, WEAPON_TILEAFFINITY_Y_MAX)),
+            statusEffectType = (EffectType)Random.Range(0, (int)Enum.GetValues(typeof(EffectType)).Cast<EffectType>().Max()),
+            statusEffectStrength = Random.Range(WEAPON_STATUS_STRENGTH_MIN, WEAPON_STATUS_STRENGTH_MAX),
+            aoeRadius = Random.Range(WEAPON_AOE_RADIUS_MIN, WEAPON_AOE_RADIUS_MAX)
         };
     }
 

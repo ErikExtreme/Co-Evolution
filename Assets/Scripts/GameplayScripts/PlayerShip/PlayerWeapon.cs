@@ -12,7 +12,7 @@ public class PlayerWeapon : Weapon
         playerShip.targetSelection += NewTarget;
 
         chargeUpTimer = weapon_Genome.chargeUpTime * 3;
-        projectileSpeed = weapon_Genome.projectileSpeed * 0.7f;
+        projectilesSpeed = weapon_Genome.projectileSpeed * 0.7f;
     }
 
     public override Transform FindNewTarget()

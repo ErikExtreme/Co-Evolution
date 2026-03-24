@@ -22,7 +22,7 @@ public abstract class Weapon : MonoBehaviour
     float shoot_Timer;
 
 
-    protected float projectileSpeed;
+    protected float projectilesSpeed;
 
     private Transform target;
 
@@ -65,7 +65,7 @@ public abstract class Weapon : MonoBehaviour
         shoot_Timer = 1 / weapon_Genome.fireRate;
         bullets_Left_In_Burst = 0;
 
-        projectileSpeed = weapon_Genome.projectileSpeed;
+        projectilesSpeed = weapon_Genome.projectileSpeed;
 
         opponentTag = "Enemy";
     }
@@ -165,7 +165,7 @@ public abstract class Weapon : MonoBehaviour
         if (activeBoost == WeaponBoost.BiggerAOELessBurstRate)
             aoeRadius *= aoeRangeBoost;
 
-        projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectileSpeed, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag);
+        projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectilesSpeed, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag);
 
 
         bullets_Left_In_Burst--;

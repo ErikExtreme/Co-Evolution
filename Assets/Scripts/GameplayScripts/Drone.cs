@@ -26,15 +26,16 @@ public class Drone : MonoBehaviour
     {
         rigidbodyThis = GetComponent<Rigidbody2D>();
 
-        //Temp
         shipTransform = GameObject.Find("Ship").transform;
     }
     private void FixedUpdate()
     {
-        //Temp
-        targetPosition = shipTransform.position - shipTransform.up * 0.5f;
+        Transform closestEnemy = EnemyManager.Instance.GetClosestEnemy(transform.position);
+        Vector3 playerEnemyMidPoint = Vector3.Lerp(shipTransform.position, closestEnemy.position, aggression);
 
+        targetPosition = playerEnemyMidPoint;
 
+        targetPosition = Vector3.Lerp(targetPosition, playerEnemyMidPoint, 0.1f);
         Move_To_Target(targetPosition);
     }
     private void Move_To_Target(Vector2 target_Position)
@@ -53,7 +54,7 @@ public class Drone : MonoBehaviour
     {
         this.speed = speed;
         this.durability = durability;
-        this.aggression = aggression;
+        this.aggression = aggression * 0.9f + 0.05f;//remaps 0-1 range to 0.05-0.95 range
     }
     public void TakeDamage(int damage)
     {

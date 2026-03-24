@@ -11,6 +11,8 @@ public class WaveManager : MonoBehaviour
     [SerializeField] Text waveDisplayText;
     [SerializeField] Text enemiesLeftText;
 
+    [SerializeField] ShipDroneManager shipDroneManager;
+
     public List<GameObject> enemiesLeftInWave;
 
     [SerializeField] List<GameObject> enemyPrefabs;
@@ -64,6 +66,8 @@ public class WaveManager : MonoBehaviour
         enemiesLeftText.text = enemiesLeftInWave.Count + "/" + enemiesInWave;
 
         wavesPaused = false;
+
+        shipDroneManager.SpawnDrones();
     }
 
     private Vector2 RandomPointOutsideScreen(float objectWidth)

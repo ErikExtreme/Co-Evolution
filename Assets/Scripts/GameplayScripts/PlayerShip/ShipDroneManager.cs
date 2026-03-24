@@ -7,13 +7,13 @@ public class ShipDroneManager : MonoBehaviour
     //Stats
     int droneCount;
     float droneSpeed;
-    int droneDurability ;
+    int droneDurability;
     float droneAggression;
 
     //Variables
     [SerializeField] GameObject dronePrefab;
     List<Drone> drones;
-    
+
     private void Start()
     {
         drones = new List<Drone>();
@@ -21,7 +21,7 @@ public class ShipDroneManager : MonoBehaviour
 
     public void SpawnDrones()
     {
-        for (int i = 0; i < droneCount-drones.Count; i++)
+        for (int i = 0; i < droneCount - drones.Count; i++)
         {
             Drone newDrone = Instantiate(dronePrefab, transform.position, Quaternion.Euler(transform.eulerAngles)).GetComponent<Drone>();
             newDrone.SetStats(droneSpeed, droneDurability, droneAggression);
@@ -33,7 +33,7 @@ public class ShipDroneManager : MonoBehaviour
     {
         //Stats
         droneCount = ShipDroneStats.droneCount;
-        droneSpeed = ShipDroneStats.droneSpeed;
+        droneSpeed = ShipDroneStats.droneSpeed / 10;
         droneDurability = ShipDroneStats.droneDurability;
         droneAggression = ShipDroneStats.droneAggression;
     }

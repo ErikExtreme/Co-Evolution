@@ -13,7 +13,7 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
 
     Text statsTextBox;
 
-    public void Initialize(ShipGenome shipGenome,ModuleStatsTracker moduleStatsTracker, Text textBox)
+    public void Initialize(ShipGenome shipGenome, ModuleStatsTracker moduleStatsTracker, Text textBox)
     {
         this.shipGenome = shipGenome;
         this.moduleStatsTracker = moduleStatsTracker;
@@ -23,17 +23,17 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
     {
         statsTextBox.text =
             "Hull HP: " + shipGenome.hullHP +
-            "\nArmor: " + shipGenome.armor +
+            "\nArmor: " + shipGenome.armor/4 +
             "\nShield cap: " + shipGenome.shieldCapacity +
-            "\nShiled regen: " + shipGenome.shieldRegen +
+            "\nShiled regen: " + shipGenome.shieldRegen / 5 +
             "\nPower cap: " + shipGenome.powerCapacity +
             "\nPower regen: " + shipGenome.powerRegen +
 
-            "\nSpeed: " + shipGenome.speed +
+            "\nSpeed: " + shipGenome.speed/20 +
             "\nTurn rate: " + shipGenome.turnRate +
             "\nEvasion: " + shipGenome.evasion +
             "\nMass: " + shipGenome.mass +
-            "\nInertia: " + shipGenome.inertia +
+            "\nInertia: " + shipGenome.inertia/20 +
 
             "\nGrid width: " + shipGenome.gridWidth +
             "\nGrid height: " + shipGenome.gridHeight +

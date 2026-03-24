@@ -35,6 +35,10 @@ public class ShipBlueprint : MonoBehaviour
         weaponBoosts = new WeaponBoost[maxWeaponGridSize, maxWeaponGridSize];
 
         hashingSeed = (int)System.DateTime.Now.Ticks;
+
+
+        gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75 + 26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
+        gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, CurrentGridHeight * 75 + 26);//Hard coded, 75 = the height of a cell, 26 = random padding the layoutgroup has
     }
 
     public void SetWeapon(WeaponGenome genome, WeaponStatsTracker tracker, int horiPos, int vertPos)

@@ -7,13 +7,13 @@ public class PlayerHealth : ShipHealth
     {
         //Stats
         HullHP = shipCoreStats.hullHP;
-        armor = shipCoreStats.armor;
-        ShieldCapacity = shipCoreStats.shieldCapacity;
-        shieldRegen = shipCoreStats.shieldRegen;
+        armor = shipCoreStats.armor / 4;
+        ShieldCapacity = shipCoreStats.shieldCapacity / 3;
+        shieldRegen = shipCoreStats.shieldRegen / 5;
         PowerCapacity = shipCoreStats.powerCapacity;
         powerRegen = shipCoreStats.powerRegen;
 
-        evasion = shipCoreStats.evasion;
+        evasion = shipCoreStats.evasion / 5;
 
         //Current, shouldn't necessarly be set here, depends on design
         Health = HullHP;

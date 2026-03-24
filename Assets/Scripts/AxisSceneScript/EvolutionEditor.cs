@@ -13,6 +13,12 @@ public class EvolutionEditor : Editor
 
         }
 
+        if (GUILayout.Button("Load Log"))
+            axisManager.LoadLog();
+
+        if (GUILayout.Button("Load Recording"))
+            axisManager.LoadRecording();
+
         if (GUILayout.Button("Generate"))
         {
             axisManager.Generate();

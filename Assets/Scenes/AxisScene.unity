@@ -256,6 +256,175 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1 &830504744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 830504749}
+  - component: {fileID: 830504748}
+  - component: {fileID: 830504747}
+  - component: {fileID: 830504746}
+  - component: {fileID: 830504745}
+  - component: {fileID: 830504750}
+  m_Layer: 0
+  m_Name: OtherManagers
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &830504745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830504744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44c66e88f7bb2514fa060d3c563f64aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatEventRouter
+--- !u!114 &830504746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830504744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 069e626895542624cb81c900b2d5ff4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponManager
+  inventory: {fileID: 830504750}
+--- !u!114 &830504747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830504744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17b18ad62a164144dbe0c195d9b8002a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ModuleManager
+  inventory: {fileID: 0}
+--- !u!114 &830504748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830504744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62b1101d874415f479bb74eb32db6c92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
+--- !u!4 &830504749
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830504744}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -31.51537, y: 0, z: -18.59343}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &830504750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830504744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e789188c48ef2a468756a0893e63e63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Inventory
+  UIweaponPrefab: {fileID: 0}
+  UImodulePrefab: {fileID: 0}
+  statsTextBox: {fileID: 0}
+--- !u!1 &1517745090
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1517745092}
+  - component: {fileID: 1517745091}
+  - component: {fileID: 1517745093}
+  m_Layer: 0
+  m_Name: MockDataTest
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1517745091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517745090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d36fb666d49a3dc47b80fc3d0499a35d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MockEvolutionRunner
+  evolutionManager: {fileID: 1907858948}
+--- !u!4 &1517745092
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517745090}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -31.51537, y: 0, z: -18.59343}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1517745093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1517745090}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21f45ee7fb1f56544846bc3e8333f3ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerBehaviorTracker
+  avgSpeed: 0.5
+  avgTurnRate: 0.3
+  movementEntropy: 0.2
+  avgEngagementDistance: 10
+  avgAngleToEnemy: 15
+  normSpeed: 0.5
+  normTurnRate: 0.3
+  normEntropy: 0.2
+  normEngagementDistance: 0.4
+  normAngleToEnemy: 0.1
 --- !u!1 &1907858946
 GameObject:
   m_ObjectHideFlags: 0
@@ -288,7 +457,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AxisManager
   evoManager: {fileID: 1907858948}
   axisScale: 10
-  generation: 1
+  jsonFilePath: C:\Users\vilme\AppData\LocalLow\DefaultCompany\Co-Evolution\EvolutionLogs\evo_61b1e95d-445d-48d9-8ec6-a62bdcc39aff.json
+  loadedLog:
+    sessionId: 
+    timestamp: 
+    recordings: []
+  evolveIndex: 0
+  generationIndex: 0
   mappedWeaponGenomes: []
   mappedShipGenomes: []
   randomPopSize: 50
@@ -306,9 +481,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6de7d80f6bff8ba48b7b7229c53cf2d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EvolutionManager
-  initalPopulationSize: 0
-  burstPopSize: 0
-  generations: 0
+  initalPopulationSize: 50
+  burstPopSize: 50
+  generations: 5
+  sessionLog:
+    sessionId: 
+    timestamp: 
+    recordings: []
 --- !u!4 &1907858949
 Transform:
   m_ObjectHideFlags: 0
@@ -342,7 +521,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1937593247
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -417,3 +596,5 @@ SceneRoots:
   - {fileID: 38787983}
   - {fileID: 1907858949}
   - {fileID: 1937593249}
+  - {fileID: 830504749}
+  - {fileID: 1517745092}

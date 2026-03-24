@@ -170,7 +170,7 @@ public class ShipBlueprint : MonoBehaviour
         return hash;
 
     }
-    private void ToggleBoost(int xPos, int yPos, GameObject cell)
+    public void ToggleBoost(int xPos, int yPos, GameObject cell)
     {
         //Gets if cell should have boost
         int hash = HashCell(xPos + 1, yPos + 1, hashingSeed);//+1 cause it stats at 0

@@ -135,6 +135,8 @@ public class ModuleGrabbingSystem : MonoBehaviour
 
         if (grabbed_Object_Transform.TryGetComponent<UIWeapon>(out var uiWeapon))
         {
+            slotInstance.transform.localScale = new Vector2(0.679f, 0.679f);
+
             int horiPos = siblingIndex % shipBlueprint.MaxWeaponGridSize;
             int vertPos = siblingIndex / shipBlueprint.MaxWeaponGridSize;
 
@@ -142,11 +144,12 @@ public class ModuleGrabbingSystem : MonoBehaviour
 
             uiWeapon.isActive = false;
 
-            bool boostActive = shipBlueprint.weaponBoosts[horiPos, vertPos] != WeaponBoost.None;
-            slotInstance.transform.GetChild(0).gameObject.SetActive(boostActive);
+            shipBlueprint.ToggleBoost(horiPos, vertPos, slotInstance);
         }
         if (grabbed_Object_Transform.TryGetComponent<UIShipModule>(out var uiShipModule))
         {
+            slotInstance.transform.localScale = new Vector2(0.735f, 0.735f);
+
             int horiPos = siblingIndex % shipBlueprint.ModuleListSize;
 
             shipBlueprint.RemoveModule(horiPos);

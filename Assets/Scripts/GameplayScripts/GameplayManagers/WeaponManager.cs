@@ -25,11 +25,10 @@ public class WeaponManager : MonoBehaviour
             {
                 return weapon;
             }
-
         }
 
         Debug.LogError("Could not find weapon with id: " + id);
-        return (null, null); ;
+        return (null, null);
     }
     public void AddWeapon(WeaponGenome weaponGenome, WeaponStatsTracker weaponStatsTracker)
     {

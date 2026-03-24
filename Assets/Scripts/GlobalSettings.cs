@@ -99,10 +99,10 @@ public static class GlobalSettings
     public const float SHIP_INERTIA_MAX = 8f;
     public const float SHIP_INERTIA_MIN = 1f;
 
-    public const int SHIP_GRID_WIDTH_MAX = 8;
-    public const int SHIP_GRID_WIDTH_MIN = 2;
-    public const int SHIP_GRID_HEIGHT_MAX = 8;
-    public const int SHIP_GRID_HEIGHT_MIN = 2;
+    public const int SHIP_GRID_WIDTH_MAX = 3;
+    public const int SHIP_GRID_WIDTH_MIN = 1;
+    public const int SHIP_GRID_HEIGHT_MAX = 3;
+    public const int SHIP_GRID_HEIGHT_MIN = 1;
     public const float SHIP_SPECIALTILE_DENSITY_MAX = 5f;
     public const float SHIP_SPECIALTILE_DENSITY_MIN = 0f;
 

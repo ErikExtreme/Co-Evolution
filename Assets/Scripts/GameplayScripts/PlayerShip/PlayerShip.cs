@@ -50,7 +50,7 @@ public class PlayerShip : ShipMovement
         if (targetAction.IsPressed())
         {
             Transform target = EnemyManager.Instance.GetClosestEnemy(mouseWorldPosition);
-            if (target != null && Vector2.Distance((Vector2)target.position, mouseWorldPosition) < 0.2f)
+            if (target != null && Vector2.Distance((Vector2)target.position, mouseWorldPosition) < 2f)
             {
                 targetSelection(target);
                 emptyTarget.gameObject.SetActive(false);

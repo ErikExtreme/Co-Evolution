@@ -11,7 +11,7 @@ public class WaveManager : MonoBehaviour
     [SerializeField] Text waveDisplayText;
     [SerializeField] Text enemiesLeftText;
 
-    List<GameObject> enemiesLeftInWave;
+    public List<GameObject> enemiesLeftInWave;
 
     [SerializeField] List<GameObject> enemyPrefabs;
 

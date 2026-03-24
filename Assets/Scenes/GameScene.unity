@@ -3745,6 +3745,7 @@ MonoBehaviour:
   gameplayCanvas: {fileID: 801267080}
   waveDisplayText: {fileID: 2022970820}
   enemiesLeftText: {fileID: 122876024}
+  enemiesLeftInWave: []
   enemyPrefabs:
   - {fileID: 6602281869372471137, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
   initialEnemies: 3
@@ -16975,6 +16976,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 62b1101d874415f479bb74eb32db6c92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
+  waveManager: {fileID: 351209991}
 --- !u!4 &2045149461
 Transform:
   m_ObjectHideFlags: 0

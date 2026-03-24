@@ -34,7 +34,7 @@ public class StatusEffectHandler : MonoBehaviour
                 switch (statusEffect.type)
                 {
                     case EffectType.Burn:
-                        healthScript.TakeDamage((int)(5 * statusEffect.strength));//No clue what a resonable base damage would be, should it be based on the weapons damage?
+                        healthScript.TakeDamage((int)(statusEffect.strength));//strenght = strength*damage
                         break;
                     case EffectType.Slow:
                         //No active effect

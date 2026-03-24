@@ -12,7 +12,7 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
 
     Text statsTextBox;
 
-    public void Initialize(WeaponGenome weaponGenome,WeaponStatsTracker weaponStatsTracker, Text textBox)
+    public void Initialize(WeaponGenome weaponGenome, WeaponStatsTracker weaponStatsTracker, Text textBox)
     {
         this.weaponGenome = weaponGenome;
         this.weaponStatsTracker = weaponStatsTracker;
@@ -25,7 +25,7 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
             "\nBurst size: " + weaponGenome.burstSize +
             "\nFire rate: " + weaponGenome.fireRate +
             "\nShot cooldown: " + weaponGenome.cooldownTime +
-            "\nProjectile speed: " + weaponGenome.projectileSpeed +
+            "\nProjectile speed: " + weaponGenome.projectileSpeed * 0.7f +
             "\nAccuracy: " + weaponGenome.accuracy +
             "\nSpread: " + weaponGenome.spreadAngle +
             "\nRange: " + weaponGenome.range +
@@ -33,7 +33,7 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
             "\nPower cost: " + weaponGenome.powerCost +
             "\nHeat per shot: " + weaponGenome.heatPerShot +
             "\nHeat dissipation: " + weaponGenome.heatDissipation +
-            "\nCharge up time: " + weaponGenome.chargeUpTime +
+            "\nCharge up time: " + weaponGenome.chargeUpTime*3 +
 
             "\nTile footprint: " + weaponGenome.tileFootprint +
             "\nTile affinity: " + weaponGenome.tileAffinity +

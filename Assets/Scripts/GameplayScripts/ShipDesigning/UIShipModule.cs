@@ -23,17 +23,17 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
     {
         statsTextBox.text =
             "Hull HP: " + shipGenome.hullHP +
-            "\nArmor: " + shipGenome.armor/4 +
-            "\nShield cap: " + shipGenome.shieldCapacity +
-            "\nShiled regen: " + shipGenome.shieldRegen / 5 +
+            "\nArmor: " + shipGenome.armor / 4 +
+            "\nShield cap: " + shipGenome.shieldCapacity / 3 +
+            "\nShield regen: " + shipGenome.shieldRegen / 5 +
             "\nPower cap: " + shipGenome.powerCapacity +
             "\nPower regen: " + shipGenome.powerRegen +
 
-            "\nSpeed: " + shipGenome.speed/20 +
+            "\nSpeed: " + shipGenome.speed / 20 +
             "\nTurn rate: " + shipGenome.turnRate +
-            "\nEvasion: " + shipGenome.evasion +
+            "\nEvasion: " + shipGenome.evasion / 5 +
             "\nMass: " + shipGenome.mass +
-            "\nInertia: " + shipGenome.inertia/20 +
+            "\nInertia: " + shipGenome.inertia / 20 +
 
             "\nGrid width: " + shipGenome.gridWidth +
             "\nGrid height: " + shipGenome.gridHeight +

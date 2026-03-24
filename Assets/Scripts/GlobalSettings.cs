@@ -88,7 +88,7 @@ public static class GlobalSettings
     public const int SHIP_POWER_REGEN_MAX = 30;
     public const int SHIP_POWER_REGEN_MIN = 5;
 
-    public const float SHIP_SPEED_MAX = 80f;
+    public const float SHIP_SPEED_MAX = 80f;//It would be really good if this was lowered to like 50
     public const float SHIP_SPEED_MIN = 20f;
     public const float SHIP_TURNRATE_MAX = 1.2f;
     public const float SHIP_TURNRATE_MIN = 0.2f;

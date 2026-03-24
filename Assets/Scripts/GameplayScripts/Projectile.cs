@@ -43,7 +43,10 @@ public class Projectile : MonoBehaviour
         if (collision.gameObject.CompareTag(opponentTag))
         {
             collision.gameObject.GetComponentInParent<ShipHealth>().TakeDamage(damage);
-            collision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength);
+            if(effectType == EffectType.Burn)
+                collision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength*damage);
+            else
+                collision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength);
 
             AoeCollision();
             Destroy(gameObject);
@@ -58,7 +61,10 @@ public class Projectile : MonoBehaviour
             if (aoeCollision.gameObject.CompareTag(opponentTag))
             {
                 aoeCollision.gameObject.GetComponentInParent<ShipHealth>().TakeDamage(damage);
-                aoeCollision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength);
+                if (effectType == EffectType.Burn)
+                    aoeCollision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage);
+                else
+                    aoeCollision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength);
             }
 
             if (aoeCollision.gameObject.CompareTag("Asteroid"))

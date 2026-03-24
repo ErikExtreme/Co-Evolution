@@ -367,7 +367,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a455bab768e4f5243acbf460fcbc2c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  enemyHullHP: 1
+  enemyHullHP: 1593
   enemyArmor: 1
   enemyShieldCapacity: 1
   enemyShieldRegen: 1

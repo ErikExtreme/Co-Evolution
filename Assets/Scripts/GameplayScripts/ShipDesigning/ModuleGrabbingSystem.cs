@@ -96,12 +96,14 @@ public class ModuleGrabbingSystem : MonoBehaviour
         grabbed_Object_Transform.TryGetComponent<IGrabbableUI>(out var objectScript);
 
         grabbedObject.SetParent(locationTransform.parent);
-        grabbedObject.transform.localScale = locationTransform.localScale;
         grabbedObject.SetSiblingIndex(siblingIndex);
         Destroy(locationTransform.gameObject);
 
         if (grabbed_Object_Transform.TryGetComponent<UIWeapon>(out var uiWeapon))
         {
+            grabbedObject.transform.localScale = new Vector2(0.935f, 0.935f);
+
+
             int horiPos = siblingIndex % shipBlueprint.MaxWeaponGridSize;
             int vertPos = siblingIndex / shipBlueprint.MaxWeaponGridSize;
 
@@ -111,6 +113,9 @@ public class ModuleGrabbingSystem : MonoBehaviour
         }
         if (grabbed_Object_Transform.TryGetComponent<UIShipModule>(out var uiShipModule))
         {
+            grabbedObject.transform.localScale = new Vector2(0.735f, 0.735f);
+
+
             int horiPos = siblingIndex % shipBlueprint.ModuleListSize;
 
             shipBlueprint.SetModule(uiShipModule.shipGenome, uiShipModule.moduleStatsTracker, horiPos);
@@ -124,7 +129,6 @@ public class ModuleGrabbingSystem : MonoBehaviour
 
         GameObject slotInstance = Instantiate(emptySlotPrefab, grabbedObject.parent);
         slotInstance.transform.SetSiblingIndex(siblingIndex);
-        slotInstance.transform.localScale = new Vector2(0.73482f, 0.73482f);
 
         grabbedObject.SetParent(canvas.transform);
         grabbedObject.transform.localScale = Vector2.one;

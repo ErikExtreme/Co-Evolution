@@ -65,11 +65,11 @@ public class ShipBlueprint : MonoBehaviour
             {
                 bool shouldBeActive = i < CurrentGridWidth && j < CurrentGridHeight;
                 int index = i + j * MaxWeaponGridSize;
-
                 GameObject cell = gridLayoutGroup.GetChild(index).gameObject;
                 cell.SetActive(shouldBeActive);
 
-                ToggleBoost(i, j, cell);
+                if (cell.CompareTag("PlacementPoint") && shouldBeActive)
+                    ToggleBoost(i, j, cell);
             }
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75 + 26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, CurrentGridHeight * 75 + 26);//Hard coded, 75 = the height of a cell, 26 = random padding the layoutgroup has
@@ -93,13 +93,16 @@ public class ShipBlueprint : MonoBehaviour
             {
                 bool shouldBeActive = i < CurrentGridWidth && j < CurrentGridHeight;
                 int index = i + j * MaxWeaponGridSize;
-
                 GameObject cell = gridLayoutGroup.GetChild(index).gameObject;
+
                 cell.SetActive(shouldBeActive);
 
-                ToggleBoost(i, j, cell);
+                if (cell.CompareTag("PlacementPoint") && shouldBeActive)
+                    ToggleBoost(i, j, cell);
             }
+
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75 + 26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
+        gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, CurrentGridHeight * 75 + 26);//Hard coded, 75 = the height of a cell, 26 = random padding the layoutgroup has
     }
 
     public void ConstructShip()

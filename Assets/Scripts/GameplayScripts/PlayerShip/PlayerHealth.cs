@@ -7,7 +7,7 @@ public class PlayerHealth : ShipHealth
     {
         //Stats
         HullHP = shipCoreStats.hullHP;
-        armor = shipCoreStats.armor / 4;
+        armor = shipCoreStats.armor / 20;
         ShieldCapacity = shipCoreStats.shieldCapacity / 3;
         shieldRegen = shipCoreStats.shieldRegen / 5;
         PowerCapacity = shipCoreStats.powerCapacity;

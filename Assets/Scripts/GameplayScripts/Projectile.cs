@@ -69,7 +69,7 @@ public class Projectile : MonoBehaviour
             {
                 hitObjectAOE.GetComponentInParent<ShipHealth>().TakeDamage(damage / 2);
                 if (effectType == EffectType.Burn)
-                    hitObjectAOE.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage / 3);
+                    hitObjectAOE.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage / 10);
                 else
                     hitObjectAOE.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength);
             }

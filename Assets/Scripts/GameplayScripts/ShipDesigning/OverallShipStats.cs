@@ -21,7 +21,7 @@ public class OverallShipStats : MonoBehaviour
 
         statsTextBox.text =
             "Health: " + shipCoreStats.hullHP +
-            "\nArmor: " + shipCoreStats.armor/4 +
+            "\nArmor: " + shipCoreStats.armor/20 +
             "\nShield Cap: " + shipCoreStats.shieldCapacity/3 +
             "\nShield Regen: " + shipCoreStats.shieldRegen/5 +
             "\nPower cap: " + shipCoreStats.powerCapacity +

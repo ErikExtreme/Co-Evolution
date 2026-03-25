@@ -24,7 +24,7 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
 
         statsTextBox.text =
             "Hull HP: " + shipGenome.hullHP +
-            "\nArmor: " + shipGenome.armor / 4 +
+            "\nArmor: " + shipGenome.armor / 20 +
             "\nShield cap: " + shipGenome.shieldCapacity / 3 +
             "\nShield regen: " + shipGenome.shieldRegen / 5 +
             "\nPower cap: " + shipGenome.powerCapacity +

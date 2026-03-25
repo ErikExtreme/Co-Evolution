@@ -8,6 +8,8 @@ public class WaveManager : MonoBehaviour
     [SerializeField] Canvas upgradeSelectionCanvas;
     [SerializeField] Canvas shipConstructionCanvas;
     [SerializeField] Canvas gameplayCanvas;
+    [SerializeField] RectTransform moduleGrid;
+
     [SerializeField] Text waveDisplayText;
     [SerializeField] Text enemiesLeftText;
 
@@ -39,15 +41,16 @@ public class WaveManager : MonoBehaviour
     }
     private void WaveCompleted()
     {
+        if (currentWave < 5 && currentWave >= 0)
+            moduleGrid.GetChild(currentWave).gameObject.SetActive(true);
+
+
         wavesPaused = true;
         currentWave++;
 
         gameplayCanvas.gameObject.SetActive(false);
         upgradeSelectionCanvas.gameObject.SetActive(true);
         upgradeSelectionCanvas.GetComponent<UpgradeSelectionManager>().GetUpgrades();
-
-
-        //shipConstructionCanvas.gameObject.SetActive(true);
     }
     public void StartWave()
     {

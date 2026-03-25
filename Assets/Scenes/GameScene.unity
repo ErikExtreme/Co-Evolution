@@ -2323,7 +2323,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &282712157
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2338,10 +2338,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 242994248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 42, y: -201.42}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &282712158
 MonoBehaviour:
@@ -3743,6 +3743,7 @@ MonoBehaviour:
   upgradeSelectionCanvas: {fileID: 40335384}
   shipConstructionCanvas: {fileID: 1809847684}
   gameplayCanvas: {fileID: 801267080}
+  moduleGrid: {fileID: 242994248}
   waveDisplayText: {fileID: 2022970820}
   enemiesLeftText: {fileID: 122876024}
   shipDroneManager: {fileID: 1699913381}
@@ -3752,7 +3753,7 @@ MonoBehaviour:
   - {fileID: 6602281869372471137, guid: abfc6c1874583774289f876a4f902ba7, type: 3}
   - {fileID: 6602281869372471137, guid: 0c5c20f70dc953e45abf1be6c0bba02f, type: 3}
   - {fileID: 6602281869372471137, guid: 2d93271ae9d1b324486ab291def66a6e, type: 3}
-  initialEnemies: 3
+  initialEnemies: 0
   enemyAmountMultiplier: 1.25
 --- !u!1001 &359068935
 PrefabInstance:
@@ -9267,7 +9268,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1059223351
 RectTransform:
   m_ObjectHideFlags: 0
@@ -9282,10 +9283,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 242994248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 42, y: -360.84}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1059223352
 MonoBehaviour:
@@ -13048,7 +13049,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1602323656
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13063,10 +13064,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 242994248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 42, y: -281.13}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1602323657
 MonoBehaviour:
@@ -14376,7 +14377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6de7d80f6bff8ba48b7b7229c53cf2d9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EvolutionManager
-  initalPopulationSize: 15
+  initalPopulationSize: 10
   burstPopSize: 50
   generations: 5
   sessionLog:
@@ -15871,7 +15872,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1899535948
 RectTransform:
   m_ObjectHideFlags: 0
@@ -15886,10 +15887,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 242994248}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 42, y: -121.71}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1899535949
 MonoBehaviour:

@@ -25,6 +25,7 @@ public abstract class Weapon : MonoBehaviour
     protected float projectileSpeedAdjusted;
     protected float fireRateAdjusted;
     protected float chargeUpTimeAdjusted;
+    protected float powerCostAdjusted;
 
     private Transform target;
 
@@ -48,7 +49,8 @@ public abstract class Weapon : MonoBehaviour
     {
         chargeUpTimeAdjusted = weapon_Genome.chargeUpTime;
         fireRateAdjusted = weapon_Genome.fireRate;
-        projectileSpeedAdjusted= weapon_Genome.projectileSpeed;
+        projectileSpeedAdjusted= weapon_Genome.projectileSpeed; 
+        powerCostAdjusted= weapon_Genome.powerCost;
 
         chargeUpTimer = chargeUpTimeAdjusted;
         shoot_Timer = 1 / Mathf.Max(fireRateAdjusted, 0.001f);
@@ -113,7 +115,7 @@ public abstract class Weapon : MonoBehaviour
         if (cooldown_Timer > 0)
             return;
 
-        if (!shipHealthScript.ConsumePower(weapon_Genome.powerCost))
+        if (!shipHealthScript.ConsumePower(powerCostAdjusted))
             return;
 
         cooldown_Timer = weapon_Genome.cooldownTime;

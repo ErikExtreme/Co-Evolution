@@ -172,7 +172,7 @@ public class ShipBlueprint : MonoBehaviour
             if (weapon.genome == null)
                 continue;
 
-            consumption += weapon.genome.powerCost / weapon.genome.cooldownTime;
+            consumption += (weapon.genome.powerCost * 1.66f) / weapon.genome.cooldownTime;
         }
 
         return consumption;

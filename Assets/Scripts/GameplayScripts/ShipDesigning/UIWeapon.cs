@@ -30,7 +30,7 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
             "\nSpread: " + FormatFloat(weaponGenome.spreadAngle) +
             "\nRange: " + FormatFloat(weaponGenome.range) +
 
-            "\nPower cost: " + weaponGenome.powerCost +
+            "\nPower cost: " + weaponGenome.powerCost*1.4f +
             "\nHeat per shot: " + weaponGenome.heatPerShot +
             "\nHeat dissipation: " + FormatFloat(weaponGenome.heatDissipation) +
             "\nCharge up time: " + FormatFloat(weaponGenome.chargeUpTime * 2) +

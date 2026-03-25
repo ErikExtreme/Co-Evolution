@@ -25,7 +25,7 @@ public static class GlobalSettings
     public const float WEAPON_RANGE_MIN = 5f;
 
     public const int WEAPON_POWERCOST_MAX = 15;
-    public const int WEAPON_POWERCOST_MIN = 1;
+    public const int WEAPON_POWERCOST_MIN = 1;//It would be good if this was increased to 3
     public const int WEAPON_HEATPERSHOT_MAX = 15;
     public const int WEAPON_HEATPERSHOT_MIN = 0;
     public const float WEAPON_HEATDISSIPATION_MAX = 15f;
@@ -88,7 +88,7 @@ public static class GlobalSettings
     public const int SHIP_POWER_REGEN_MAX = 30;
     public const int SHIP_POWER_REGEN_MIN = 5;
 
-    public const float SHIP_SPEED_MAX = 80f;//It would be really good if this was lowered to like 50
+    public const float SHIP_SPEED_MAX = 80f;//It would be really good if this was lowered to like 40
     public const float SHIP_SPEED_MIN = 20f;
     public const float SHIP_TURNRATE_MAX = 1.2f;
     public const float SHIP_TURNRATE_MIN = 0.2f;

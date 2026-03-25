@@ -16,7 +16,7 @@ public class ShipHealth : MonoBehaviour
     //Current
     public int Health { get; protected set; }
     public int Shield { get; protected set; }
-    public int Power { get; protected set; }
+    public float Power { get; protected set; }
 
     protected float regenTimer;
 
@@ -84,7 +84,7 @@ public class ShipHealth : MonoBehaviour
         if (Health > HullHP)
             Health = HullHP;
     }
-    public bool ConsumePower(int amountConsumed)
+    public bool ConsumePower(float amountConsumed)
     {
         if (Power >= amountConsumed)
         {

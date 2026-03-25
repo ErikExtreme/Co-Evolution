@@ -46,7 +46,7 @@ public class Projectile : MonoBehaviour
             AoeCollision(collidedObject);
             Destroy(gameObject);
         }
-        else if (collidedObject.CompareTag("Drone"))
+        else if (collidedObject.CompareTag("Drone") && opponentTag == "Player")
         {
             if (collidedObject.TryGetComponent<Drone>(out var droneScript))
             {

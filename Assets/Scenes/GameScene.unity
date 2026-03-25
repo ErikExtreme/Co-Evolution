@@ -3690,7 +3690,7 @@ MonoBehaviour:
   - {fileID: 6602281869372471137, guid: 29d646011c239df4e807e36ecc2a4bcd, type: 3}
   - {fileID: 6602281869372471137, guid: e698cdfc1078bb14394d4d4b25fa8705, type: 3}
   - {fileID: 6602281869372471137, guid: 0398507cfe3e837438adb15aeaf31a53, type: 3}
-  initialEnemies: 1
+  initialEnemies: 3
   enemyAmountMultiplier: 1.25
 --- !u!1001 &359068935
 PrefabInstance:

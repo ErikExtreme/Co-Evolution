@@ -23,8 +23,8 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
         statsTextBox.text =
             "Damage: " + weaponGenome.baseDamage +
             "\nBurst size: " + weaponGenome.burstSize +
-            "\nFire rate: " + FormatFloat(weaponGenome.fireRate) +
-            "\nShot cooldown: " + FormatFloat(weaponGenome.cooldownTime) +
+            "\nBurst cooldown: " + FormatFloat(weaponGenome.cooldownTime) +
+            "\nFire rate: " + FormatFloat(weaponGenome.fireRate/2) +
             "\nProjectile speed: " + FormatFloat(weaponGenome.projectileSpeed * 0.7f) +
             "\nAccuracy: " + FormatFloat(weaponGenome.accuracy) +
             "\nSpread: " + FormatFloat(weaponGenome.spreadAngle) +
@@ -33,7 +33,7 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
             "\nPower cost: " + weaponGenome.powerCost +
             "\nHeat per shot: " + weaponGenome.heatPerShot +
             "\nHeat dissipation: " + FormatFloat(weaponGenome.heatDissipation) +
-            "\nCharge up time: " + FormatFloat(weaponGenome.chargeUpTime * 3) +
+            "\nCharge up time: " + FormatFloat(weaponGenome.chargeUpTime * 2) +
 
             "\nStatus effect: " + weaponGenome.statusEffectType.ToString() +
             "\nStatus effect strength: " + FormatFloat(weaponGenome.statusEffectStrength) +

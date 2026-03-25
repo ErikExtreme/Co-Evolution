@@ -85,12 +85,14 @@ public class PlayerShip : ShipMovement
     public void SetStats(ShipMobilityStats shipMobilityStats)
     {
         //Stats
-        speed = shipMobilityStats.speed / 20;//Adjust genome stats to gameplay stats              Max speed in settings would be good if it was reduced(50?)
+        speed = shipMobilityStats.speed / 10;//Adjust genome stats to gameplay stats       Max speed in settings would be good if it was reduced(50?)
         turnRate = shipMobilityStats.turnRate;
         mass = shipMobilityStats.mass;
         inertia = 1 + shipMobilityStats.inertia / 20;//Adjust genome stats to gameplay stats, never lower than 1
 
         rigidbodyThis.mass = mass;
         rigidbodyThis.inertia = inertia;
+
+        speed = Mathf.Min(speed, 6);
     }
 }

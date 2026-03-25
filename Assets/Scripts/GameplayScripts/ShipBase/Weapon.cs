@@ -19,17 +19,19 @@ public abstract class Weapon : MonoBehaviour
     int bullets_Left_In_Burst;
     float cooldown_Timer;
 
-    float shoot_Timer;
+    protected float shoot_Timer;
 
 
-    protected float projectilesSpeed;
+    protected float projectileSpeedAdjusted;
+    protected float fireRateAdjusted;
+    protected float chargeUpTimeAdjusted;
 
     private Transform target;
 
     public WeaponBoost activeBoost;
     //Values for boosts (standalone, all additive)
     int damageBoostAdditive = 10;
-    float burstRateBoost = 20;
+    float burstRateBoost = 0.5f;
     float spreadAngleBoost = 10;
     int heatBoost = 5;
     //Values for boosts (Buff + debuff, multiplicative)
@@ -40,32 +42,17 @@ public abstract class Weapon : MonoBehaviour
 
     void Start()
     {
-        /*weapon_Genome = new WeaponGenome();
-        //weapon_Genome = GlobalSettings.RandomWeaponGenome();
-
-        //Temporary(?) default values
-        weapon_Genome.baseDamage = 1;
-        weapon_Genome.burstSize = 3;
-        weapon_Genome.fireRate = 1f;
-        weapon_Genome.cooldownTime = 0.3f;
-        weapon_Genome.projectileSpeed = 2;
-        //weapon_Genome.accuracy   unimplemented
-        weapon_Genome.spreadAngle = 5;
-        weapon_Genome.range = 5;
-
-        weapon_Genome.powerCost = 1;
-
-        weapon_Genome.aoeRadius = 1f;*/
-
         OnStart();
     }
     protected virtual void OnStart()
     {
-        chargeUpTimer = weapon_Genome.chargeUpTime;
-        shoot_Timer = 1 / weapon_Genome.fireRate;
-        bullets_Left_In_Burst = 0;
+        chargeUpTimeAdjusted = weapon_Genome.chargeUpTime;
+        fireRateAdjusted = weapon_Genome.fireRate;
+        projectileSpeedAdjusted= weapon_Genome.projectileSpeed;
 
-        projectilesSpeed = weapon_Genome.projectileSpeed;
+        chargeUpTimer = chargeUpTimeAdjusted;
+        shoot_Timer = 1 / Mathf.Max(fireRateAdjusted, 0.001f);
+        bullets_Left_In_Burst = 0;
 
         opponentTag = "Enemy";
     }
@@ -90,7 +77,7 @@ public abstract class Weapon : MonoBehaviour
         if (currentHeat >= maxHeat)
         {
             isOverHeated = true;
-            chargeUpTimer = weapon_Genome.chargeUpTime;
+            chargeUpTimer = chargeUpTimeAdjusted;
         }
         else if (currentHeat <= 0)
             isOverHeated = false;
@@ -116,25 +103,24 @@ public abstract class Weapon : MonoBehaviour
             if (target == null) return;
         }
 
-        cooldown_Timer -= Time.deltaTime;
-        if (cooldown_Timer <= 0 && bullets_Left_In_Burst > 0)
+        shoot_Timer -= Time.deltaTime;
+        if (shoot_Timer <= 0 && bullets_Left_In_Burst > 0)
             FireBullet();
     }
     private void HandleBurstRefill()
     {
-        shoot_Timer -= Time.deltaTime;
-        if (shoot_Timer > 0)
+        cooldown_Timer -= Time.deltaTime;
+        if (cooldown_Timer > 0)
             return;
 
         if (!shipHealthScript.ConsumePower(weapon_Genome.powerCost))
             return;
 
-        float fireRate = weapon_Genome.fireRate;
+        cooldown_Timer = weapon_Genome.cooldownTime;
         if (activeBoost == WeaponBoost.BurstRate)
-            fireRate += burstRateBoost;
+            cooldown_Timer -= burstRateBoost;
         if (activeBoost == WeaponBoost.BiggerAOELessBurstRate)
-            fireRate *= burstRatePenalty;
-        shoot_Timer = 1 / Mathf.Max(fireRate, 0.001f);
+            cooldown_Timer *= burstRatePenalty;
 
         bullets_Left_In_Burst = weapon_Genome.burstSize;
     }
@@ -165,11 +151,11 @@ public abstract class Weapon : MonoBehaviour
         if (activeBoost == WeaponBoost.BiggerAOELessBurstRate)
             aoeRadius *= aoeRangeBoost;
 
-        projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectilesSpeed, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag);
+        projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectileSpeedAdjusted, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag);
 
 
         bullets_Left_In_Burst--;
-        cooldown_Timer = 2f;//weapon_Genome.cooldownTime;
+        shoot_Timer = 1 / Mathf.Max(fireRateAdjusted, 0.001f);
         int heatIncrease = weapon_Genome.heatPerShot;
         if (activeBoost == WeaponBoost.LowerHeatGeneration)
             heatIncrease -= heatBoost;

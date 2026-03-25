@@ -114,7 +114,7 @@ MonoBehaviour:
   projectileSpeed: 8
   accuracy: 0.8
   spreadAngle: 15
-  range: 5
+  range: 4
   powerCost: 3
   heatPerShot: 10
   heatDissipation: 20

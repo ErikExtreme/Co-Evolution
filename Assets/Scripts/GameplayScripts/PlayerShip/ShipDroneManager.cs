@@ -1,4 +1,4 @@
-using System;
+//using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -21,9 +21,11 @@ public class ShipDroneManager : MonoBehaviour
 
     public void SpawnDrones()
     {
-        for (int i = 0; i < droneCount - drones.Count; i++)
+        int dronesToSpawn = droneCount - drones.Count;
+        for (int i = 0; i < dronesToSpawn; i++)
         {
-            Drone newDrone = Instantiate(dronePrefab, transform.position, Quaternion.Euler(transform.eulerAngles)).GetComponent<Drone>();
+            Vector2 spawnPosition = transform.position + Random.onUnitSphere * 1.5f;
+            Drone newDrone = Instantiate(dronePrefab, spawnPosition, Quaternion.Euler(transform.eulerAngles)).GetComponent<Drone>();
             newDrone.SetStats(droneSpeed, droneDurability, droneAggression);
             drones.Add(newDrone);
         }

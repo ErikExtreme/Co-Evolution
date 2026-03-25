@@ -33,18 +33,24 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag(opponentTag))
-        {
-            collision.gameObject.GetComponentInParent<ShipHealth>().TakeDamage(damage);
-            if (effectType == EffectType.Burn)
-                collision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage/4);
-            else
-                collision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength);
+        GameObject collidedObject = collision.gameObject;
 
-            AoeCollision(collision.gameObject);
+        if (collidedObject.CompareTag(opponentTag))
+        {
+            collidedObject.GetComponentInParent<ShipHealth>().TakeDamage(damage);
+            if (effectType == EffectType.Burn)
+                collidedObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage/4);
+            else
+                collidedObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength);
+
+            AoeCollision(collidedObject);
             Destroy(gameObject);
         }
-
+        else if (collidedObject.CompareTag("Drone"))
+        {
+            collidedObject.GetComponent<Drone>().TakeDamage(damage);
+            Destroy(gameObject);
+        }
     }
     private void AoeCollision(GameObject hitObject)
     {
@@ -54,13 +60,15 @@ public class Projectile : MonoBehaviour
             if (aoeCollision == hitObject)
                 continue;
 
-            if (aoeCollision.gameObject.CompareTag(opponentTag))
+            GameObject hitObjectAOE = aoeCollision.gameObject;
+
+            if (hitObjectAOE.CompareTag(opponentTag))
             {
-                aoeCollision.gameObject.GetComponentInParent<ShipHealth>().TakeDamage(damage / 2);
+                hitObjectAOE.GetComponentInParent<ShipHealth>().TakeDamage(damage / 2);
                 if (effectType == EffectType.Burn)
-                    aoeCollision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage/3);
+                    hitObjectAOE.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage/3);
                 else
-                    aoeCollision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength);
+                    hitObjectAOE.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength);
             }
         }
     }

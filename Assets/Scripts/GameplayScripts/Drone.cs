@@ -9,56 +9,51 @@ public class Drone : MonoBehaviour
     float aggression;
 
 
-
     //Variables
     private Rigidbody2D rigidbodyThis;
     Vector2 targetPosition;
     float damage_Taken;
 
+    float minimum_Distance_To_Target = 1f;
 
-    float turn_Rate = 4;
-    float minimum_Distance_To_Target = 1.5f;
-
-    //Temp
     Transform shipTransform;
+    Vector2 randomPositionOffset;
 
     private void Start()
     {
         rigidbodyThis = GetComponent<Rigidbody2D>();
 
         shipTransform = GameObject.Find("Ship").transform;
+        randomPositionOffset = Random.insideUnitCircle;
     }
     private void FixedUpdate()
     {
         Transform closestEnemy = EnemyManager.Instance.GetClosestEnemy(transform.position);
         if (closestEnemy != null)
         {
-            Vector3 playerEnemyMidPoint = Vector3.Lerp(shipTransform.position, closestEnemy.position, aggression);
+            Vector3 playerEnemyMidPoint = Vector3.Lerp(shipTransform.position, closestEnemy.position + closestEnemy.up * 0.4f, aggression);
 
-            targetPosition = playerEnemyMidPoint;
-
-            targetPosition = Vector3.Lerp(targetPosition, playerEnemyMidPoint, 0.1f);
+            //if (Vector2.Distance(targetPosition, playerEnemyMidPoint) >= 1f)
+                targetPosition = playerEnemyMidPoint;
         }
 
-        Move_To_Target(targetPosition);
+        Move_To_Target(targetPosition+randomPositionOffset);
+        rigidbodyThis.linearVelocity = Vector2.zero;
     }
     private void Move_To_Target(Vector2 target_Position)
     {
         Vector2 targetDirection = (target_Position - (Vector2)transform.position).normalized;
-        float targetAngle = Mathf.Atan2(targetDirection.y, targetDirection.x) * Mathf.Rad2Deg - 90f;
-        float newAngle = Mathf.LerpAngle(rigidbodyThis.rotation, targetAngle, turn_Rate * Time.fixedDeltaTime);
-        rigidbodyThis.MoveRotation(newAngle);
 
         if (Vector2.Distance(target_Position, rigidbodyThis.position) <= minimum_Distance_To_Target)
             return;
 
-        rigidbodyThis.MovePosition(rigidbodyThis.position + (Vector2)transform.up * speed * Time.fixedDeltaTime);
+        rigidbodyThis.MovePosition(rigidbodyThis.position + targetDirection * speed * Time.fixedDeltaTime);
     }
     public void SetStats(float speed, int durability, float aggression)
     {
         this.speed = speed;
         this.durability = durability;
-        this.aggression = aggression * 0.9f + 0.05f;//remaps 0-1 range to 0.05-0.95 range
+        this.aggression = aggression * 0.9f + 0.1f;//remaps 0-1 range to 0.1-1 range
     }
     public void TakeDamage(int damage)
     {

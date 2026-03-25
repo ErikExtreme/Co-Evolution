@@ -9,6 +9,7 @@ TagManager:
   - PlacementPoint
   - ModuleSlot
   - Enemy
+  - Drone
   layers:
   - Default
   - TransparentFX

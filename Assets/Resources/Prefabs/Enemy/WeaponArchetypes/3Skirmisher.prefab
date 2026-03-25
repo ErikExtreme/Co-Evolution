@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2849702603443415651}
   - component: {fileID: 962889965124784174}
   m_Layer: 0
-  m_Name: 3Skrimisher
+  m_Name: 3Skirmisher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

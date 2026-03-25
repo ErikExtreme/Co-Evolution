@@ -653,6 +653,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 5534002332984215149}
     m_Modifications:
     - target: {fileID: 962889965124784174, guid: 8dd8012d15f38e041bef26c3d095664a, type: 3}
+      propertyPath: heatPerShot
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 8dd8012d15f38e041bef26c3d095664a, type: 3}
+      propertyPath: cooldownTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 8dd8012d15f38e041bef26c3d095664a, type: 3}
       propertyPath: shipHealthScript
       value: 
       objectReference: {fileID: 2210187875960683089}

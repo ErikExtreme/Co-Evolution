@@ -369,12 +369,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a455bab768e4f5243acbf460fcbc2c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  enemyHullHP: 30
+  enemyHullHP: 25
   enemyArmor: 1
   enemyShieldCapacity: 10
   enemyShieldRegen: 2
   enemyPowerCapacity: 50
-  enemyPowerRegen: 10
+  enemyPowerRegen: 12
   enemyEvasion: 0.25
 --- !u!114 &1716039677175244755
 MonoBehaviour:
@@ -655,6 +655,18 @@ PrefabInstance:
     m_TransformParent: {fileID: 5534002332984215149}
     m_Modifications:
     - target: {fileID: 962889965124784174, guid: 1599dc335f1fded4a8135f5f5e87507a, type: 3}
+      propertyPath: burstSize
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 1599dc335f1fded4a8135f5f5e87507a, type: 3}
+      propertyPath: powerCost
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 1599dc335f1fded4a8135f5f5e87507a, type: 3}
+      propertyPath: baseDamage
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 1599dc335f1fded4a8135f5f5e87507a, type: 3}
       propertyPath: shipHealthScript
       value: 
       objectReference: {fileID: 2210187875960683089}
@@ -737,6 +749,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 5534002332984215149}
     m_Modifications:
     - target: {fileID: 962889965124784174, guid: 1599dc335f1fded4a8135f5f5e87507a, type: 3}
+      propertyPath: burstSize
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 1599dc335f1fded4a8135f5f5e87507a, type: 3}
+      propertyPath: powerCost
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 1599dc335f1fded4a8135f5f5e87507a, type: 3}
       propertyPath: shipHealthScript
       value: 
       objectReference: {fileID: 2210187875960683089}
@@ -818,6 +838,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5534002332984215149}
     m_Modifications:
+    - target: {fileID: 962889965124784174, guid: 1599dc335f1fded4a8135f5f5e87507a, type: 3}
+      propertyPath: burstSize
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 1599dc335f1fded4a8135f5f5e87507a, type: 3}
+      propertyPath: powerCost
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 1599dc335f1fded4a8135f5f5e87507a, type: 3}
+      propertyPath: baseDamage
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 962889965124784174, guid: 1599dc335f1fded4a8135f5f5e87507a, type: 3}
       propertyPath: shipHealthScript
       value: 

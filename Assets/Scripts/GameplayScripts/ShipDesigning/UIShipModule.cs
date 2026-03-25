@@ -21,6 +21,7 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
     }
     public void DisplayStats()
     {
+
         statsTextBox.text =
             "Hull HP: " + shipGenome.hullHP +
             "\nArmor: " + shipGenome.armor / 4 +
@@ -29,20 +30,20 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
             "\nPower cap: " + shipGenome.powerCapacity +
             "\nPower regen: " + shipGenome.powerRegen +
 
-            "\nSpeed: " + shipGenome.speed / 20 +
-            "\nTurn rate: " + shipGenome.turnRate +
-            "\nEvasion: " + shipGenome.evasion / 5 +
-            "\nMass: " + shipGenome.mass +
-            "\nInertia: " + shipGenome.inertia / 20 +
+            "\nSpeed: " + FormatFloat(shipGenome.speed / 20) +
+            "\nTurn rate: " + FormatFloat(shipGenome.turnRate) +
+            "\nEvasion: " + FormatFloat(shipGenome.evasion / 5) +
+            "\nMass: " + FormatFloat(shipGenome.mass) +
+            "\nInertia: " + FormatFloat(shipGenome.inertia / 20) +
 
             "\nGrid width: " + shipGenome.gridWidth +
             "\nGrid height: " + shipGenome.gridHeight +
-            "\nSpecial Tile Density: " + shipGenome.specialTileDensity +
+            "\nSpecial Tile Density: " + FormatFloat(shipGenome.specialTileDensity) +
 
             "\nDrone count: " + shipGenome.droneCount +
-            "\nDrone speed: " + shipGenome.droneSpeed +
+            "\nDrone speed: " + FormatFloat(shipGenome.droneSpeed) +
             "\nDrone durability: " + shipGenome.droneDurability +
-            "\nDrone aggression: " + shipGenome.droneAggression;
+            "\nDrone aggression: " + FormatFloat(shipGenome.droneAggression);
     }
-
+    private string FormatFloat(float value) => value.ToString("F2");
 }

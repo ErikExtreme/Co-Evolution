@@ -266,16 +266,13 @@ public class ShipMobilityStats
 //}
 public class ShipDroneStats
 {
-    public int droneCount;
-    public float droneSpeed;
-    public int droneDurability;
-    public float droneAggression;
-
+    public List<(int count, float speed, int durability, float aggression)> availableDrones;
+    public ShipDroneStats()
+    {
+        availableDrones = new List<(int count, float speed, int durability, float aggression)>();
+    }
     public void Add(int droneCount, float droneSpeed, int droneDurability, float droneAggression)
     {
-        this.droneCount += droneCount;
-        this.droneSpeed += droneSpeed;
-        this.droneDurability += droneDurability;
-        this.droneAggression += droneAggression;
+        availableDrones.Add((droneCount, droneSpeed / 10, droneDurability, droneAggression));
     }
 }

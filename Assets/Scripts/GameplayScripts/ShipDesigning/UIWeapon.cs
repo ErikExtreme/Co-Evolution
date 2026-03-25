@@ -33,10 +33,7 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
             "\nPower cost: " + weaponGenome.powerCost +
             "\nHeat per shot: " + weaponGenome.heatPerShot +
             "\nHeat dissipation: " + weaponGenome.heatDissipation +
-            "\nCharge up time: " + weaponGenome.chargeUpTime*3 +
-
-            "\nTile footprint: " + weaponGenome.tileFootprint +
-            "\nTile affinity: " + weaponGenome.tileAffinity +
+            "\nCharge up time: " + weaponGenome.chargeUpTime * 3 +
 
             "\nStatus effect: " + weaponGenome.statusEffectType.ToString() +
             "\nStatus effect strength: " + weaponGenome.statusEffectStrength +

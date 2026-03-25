@@ -4,39 +4,41 @@ using UnityEngine;
 
 public class ShipDroneManager : MonoBehaviour
 {
-    //Stats
-    int droneCount;
-    float droneSpeed;
-    int droneDurability;
-    float droneAggression;
-
     //Variables
     [SerializeField] GameObject dronePrefab;
-    List<Drone> drones;
+    List<(int count, float speed, int durability, float aggression)> availableDrones;
+    List<Drone> activeDrones;
 
     private void Start()
     {
-        drones = new List<Drone>();
+        availableDrones = new List<(int count, float speed, int durability, float aggression)> ();
+        activeDrones = new List<Drone>();
     }
 
     public void SpawnDrones()
     {
-        int dronesToSpawn = droneCount - drones.Count;
-        for (int i = 0; i < dronesToSpawn; i++)
+        activeDrones.ForEach(drone => { if (drone != null) Destroy(drone); });
+        activeDrones.Clear();
+
+        foreach (var droneCollection in availableDrones)
         {
-            Vector2 spawnPosition = transform.position + Random.onUnitSphere * 1.5f;
-            Drone newDrone = Instantiate(dronePrefab, spawnPosition, Quaternion.Euler(transform.eulerAngles)).GetComponent<Drone>();
-            newDrone.SetStats(droneSpeed, droneDurability, droneAggression);
-            drones.Add(newDrone);
+            for (int i = 0; i < droneCollection.count; i++)
+            {
+                Vector2 spawnPosition = transform.position + Random.onUnitSphere * 1.5f;
+                Drone newDrone = Instantiate(dronePrefab, spawnPosition, Quaternion.Euler(transform.eulerAngles)).GetComponent<Drone>();
+                newDrone.SetStats(droneCollection.speed, droneCollection.durability, droneCollection.aggression, this);
+                activeDrones.Add(newDrone);
+            }
         }
     }
 
     public void SetStats(ShipDroneStats ShipDroneStats)
     {
-        //Stats
-        droneCount = ShipDroneStats.droneCount;
-        droneSpeed = ShipDroneStats.droneSpeed / 10;
-        droneDurability = ShipDroneStats.droneDurability;
-        droneAggression = ShipDroneStats.droneAggression;
+        availableDrones = ShipDroneStats.availableDrones;
+    }
+    public void DestroyDrone(Drone drone)
+    {
+        activeDrones.Remove(drone);
+        Destroy(drone.gameObject);
     }
 }

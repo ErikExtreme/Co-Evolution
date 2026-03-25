@@ -19,6 +19,8 @@ public class Drone : MonoBehaviour
     Transform shipTransform;
     Vector2 randomPositionOffset;
 
+    ShipDroneManager shipDroneManager;
+
     private void Start()
     {
         rigidbodyThis = GetComponent<Rigidbody2D>();
@@ -49,17 +51,19 @@ public class Drone : MonoBehaviour
 
         rigidbodyThis.MovePosition(rigidbodyThis.position + targetDirection * speed * Time.fixedDeltaTime);
     }
-    public void SetStats(float speed, int durability, float aggression)
+    public void SetStats(float speed, int durability, float aggression, ShipDroneManager shipDroneManager)
     {
         this.speed = speed;
         this.durability = durability;
         this.aggression = aggression * 0.9f + 0.1f;//remaps 0-1 range to 0.1-1 range
+
+        this.shipDroneManager = shipDroneManager;
     }
     public void TakeDamage(int damage)
     {
         damage_Taken += damage;
 
         if (damage_Taken >= durability)
-            Destroy(gameObject);
+            shipDroneManager.DestroyDrone(this);
     }
 }

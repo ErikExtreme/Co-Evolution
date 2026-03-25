@@ -26,6 +26,7 @@ public abstract class Weapon : MonoBehaviour
     protected float fireRateAdjusted;
     protected float chargeUpTimeAdjusted;
     protected float powerCostAdjusted;
+    protected int damageAdjusted;
 
     private Transform target;
 
@@ -51,6 +52,7 @@ public abstract class Weapon : MonoBehaviour
         fireRateAdjusted = weapon_Genome.fireRate;
         projectileSpeedAdjusted = weapon_Genome.projectileSpeed;
         powerCostAdjusted = weapon_Genome.powerCost;
+        damageAdjusted = weapon_Genome.baseDamage;
 
         chargeUpTimer = chargeUpTimeAdjusted;
         shoot_Timer = 1 / Mathf.Max(fireRateAdjusted, 0.001f);
@@ -144,7 +146,7 @@ public abstract class Weapon : MonoBehaviour
             rotation = Quaternion.Euler(0, 0, targetAngle);
 
         GameObject projectile_Instance = Instantiate(projectilePrefab, transform.position, rotation);
-        int damage = weapon_Genome.baseDamage;
+        int damage = damageAdjusted;
         float aoeRadius = weapon_Genome.aoeRadius;
         if (activeBoost == WeaponBoost.Damage)
             damage += Mathf.RoundToInt(damageBoostAdditive);

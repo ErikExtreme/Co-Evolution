@@ -11,7 +11,7 @@ public class PlayerHealth : ShipHealth
         ShieldCapacity = shipCoreStats.shieldCapacity / 3;
         shieldRegen = shipCoreStats.shieldRegen / 5;
         PowerCapacity = shipCoreStats.powerCapacity;
-        powerRegen = shipCoreStats.powerRegen*1.25f;
+        powerRegen = shipCoreStats.powerRegen;
 
         evasion = shipCoreStats.evasion / 5;
 

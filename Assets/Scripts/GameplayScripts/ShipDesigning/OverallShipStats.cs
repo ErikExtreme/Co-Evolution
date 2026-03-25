@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 public class OverallShipStats : MonoBehaviour
 {
-    [SerializeField]ShipBlueprint shipBlueprint;
+    [SerializeField] ShipBlueprint shipBlueprint;
 
-    [SerializeField]Text statsTextBox;
+    [SerializeField] Text statsTextBox;
 
     float netEnergyProduction;
     float speed;
@@ -17,23 +17,23 @@ public class OverallShipStats : MonoBehaviour
         ShipMobilityStats shipMobilityStats = shipStats.shipMobilityStats;
         ShipDroneStats shipDroneStats = shipStats.shipDroneStats;
 
-        netEnergyProduction = shipCoreStats.powerRegen*1.25f - shipBlueprint.CalculatePowerConsumption();
+        netEnergyProduction = shipCoreStats.powerRegen - shipBlueprint.CalculatePowerConsumption();
 
         statsTextBox.text =
             "Health: " + shipCoreStats.hullHP +
-            "\nArmor: " + shipCoreStats.armor/20 +
-            "\nShield Cap: " + shipCoreStats.shieldCapacity/3 +
-            "\nShield Regen: " + shipCoreStats.shieldRegen/5 +
+            "\nArmor: " + shipCoreStats.armor / 20 +
+            "\nShield Cap: " + shipCoreStats.shieldCapacity / 3 +
+            "\nShield Regen: " + shipCoreStats.shieldRegen / 5 +
             "\nPower cap: " + shipCoreStats.powerCapacity +
             "\nNet power: " + FormatFloat(netEnergyProduction) +
 
-            "\nSpeed: " + FormatFloat(shipMobilityStats.speed/20) +
+            "\nSpeed: " + FormatFloat(Mathf.Min(shipMobilityStats.speed / 20, 4)) +
             "\nTurn rate: " + FormatFloat(shipMobilityStats.turnRate) +
-            "\nEvasion: " + FormatFloat(shipCoreStats.evasion/5) +
+            "\nEvasion: " + FormatFloat(shipCoreStats.evasion / 5) +
             "\nMass: " + FormatFloat(shipMobilityStats.mass) +
-            "\nInertia: " + FormatFloat(shipMobilityStats.inertia/20) +
+            "\nInertia: " + FormatFloat(shipMobilityStats.inertia / 20) +
 
-            "\nDrone count: " + shipDroneStats.availableDrones.Sum(drones =>(drones.count));
+            "\nDrone count: " + shipDroneStats.availableDrones.Sum(drones => (drones.count));
 
     }
     private string FormatFloat(float value) => value.ToString("F2");

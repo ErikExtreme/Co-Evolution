@@ -370,10 +370,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a455bab768e4f5243acbf460fcbc2c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  enemyHullHP: 45
-  enemyArmor: 3
-  enemyShieldCapacity: 15
-  enemyShieldRegen: 3
+  enemyHullHP: 60
+  enemyArmor: 4
+  enemyShieldCapacity: 25
+  enemyShieldRegen: 2
   enemyPowerCapacity: 60
   enemyPowerRegen: 13
   enemyEvasion: 0
@@ -389,7 +389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6c6324a0ef44aa4d88806178a3c21ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyTargeting
-  targetDistanceFromTarget: 3.5
+  targetDistanceFromTarget: 3
   stopDistance: 0.1
 --- !u!114 &2339701679790293092
 MonoBehaviour:

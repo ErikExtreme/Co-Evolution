@@ -8,10 +8,11 @@ public class PlayerWeapon : Weapon
     {
         base.OnStart();
 
-        fireRateAdjusted = weapon_Genome.fireRate * 2;
+        fireRateAdjusted = weapon_Genome.fireRate;
         projectileSpeedAdjusted = weapon_Genome.projectileSpeed * 0.7f;
-        chargeUpTimeAdjusted = weapon_Genome.chargeUpTime * 2;
+        chargeUpTimeAdjusted = weapon_Genome.chargeUpTime*2;
         powerCostAdjusted = weapon_Genome.powerCost * 1.4f;
+        damageAdjusted = Mathf.RoundToInt(weapon_Genome.baseDamage / 1.15f);
 
         chargeUpTimer = chargeUpTimeAdjusted;
         shoot_Timer = 1 / Mathf.Max(fireRateAdjusted, 0.001f);

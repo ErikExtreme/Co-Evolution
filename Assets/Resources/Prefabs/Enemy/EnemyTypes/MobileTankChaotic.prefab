@@ -350,7 +350,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9bc89ab7fa0745468bf82cdbe0fb4c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyMovement
-  enemyBaseSpeed: 3.7
+  enemyBaseSpeed: 3.2
   enemyTurnRate: 0.2
   enemyMass: 1
   enemyInertia: 1
@@ -367,10 +367,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a455bab768e4f5243acbf460fcbc2c14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  enemyHullHP: 100
-  enemyArmor: 8
-  enemyShieldCapacity: 30
-  enemyShieldRegen: 6
+  enemyHullHP: 130
+  enemyArmor: 12
+  enemyShieldCapacity: 35
+  enemyShieldRegen: 4
   enemyPowerCapacity: 10
   enemyPowerRegen: 3
   enemyEvasion: 0.15

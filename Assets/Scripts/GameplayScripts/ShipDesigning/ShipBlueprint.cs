@@ -134,7 +134,18 @@ public class ShipBlueprint : MonoBehaviour
             }
 
 
+        var shipStats = CalculateShipStats();
+        shipHealthScript.SetStats(shipStats.shipCoreStats);
+        gameObject.GetComponent<PlayerShip>().SetStats(shipStats.shipMobilityStats);
+        gameObject.GetComponent<ShipDroneManager>().SetStats(shipStats.shipDroneStats);
 
+
+        constructionCanvas.gameObject.SetActive(false);
+        waveManager.StartWave();
+    }
+
+    public (ShipCoreStats shipCoreStats, ShipMobilityStats shipMobilityStats, ShipDroneStats shipDroneStats) CalculateShipStats()
+    {
         ShipCoreStats shipCoreStats = new ShipCoreStats();
         ShipMobilityStats shipMobilityStats = new ShipMobilityStats();
         ShipDroneStats shipDroneStats = new ShipDroneStats();
@@ -149,13 +160,22 @@ public class ShipBlueprint : MonoBehaviour
             shipMobilityStats.Add(genome.speed, genome.turnRate, genome.mass, genome.inertia);
             shipDroneStats.Add(genome.droneCount, genome.droneSpeed, genome.droneDurability, genome.droneAggression);
         }
-        shipHealthScript.SetStats(shipCoreStats);
-        gameObject.GetComponent<PlayerShip>().SetStats(shipMobilityStats);
-        gameObject.GetComponent<ShipDroneManager>().SetStats(shipDroneStats);
 
+        return (shipCoreStats, shipMobilityStats, shipDroneStats);
+    }
+    public float CalculatePowerConsumption()
+    {
+        float consumption = 0;
 
-        constructionCanvas.gameObject.SetActive(false);
-        waveManager.StartWave();
+        foreach (var weapon in weaponsArray)
+        {
+            if (weapon.genome == null)
+                continue;
+
+            consumption += weapon.genome.powerCost / weapon.genome.cooldownTime;
+        }
+
+        return consumption;
     }
 
     private int HashCell(int x, int y, int seed)

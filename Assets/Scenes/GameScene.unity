@@ -3883,6 +3883,7 @@ GameObject:
   - component: {fileID: 364530010}
   - component: {fileID: 364530012}
   - component: {fileID: 364530011}
+  - component: {fileID: 364530013}
   m_Layer: 5
   m_Name: Text (Legacy)
   m_TagString: Untagged
@@ -3951,6 +3952,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 364530009}
   m_CullTransparentMesh: 1
+--- !u!114 &364530013
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 364530009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9207886efe31d5142983c6d972f35300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OverallShipStats
+  shipBlueprint: {fileID: 0}
+  statsTextBox: {fileID: 0}
 --- !u!1001 &384777393
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15457,6 +15472,8 @@ GameObject:
   - component: {fileID: 1861265455}
   - component: {fileID: 1861265454}
   - component: {fileID: 1861265453}
+  - component: {fileID: 1861265457}
+  - component: {fileID: 1861265456}
   m_Layer: 5
   m_Name: ConstructButton (Legacy)
   m_TagString: Untagged
@@ -15481,7 +15498,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 125.8, y: -1.5}
+  m_AnchoredPosition: {x: 132, y: -1.5}
   m_SizeDelta: {x: 160, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1861265453
@@ -15578,6 +15595,49 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1861265451}
   m_CullTransparentMesh: 1
+--- !u!114 &1861265456
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861265451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9207886efe31d5142983c6d972f35300, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OverallShipStats
+  shipBlueprint: {fileID: 1699913377}
+  statsTextBox: {fileID: 364530011}
+--- !u!114 &1861265457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1861265451}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventTrigger
+  m_Delegates:
+  - eventID: 0
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1861265456}
+          m_TargetAssemblyTypeName: OverallShipStats, Assembly-CSharp
+          m_MethodName: DisplayStats
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1862225232
 GameObject:
   m_ObjectHideFlags: 0

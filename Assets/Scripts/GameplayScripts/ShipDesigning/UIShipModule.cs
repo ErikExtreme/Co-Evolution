@@ -28,7 +28,7 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
             "\nShield cap: " + shipGenome.shieldCapacity / 3 +
             "\nShield regen: " + shipGenome.shieldRegen / 5 +
             "\nPower cap: " + shipGenome.powerCapacity +
-            "\nPower regen: " + shipGenome.powerRegen +
+            "\nPower regen: " + shipGenome.powerRegen*1.25f +
 
             "\nSpeed: " + FormatFloat(shipGenome.speed / 20) +
             "\nTurn rate: " + FormatFloat(shipGenome.turnRate) +

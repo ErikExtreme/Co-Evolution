@@ -17,7 +17,7 @@ public class OverallShipStats : MonoBehaviour
         ShipMobilityStats shipMobilityStats = shipStats.shipMobilityStats;
         ShipDroneStats shipDroneStats = shipStats.shipDroneStats;
 
-        netEnergyProduction = shipCoreStats.powerRegen - shipBlueprint.CalculatePowerConsumption();
+        netEnergyProduction = shipCoreStats.powerRegen*1.25f - shipBlueprint.CalculatePowerConsumption();
 
         statsTextBox.text =
             "Health: " + shipCoreStats.hullHP +

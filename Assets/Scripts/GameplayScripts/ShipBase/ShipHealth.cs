@@ -9,7 +9,7 @@ public class ShipHealth : MonoBehaviour
     public int ShieldCapacity { get; protected set; }
     protected int shieldRegen;
     public int PowerCapacity { get; protected set; }
-    protected int powerRegen;
+    protected float powerRegen;
 
     protected float evasion;
 

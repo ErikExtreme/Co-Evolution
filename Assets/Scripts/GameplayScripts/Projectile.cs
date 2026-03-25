@@ -39,7 +39,7 @@ public class Projectile : MonoBehaviour
         {
             collidedObject.GetComponentInParent<ShipHealth>().TakeDamage(damage);
             if (effectType == EffectType.Burn)
-                collidedObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage/4);
+                collidedObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage / 4);
             else
                 collidedObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength);
 
@@ -48,8 +48,11 @@ public class Projectile : MonoBehaviour
         }
         else if (collidedObject.CompareTag("Drone"))
         {
-            collidedObject.GetComponent<Drone>().TakeDamage(damage);
-            Destroy(gameObject);
+            if (collidedObject.TryGetComponent<Drone>(out var droneScript))
+            {
+                droneScript.TakeDamage(damage);
+                Destroy(gameObject);
+            }
         }
     }
     private void AoeCollision(GameObject hitObject)
@@ -66,7 +69,7 @@ public class Projectile : MonoBehaviour
             {
                 hitObjectAOE.GetComponentInParent<ShipHealth>().TakeDamage(damage / 2);
                 if (effectType == EffectType.Burn)
-                    hitObjectAOE.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage/3);
+                    hitObjectAOE.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage / 3);
                 else
                     hitObjectAOE.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength);
             }

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2849702603443415651}
   - component: {fileID: 962889965124784174}
   m_Layer: 0
-  m_Name: +X-Y-Z
+  m_Name: 6LongRangeSuppressor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83,7 +83,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 49d69ad926f5c934da57fc1d51fac13e, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.58431375, g: 0.7490196, b: 0.9607843, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -107,18 +107,18 @@ MonoBehaviour:
   shipHealthScript: {fileID: 0}
   projectilePrefab: {fileID: 116823659217514177, guid: 444cec6cfbb9fd94ab3d0cf738ce139b, type: 3}
   activeBoost: 0
-  baseDamage: 1
-  burstSize: 1
-  fireRate: 1
-  cooldownTime: 1
-  projectileSpeed: 2
-  accuracy: 0.2
-  spreadAngle: 5
-  range: 3.5
-  powerCost: 1
-  heatPerShot: 1
-  heatDissipation: 1
-  chargeUpTime: 1
+  baseDamage: 40
+  burstSize: 2
+  fireRate: 2
+  cooldownTime: 0.8
+  projectileSpeed: 4
+  accuracy: 0.8
+  spreadAngle: 2
+  range: 16
+  powerCost: 5
+  heatPerShot: 15
+  heatDissipation: 20
+  chargeUpTime: 3
   statusEffectType: 0
-  statusEffectStrength: 1
-  aoeRadius: 1
+  statusEffectStrength: 0.5
+  aoeRadius: 0

@@ -49,8 +49,8 @@ public abstract class Weapon : MonoBehaviour
     {
         chargeUpTimeAdjusted = weapon_Genome.chargeUpTime;
         fireRateAdjusted = weapon_Genome.fireRate;
-        projectileSpeedAdjusted= weapon_Genome.projectileSpeed; 
-        powerCostAdjusted= weapon_Genome.powerCost;
+        projectileSpeedAdjusted = weapon_Genome.projectileSpeed;
+        powerCostAdjusted = weapon_Genome.powerCost;
 
         chargeUpTimer = chargeUpTimeAdjusted;
         shoot_Timer = 1 / Mathf.Max(fireRateAdjusted, 0.001f);
@@ -68,13 +68,13 @@ public abstract class Weapon : MonoBehaviour
 
     void Update()
     {
-        if (!isOverHeated)
+        if (isOverHeated)
         {
-            HandleShooting();
+            currentHeat -= Time.deltaTime * weapon_Genome.heatDissipation;
+            currentHeat = Mathf.Max(currentHeat, 0);
         }
-
-        currentHeat -= Time.deltaTime * weapon_Genome.heatDissipation;//Only dissipate heat while overheated?, slower dissipation when not overheated?
-        currentHeat = Mathf.Max(currentHeat, 0);
+        else
+            HandleShooting();
 
         if (currentHeat >= maxHeat)
         {

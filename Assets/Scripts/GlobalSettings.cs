@@ -28,8 +28,8 @@ public static class GlobalSettings
     public const int WEAPON_POWERCOST_MIN = 3;//I increased this from 1 to 3
     public const int WEAPON_HEATPERSHOT_MAX = 15;
     public const int WEAPON_HEATPERSHOT_MIN = 0;
-    public const float WEAPON_HEATDISSIPATION_MAX = 15f;
-    public const float WEAPON_HEATDISSIPATION_MIN = 0f;
+    public const float WEAPON_HEATDISSIPATION_MAX = 25f;
+    public const float WEAPON_HEATDISSIPATION_MIN = 10f;
     public const float WEAPON_CHARGEUPTIME_MAX = 3f;
     public const float WEAPON_CHARGEUPTIME_MIN = 0f;
 

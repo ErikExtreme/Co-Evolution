@@ -23,20 +23,21 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
         statsTextBox.text =
             "Damage: " + weaponGenome.baseDamage +
             "\nBurst size: " + weaponGenome.burstSize +
-            "\nFire rate: " + weaponGenome.fireRate +
-            "\nShot cooldown: " + weaponGenome.cooldownTime +
-            "\nProjectile speed: " + weaponGenome.projectileSpeed * 0.7f +
-            "\nAccuracy: " + weaponGenome.accuracy +
-            "\nSpread: " + weaponGenome.spreadAngle +
-            "\nRange: " + weaponGenome.range +
+            "\nFire rate: " + FormatFloat(weaponGenome.fireRate) +
+            "\nShot cooldown: " + FormatFloat(weaponGenome.cooldownTime) +
+            "\nProjectile speed: " + FormatFloat(weaponGenome.projectileSpeed * 0.7f) +
+            "\nAccuracy: " + FormatFloat(weaponGenome.accuracy) +
+            "\nSpread: " + FormatFloat(weaponGenome.spreadAngle) +
+            "\nRange: " + FormatFloat(weaponGenome.range) +
 
             "\nPower cost: " + weaponGenome.powerCost +
             "\nHeat per shot: " + weaponGenome.heatPerShot +
-            "\nHeat dissipation: " + weaponGenome.heatDissipation +
-            "\nCharge up time: " + weaponGenome.chargeUpTime * 3 +
+            "\nHeat dissipation: " + FormatFloat(weaponGenome.heatDissipation) +
+            "\nCharge up time: " + FormatFloat(weaponGenome.chargeUpTime * 3) +
 
             "\nStatus effect: " + weaponGenome.statusEffectType.ToString() +
-            "\nStatus effect strength: " + weaponGenome.statusEffectStrength +
-            "\nAoe radius: " + weaponGenome.aoeRadius;
+            "\nStatus effect strength: " + FormatFloat(weaponGenome.statusEffectStrength) +
+            "\nAoe radius: " + FormatFloat(weaponGenome.aoeRadius);
     }
+    private string FormatFloat(float value) => value.ToString("F2");
 }

@@ -31,11 +31,15 @@ public class Drone : MonoBehaviour
     private void FixedUpdate()
     {
         Transform closestEnemy = EnemyManager.Instance.GetClosestEnemy(transform.position);
-        Vector3 playerEnemyMidPoint = Vector3.Lerp(shipTransform.position, closestEnemy.position, aggression);
+        if (closestEnemy != null)
+        {
+            Vector3 playerEnemyMidPoint = Vector3.Lerp(shipTransform.position, closestEnemy.position, aggression);
 
-        targetPosition = playerEnemyMidPoint;
+            targetPosition = playerEnemyMidPoint;
 
-        targetPosition = Vector3.Lerp(targetPosition, playerEnemyMidPoint, 0.1f);
+            targetPosition = Vector3.Lerp(targetPosition, playerEnemyMidPoint, 0.1f);
+        }
+
         Move_To_Target(targetPosition);
     }
     private void Move_To_Target(Vector2 target_Position)

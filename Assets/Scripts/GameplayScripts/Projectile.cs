@@ -33,42 +33,35 @@ public class Projectile : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Asteroid"))
-        {
-            collision.gameObject.GetComponent<Asteroid>().TakeDamage(damage);
-
-            AoeCollision();
-            Destroy(gameObject);
-        }
         if (collision.gameObject.CompareTag(opponentTag))
         {
             collision.gameObject.GetComponentInParent<ShipHealth>().TakeDamage(damage);
-            if(effectType == EffectType.Burn)
-                collision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength*damage);
+            if (effectType == EffectType.Burn)
+                collision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage/4);
             else
                 collision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength);
 
-            AoeCollision();
+            AoeCollision(collision.gameObject);
             Destroy(gameObject);
         }
 
     }
-    private void AoeCollision()
+    private void AoeCollision(GameObject hitObject)
     {
         var Results = Physics2D.OverlapCircleAll(transform.position, aoeRadius);
         foreach (var aoeCollision in Results)
         {
+            if (aoeCollision == hitObject)
+                continue;
+
             if (aoeCollision.gameObject.CompareTag(opponentTag))
             {
-                aoeCollision.gameObject.GetComponentInParent<ShipHealth>().TakeDamage(damage);
+                aoeCollision.gameObject.GetComponentInParent<ShipHealth>().TakeDamage(damage / 2);
                 if (effectType == EffectType.Burn)
-                    aoeCollision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage);
+                    aoeCollision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage/3);
                 else
                     aoeCollision.gameObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength);
             }
-
-            if (aoeCollision.gameObject.CompareTag("Asteroid"))
-                aoeCollision.gameObject.GetComponent<Asteroid>().TakeDamage(damage);
         }
     }
 }

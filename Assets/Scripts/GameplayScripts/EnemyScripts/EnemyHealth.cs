@@ -16,7 +16,7 @@ public class EnemyHealth : ShipHealth
     {
         HullHP = enemyHullHP;
         armor = enemyArmor;
-        ShieldCapacity = enemyShieldRegen;
+        ShieldCapacity = enemyShieldCapacity;
         shieldRegen = enemyShieldRegen;
         PowerCapacity = enemyPowerCapacity;
         powerRegen = enemyPowerRegen;

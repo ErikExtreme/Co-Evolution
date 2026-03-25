@@ -3748,7 +3748,10 @@ MonoBehaviour:
   shipDroneManager: {fileID: 1699913381}
   enemiesLeftInWave: []
   enemyPrefabs:
-  - {fileID: 6602281869372471137, guid: 24ed63ca9fdccff4aae9ba42a6f6e4f1, type: 3}
+  - {fileID: 6602281869372471137, guid: 430686289138b2144836cc2dc9eaa0ee, type: 3}
+  - {fileID: 6602281869372471137, guid: abfc6c1874583774289f876a4f902ba7, type: 3}
+  - {fileID: 6602281869372471137, guid: 0c5c20f70dc953e45abf1be6c0bba02f, type: 3}
+  - {fileID: 6602281869372471137, guid: 2d93271ae9d1b324486ab291def66a6e, type: 3}
   initialEnemies: 3
   enemyAmountMultiplier: 1.25
 --- !u!1001 &359068935

@@ -38,6 +38,7 @@ public class Projectile : MonoBehaviour
         if (collidedObject.CompareTag(opponentTag))
         {
             collidedObject.GetComponentInParent<ShipHealth>().TakeDamage(damage);
+
             if (effectType == EffectType.Burn)
                 collidedObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage / 4);
             else
@@ -68,6 +69,7 @@ public class Projectile : MonoBehaviour
             if (hitObjectAOE.CompareTag(opponentTag))
             {
                 hitObjectAOE.GetComponentInParent<ShipHealth>().TakeDamage(damage / 2);
+
                 if (effectType == EffectType.Burn)
                     hitObjectAOE.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage / 10);
                 else

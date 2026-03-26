@@ -3,6 +3,7 @@ using UnityEngine;
 public class EnemyTargeting : MonoBehaviour
 {
     private EnemyMovement movementScript;
+    private Camera camera;
 
     private Transform target;
 
@@ -11,6 +12,7 @@ public class EnemyTargeting : MonoBehaviour
     void Start()
     {
         movementScript = GetComponent<EnemyMovement>();
+        camera = Camera.main;
 
         target = GameObject.FindGameObjectWithTag("Player").transform;
         foreach (var weapon in GetComponentsInChildren<EnemyWeapon>())
@@ -31,6 +33,12 @@ public class EnemyTargeting : MonoBehaviour
     {
         Vector2 direction = (target.position - transform.position).normalized;
         Vector2 destination = (Vector2)target.position - direction * targetDistanceFromTarget;
+
+        //Clamp destination to on screen
+        Vector3 viewportPosition = camera.WorldToViewportPoint(destination);
+        viewportPosition.x = Mathf.Clamp01(viewportPosition.x);
+        viewportPosition.y = Mathf.Clamp01(viewportPosition.y);
+        destination = camera.ViewportToWorldPoint(viewportPosition);
 
         if (Vector2.Distance(transform.position, destination) < stopDistance)
         {

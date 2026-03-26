@@ -14,6 +14,7 @@ public class EnemyMovement : ShipMovement
 
     public Vector2? destination;
 
+    Camera mainCamera;
     protected override void OnStart()
     {
         base.OnStart();
@@ -26,8 +27,10 @@ public class EnemyMovement : ShipMovement
 
         rigidbodyThis.mass = enemyMass;
         rigidbodyThis.inertia = enemyInertia;
+
+        mainCamera = Camera.main;
     }
-    // Update is called once per frame
+
     void FixedUpdate()
     {
         if (destination.HasValue)
@@ -41,9 +44,20 @@ public class EnemyMovement : ShipMovement
 
             rigidbodyThis.linearVelocity = Vector2.zero;
             rigidbodyThis.MovePosition(rigidbodyThis.position + (Vector2)transform.up * Speed * Time.fixedDeltaTime);
+
         }
 
         // Auto-stabilization
         rigidbodyThis.AddTorque(-rigidbodyThis.angularVelocity * angularDamping, ForceMode2D.Force);
+
+
+        //Push enemy back onto screen
+        Vector3 viewportPosition = mainCamera.WorldToViewportPoint(transform.position);
+        if (viewportPosition.x < -0.1f || viewportPosition.x > 1.1f ||
+            viewportPosition.y < -0.1f || viewportPosition.y > 1.1f)
+        {
+            Vector2 direction = (-transform.position).normalized;
+            rigidbodyThis.MovePosition(rigidbodyThis.position + direction * 20 * Time.fixedDeltaTime);
+        }
     }
 }

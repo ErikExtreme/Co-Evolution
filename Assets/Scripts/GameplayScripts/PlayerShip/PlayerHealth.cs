@@ -23,5 +23,6 @@ public class PlayerHealth : ShipHealth
     protected override void OutOfHealth()
     {
         gameoverCanvas.gameObject.SetActive(true);
+        gameObject.SetActive(false);
     }
 }

@@ -193,6 +193,13 @@ public class EvolutionManager : MonoBehaviour
         if (direction.sqrMagnitude > 0.0001f)
             direction = direction.normalized * 0.25f; // step size
 
+        Vector3 noise = new Vector3(
+            Random.Range(-0.1f, 0.1f),
+            Random.Range(-0.1f, 0.1f),
+            Random.Range(-0.1f, 0.1f));
+        
+        direction += noise;
+
         return direction;
     }
 
@@ -221,29 +228,41 @@ public class EvolutionManager : MonoBehaviour
         if (direction.sqrMagnitude > 0.0001f)
             direction = direction.normalized * 0.25f; // step size
 
+        Vector3 noise = new Vector3(
+            Random.Range(-0.1f, 0.1f),
+            Random.Range(-0.1f, 0.1f),
+            Random.Range(-0.1f, 0.1f));
+
+        direction += noise;
+
         return direction;
     }
 
     private WeaponGenome AxisAlignedMutation(WeaponGenome genome, Vector3 dir)
     {
         WeaponGenome g = genome.CloneForEvo();
-        const float pct = 0.05f; // 5 percent mutation
 
-        // --- Helper: mutate float gene by percentage ---
-        float MutateFloat(float value, float min, float max, float sign)
+        // Scale factor for how strongly direction affects mutation
+        const float mutationScale = 0.01f; // 1% of axis direction magnitude
+
+        // Convert axis direction into per-axis mutation strength
+        float stepX = dir.x * mutationScale;
+        float stepY = dir.y * mutationScale;
+        float stepZ = dir.z * mutationScale;
+
+        // Helper functions
+        float MutateFloat(float value, float min, float max, float amount)
         {
-            float delta = pct * (max - min) * sign;
-            float newVal = value + delta;
-            return Mathf.Clamp(newVal, min, max);
+            float range = max - min;
+            float delta = amount * range;
+            return Mathf.Clamp(value + delta, min, max);
         }
 
-        // --- Helper: mutate int gene by percentage with stochastic rounding ---
-        int MutateInt(int value, int min, int max, float sign)
+        int MutateInt(int value, int min, int max, float amount)
         {
-            float delta = pct * (max - min) * sign;
-            float raw = value + delta;
+            float range = max - min;
+            float raw = value + amount * range;
 
-            // Stochastic rounding
             int low = Mathf.FloorToInt(raw);
             float frac = raw - low;
             int rounded = (Random.value < frac) ? low + 1 : low;
@@ -251,81 +270,41 @@ public class EvolutionManager : MonoBehaviour
             return Mathf.Clamp(rounded, min, max);
         }
 
-        // ---------------------------------------------------------
-        // X‑Axis: Burst (+X) vs Sustained (‑X)
-        // ---------------------------------------------------------
-        if (dir.x > 0f)
-        {
-            g.baseDamage = MutateInt(g.baseDamage, WEAPON_DAMAGE_MIN, WEAPON_DAMAGE_MAX, +1);
-            g.burstSize = MutateInt(g.burstSize, WEAPON_BURSTSIZE_MIN, WEAPON_BURSTSIZE_MAX, +1);
-            g.fireRate = MutateFloat(g.fireRate, WEAPON_FIRERATE_MIN, WEAPON_FIRERATE_MAX, -1);
-            g.cooldownTime = MutateFloat(g.cooldownTime, WEAPON_COOLDOWNTIME_MIN, WEAPON_COOLDOWNTIME_MAX, +1);
-        }
-        else if (dir.x < 0f)
-        {
-            g.baseDamage = MutateInt(g.baseDamage, WEAPON_DAMAGE_MIN, WEAPON_DAMAGE_MAX, -1);
-            g.burstSize = MutateInt(g.burstSize, WEAPON_BURSTSIZE_MIN, WEAPON_BURSTSIZE_MAX, -1);
-            g.fireRate = MutateFloat(g.fireRate, WEAPON_FIRERATE_MIN, WEAPON_FIRERATE_MAX, +1);
-            g.cooldownTime = MutateFloat(g.cooldownTime, WEAPON_COOLDOWNTIME_MIN, WEAPON_COOLDOWNTIME_MAX, -1);
-        }
+        // -------------------------
+        // X‑Axis: Burst vs Sustained
+        // -------------------------
+        g.baseDamage = MutateInt(g.baseDamage, WEAPON_DAMAGE_MIN, WEAPON_DAMAGE_MAX, stepX);
+        g.burstSize = MutateInt(g.burstSize, WEAPON_BURSTSIZE_MIN, WEAPON_BURSTSIZE_MAX, stepX);
+        g.fireRate = MutateFloat(g.fireRate, WEAPON_FIRERATE_MIN, WEAPON_FIRERATE_MAX, -stepX);
+        g.cooldownTime = MutateFloat(g.cooldownTime, WEAPON_COOLDOWNTIME_MIN, WEAPON_COOLDOWNTIME_MAX, stepX);
 
-        // ---------------------------------------------------------
-        // Y‑Axis: Control (+Y) vs Close‑Quarters (‑Y)
-        // ---------------------------------------------------------
-        if (dir.y > 0f)
-        {
-            g.range = MutateFloat(g.range, WEAPON_RANGE_MIN, WEAPON_RANGE_MAX, +1);
-            g.accuracy = MutateFloat(g.accuracy, WEAPON_ACCURACY_MIN, WEAPON_ACCURACY_MAX, +1);
-            g.statusEffectStrength = MutateFloat(g.statusEffectStrength, WEAPON_STATUS_STRENGTH_MIN, WEAPON_STATUS_STRENGTH_MAX, +1);
+        // -------------------------
+        // Y‑Axis: Control vs CQ
+        // -------------------------
+        g.range = MutateFloat(g.range, WEAPON_RANGE_MIN, WEAPON_RANGE_MAX, stepY);
+        g.accuracy = MutateFloat(g.accuracy, WEAPON_ACCURACY_MIN, WEAPON_ACCURACY_MAX, stepY);
+        g.statusEffectStrength = MutateFloat(g.statusEffectStrength, WEAPON_STATUS_STRENGTH_MIN, WEAPON_STATUS_STRENGTH_MAX, stepY);
 
-            g.projectileSpeed = MutateFloat(g.projectileSpeed, WEAPON_PROJECTILE_SPEED_MIN, WEAPON_PROJECTILE_SPEED_MAX, -1);
-            g.fireRate = MutateFloat(g.fireRate, WEAPON_FIRERATE_MIN, WEAPON_FIRERATE_MAX, -1);
-            g.spreadAngle = MutateFloat(g.spreadAngle, WEAPON_SPREAD_ANGLE_MIN, WEAPON_SPREAD_ANGLE_MAX, -1);
-        }
-        else if (dir.y < 0f)
-        {
-            g.range = MutateFloat(g.range, WEAPON_RANGE_MIN, WEAPON_RANGE_MAX, -1);
-            g.accuracy = MutateFloat(g.accuracy, WEAPON_ACCURACY_MIN, WEAPON_ACCURACY_MAX, -1);
-            g.statusEffectStrength = MutateFloat(g.statusEffectStrength, WEAPON_STATUS_STRENGTH_MIN, WEAPON_STATUS_STRENGTH_MAX, -1);
+        g.projectileSpeed = MutateFloat(g.projectileSpeed, WEAPON_PROJECTILE_SPEED_MIN, WEAPON_PROJECTILE_SPEED_MAX, -stepY);
+        g.fireRate = MutateFloat(g.fireRate, WEAPON_FIRERATE_MIN, WEAPON_FIRERATE_MAX, -stepY);
+        g.spreadAngle = MutateFloat(g.spreadAngle, WEAPON_SPREAD_ANGLE_MIN, WEAPON_SPREAD_ANGLE_MAX, -stepY);
 
-            g.projectileSpeed = MutateFloat(g.projectileSpeed, WEAPON_PROJECTILE_SPEED_MIN, WEAPON_PROJECTILE_SPEED_MAX, +1);
-            g.fireRate = MutateFloat(g.fireRate, WEAPON_FIRERATE_MIN, WEAPON_FIRERATE_MAX, +1);
-            g.spreadAngle = MutateFloat(g.spreadAngle, WEAPON_SPREAD_ANGLE_MIN, WEAPON_SPREAD_ANGLE_MAX, +1);
-        }
+        // -------------------------
+        // Z‑Axis: Efficiency vs Volatility
+        // -------------------------
+        g.powerCost = MutateInt(g.powerCost, WEAPON_POWERCOST_MIN, WEAPON_POWERCOST_MAX, -stepZ);
+        g.heatPerShot = MutateInt(g.heatPerShot, WEAPON_HEATPERSHOT_MIN, WEAPON_HEATPERSHOT_MAX, -stepZ);
+        g.heatDissipation = MutateFloat(g.heatDissipation, WEAPON_HEATDISSIPATION_MIN, WEAPON_HEATDISSIPATION_MAX, stepZ);
+        g.chargeUpTime = MutateFloat(g.chargeUpTime, WEAPON_CHARGEUPTIME_MIN, WEAPON_CHARGEUPTIME_MAX, -stepZ);
 
-        // ---------------------------------------------------------
-        // Z‑Axis: Efficiency (+Z) vs Volatility (‑Z)
-        // ---------------------------------------------------------
-        if (dir.z > 0f)
-        {
-            g.powerCost = MutateInt(g.powerCost, WEAPON_POWERCOST_MIN, WEAPON_POWERCOST_MAX, -1);
-            g.heatPerShot = MutateInt(g.heatPerShot, WEAPON_HEATPERSHOT_MIN, WEAPON_HEATPERSHOT_MAX, -1);
-            g.heatDissipation = MutateFloat(g.heatDissipation, WEAPON_HEATDISSIPATION_MIN, WEAPON_HEATDISSIPATION_MAX, +1);
-            g.chargeUpTime = MutateFloat(g.chargeUpTime, WEAPON_CHARGEUPTIME_MIN, WEAPON_CHARGEUPTIME_MAX, -1);
-        }
-        else if (dir.z < 0f)
-        {
-            g.powerCost = MutateInt(g.powerCost, WEAPON_POWERCOST_MIN, WEAPON_POWERCOST_MAX, +1);
-            g.heatPerShot = MutateInt(g.heatPerShot, WEAPON_HEATPERSHOT_MIN, WEAPON_HEATPERSHOT_MAX, +1);
-            g.heatDissipation = MutateFloat(g.heatDissipation, WEAPON_HEATDISSIPATION_MIN, WEAPON_HEATDISSIPATION_MAX, -1);
-            g.chargeUpTime = MutateFloat(g.chargeUpTime, WEAPON_CHARGEUPTIME_MIN, WEAPON_CHARGEUPTIME_MAX, +1);
-        }
-
-        // --- Categorical mutation for StatusEffectType ---
-        const float statusMutationChance = 0.02f; // 2%
-
+        // Categorical mutation
+        const float statusMutationChance = 0.02f;
         if (Random.value < statusMutationChance)
         {
-            // Pick a different status effect than the current one
             var values = (EffectType[])System.Enum.GetValues(typeof(EffectType));
             EffectType newType;
-
-            do
-            {
-                newType = values[Random.Range(0, values.Length)];
-            }
+            do { newType = values[Random.Range(0, values.Length)]; }
             while (newType == g.statusEffectType);
-
             g.statusEffectType = newType;
         }
 
@@ -335,21 +314,24 @@ public class EvolutionManager : MonoBehaviour
     private ShipGenome AxisAlignedMutation(ShipGenome genome, Vector3 dir)
     {
         ShipGenome g = genome.CloneForEvo();
-        const float pct = 0.05f; // 5 percent mutation per step
 
-        // --- Helper: mutate float gene by percentage ---
-        float MutateFloat(float value, float min, float max, float sign)
+        const float mutationScale = 0.01f;
+
+        float stepX = dir.x * mutationScale;
+        float stepY = dir.y * mutationScale;
+        float stepZ = dir.z * mutationScale;
+
+        float MutateFloat(float value, float min, float max, float amount)
         {
-            float delta = pct * (max - min) * sign;
-            float newVal = value + delta;
-            return Mathf.Clamp(newVal, min, max);
+            float range = max - min;
+            float delta = amount * range;
+            return Mathf.Clamp(value + delta, min, max);
         }
 
-        // --- Helper: mutate int gene by percentage with stochastic rounding ---
-        int MutateInt(int value, int min, int max, float sign)
+        int MutateInt(int value, int min, int max, float amount)
         {
-            float delta = pct * (max - min) * sign;
-            float raw = value + delta;
+            float range = max - min;
+            float raw = value + amount * range;
 
             int low = Mathf.FloorToInt(raw);
             float frac = raw - low;
@@ -358,77 +340,38 @@ public class EvolutionManager : MonoBehaviour
             return Mathf.Clamp(rounded, min, max);
         }
 
-        // ---------------------------------------------------------
-        // X‑Axis: Durability (+X) vs Mobility (‑X)
-        // ---------------------------------------------------------
-        if (dir.x > 0f)
-        {
-            g.hullHP = MutateInt(g.hullHP, SHIP_HULLHP_MIN, SHIP_HULLHP_MAX, +1);
-            g.armor = MutateInt(g.armor, SHIP_ARMOR_MIN, SHIP_ARMOR_MAX, +1);
-            g.shieldCapacity = MutateInt(g.shieldCapacity, SHIP_SHIELD_CAPACITY_MIN, SHIP_SHIELD_CAPACITY_MAX, +1);
-            g.shieldRegen = MutateInt(g.shieldRegen, SHIP_SHIELD_REGEN_MIN, SHIP_SHIELD_REGEN_MAX, +1);
+        // -------------------------
+        // X‑Axis: Durability vs Mobility
+        // -------------------------
+        g.hullHP = MutateInt(g.hullHP, SHIP_HULLHP_MIN, SHIP_HULLHP_MAX, stepX);
+        g.armor = MutateInt(g.armor, SHIP_ARMOR_MIN, SHIP_ARMOR_MAX, stepX);
+        g.shieldCapacity = MutateInt(g.shieldCapacity, SHIP_SHIELD_CAPACITY_MIN, SHIP_SHIELD_CAPACITY_MAX, stepX);
+        g.shieldRegen = MutateInt(g.shieldRegen, SHIP_SHIELD_REGEN_MIN, SHIP_SHIELD_REGEN_MAX, stepX);
 
-            g.speed = MutateFloat(g.speed, SHIP_SPEED_MIN, SHIP_SPEED_MAX, -1);
-            g.turnRate = MutateFloat(g.turnRate, SHIP_TURNRATE_MIN, SHIP_TURNRATE_MAX, -1);
-            g.evasion = MutateFloat(g.evasion, SHIP_EVASION_MIN, SHIP_EVASION_MAX, -1);
-        }
-        else if (dir.x < 0f)
-        {
-            g.hullHP = MutateInt(g.hullHP, SHIP_HULLHP_MIN, SHIP_HULLHP_MAX, -1);
-            g.armor = MutateInt(g.armor, SHIP_ARMOR_MIN, SHIP_ARMOR_MAX, -1);
-            g.shieldCapacity = MutateInt(g.shieldCapacity, SHIP_SHIELD_CAPACITY_MIN, SHIP_SHIELD_CAPACITY_MAX, -1);
-            g.shieldRegen = MutateInt(g.shieldRegen, SHIP_SHIELD_REGEN_MIN, SHIP_SHIELD_REGEN_MAX, -1);
+        g.speed = MutateFloat(g.speed, SHIP_SPEED_MIN, SHIP_SPEED_MAX, -stepX);
+        g.turnRate = MutateFloat(g.turnRate, SHIP_TURNRATE_MIN, SHIP_TURNRATE_MAX, -stepX);
+        g.evasion = MutateFloat(g.evasion, SHIP_EVASION_MIN, SHIP_EVASION_MAX, -stepX);
 
-            g.speed = MutateFloat(g.speed, SHIP_SPEED_MIN, SHIP_SPEED_MAX, +1);
-            g.turnRate = MutateFloat(g.turnRate, SHIP_TURNRATE_MIN, SHIP_TURNRATE_MAX, +1);
-            g.evasion = MutateFloat(g.evasion, SHIP_EVASION_MIN, SHIP_EVASION_MAX, +1);
-        }
+        // -------------------------
+        // Y‑Axis: Power Economy vs Weapon Platform
+        // -------------------------
+        g.powerCapacity = MutateInt(g.powerCapacity, SHIP_POWER_CAPACITY_MIN, SHIP_POWER_CAPACITY_MAX, stepY);
+        g.powerRegen = MutateInt(g.powerRegen, SHIP_POWER_REGEN_MIN, SHIP_POWER_REGEN_MAX, stepY);
+        g.specialTileDensity = MutateFloat(g.specialTileDensity, SHIP_SPECIALTILE_DENSITY_MIN, SHIP_SPECIALTILE_DENSITY_MAX, stepY);
 
-        // ---------------------------------------------------------
-        // Y‑Axis: Power Economy (+Y) vs Weapon Platform (‑Y)
-        // ---------------------------------------------------------
-        if (dir.y > 0f)
-        {
-            g.powerCapacity = MutateInt(g.powerCapacity, SHIP_POWER_CAPACITY_MIN, SHIP_POWER_CAPACITY_MAX, +1);
-            g.powerRegen = MutateInt(g.powerRegen, SHIP_POWER_REGEN_MIN, SHIP_POWER_REGEN_MAX, +1);
-            g.specialTileDensity = MutateFloat(g.specialTileDensity, SHIP_SPECIALTILE_DENSITY_MIN, SHIP_SPECIALTILE_DENSITY_MAX, +1);
+        g.gridWidth = MutateInt(g.gridWidth, SHIP_GRID_WIDTH_MIN, SHIP_GRID_WIDTH_MAX, -stepY);
+        g.gridHeight = MutateInt(g.gridHeight, SHIP_GRID_HEIGHT_MIN, SHIP_GRID_HEIGHT_MAX, -stepY);
+        g.droneCount = MutateInt(g.droneCount, SHIP_DRONE_COUNT_MIN, SHIP_DRONE_COUNT_MAX, -stepY);
 
-            g.gridWidth = MutateInt(g.gridWidth, SHIP_GRID_WIDTH_MIN, SHIP_GRID_WIDTH_MAX, -1);
-            g.gridHeight = MutateInt(g.gridHeight, SHIP_GRID_HEIGHT_MIN, SHIP_GRID_HEIGHT_MAX, -1);
-            g.droneCount = MutateInt(g.droneCount, SHIP_DRONE_COUNT_MIN, SHIP_DRONE_COUNT_MAX, -1);
-        }
-        else if (dir.y < 0f)
-        {
-            g.powerCapacity = MutateInt(g.powerCapacity, SHIP_POWER_CAPACITY_MIN, SHIP_POWER_CAPACITY_MAX, -1);
-            g.powerRegen = MutateInt(g.powerRegen, SHIP_POWER_REGEN_MIN, SHIP_POWER_REGEN_MAX, -1);
-            g.specialTileDensity = MutateFloat(g.specialTileDensity, SHIP_SPECIALTILE_DENSITY_MIN, SHIP_SPECIALTILE_DENSITY_MAX, -1);
+        // -------------------------
+        // Z‑Axis: Stability vs Aggression
+        // -------------------------
+        g.mass = MutateFloat(g.mass, SHIP_MASS_MIN, SHIP_MASS_MAX, stepZ);
+        g.inertia = MutateFloat(g.inertia, SHIP_INERTIA_MIN, SHIP_INERTIA_MAX, stepZ);
+        g.droneDurability = MutateInt(g.droneDurability, SHIP_DRONE_DURABILITY_MIN, SHIP_DRONE_DURABILITY_MAX, stepZ);
 
-            g.gridWidth = MutateInt(g.gridWidth, SHIP_GRID_WIDTH_MIN, SHIP_GRID_WIDTH_MAX, +1);
-            g.gridHeight = MutateInt(g.gridHeight, SHIP_GRID_HEIGHT_MIN, SHIP_GRID_HEIGHT_MAX, +1);
-            g.droneCount = MutateInt(g.droneCount, SHIP_DRONE_COUNT_MIN, SHIP_DRONE_COUNT_MAX, +1);
-        }
-
-        // ---------------------------------------------------------
-        // Z‑Axis: Stability (+Z) vs Aggression (‑Z)
-        // ---------------------------------------------------------
-        if (dir.z > 0f)
-        {
-            g.mass = MutateFloat(g.mass, SHIP_MASS_MIN, SHIP_MASS_MAX, +1);
-            g.inertia = MutateFloat(g.inertia, SHIP_INERTIA_MIN, SHIP_INERTIA_MAX, +1);
-            g.droneDurability = MutateInt(g.droneDurability, SHIP_DRONE_DURABILITY_MIN, SHIP_DRONE_DURABILITY_MAX, +1);
-
-            g.droneSpeed = MutateFloat(g.droneSpeed, SHIP_DRONE_SPEED_MIN, SHIP_DRONE_SPEED_MAX, -1);
-            g.droneAggression = MutateFloat(g.droneAggression, SHIP_DRONE_AGGRESSION_MIN, SHIP_DRONE_AGGRESSION_MAX, -1);
-        }
-        else if (dir.z < 0f)
-        {
-            g.mass = MutateFloat(g.mass, SHIP_MASS_MIN, SHIP_MASS_MAX, -1);
-            g.inertia = MutateFloat(g.inertia, SHIP_INERTIA_MIN, SHIP_INERTIA_MAX, -1);
-            g.droneDurability = MutateInt(g.droneDurability, SHIP_DRONE_DURABILITY_MIN, SHIP_DRONE_DURABILITY_MAX, -1);
-
-            g.droneSpeed = MutateFloat(g.droneSpeed, SHIP_DRONE_SPEED_MIN, SHIP_DRONE_SPEED_MAX, +1);
-            g.droneAggression = MutateFloat(g.droneAggression, SHIP_DRONE_AGGRESSION_MIN, SHIP_DRONE_AGGRESSION_MAX, +1);
-        }
+        g.droneSpeed = MutateFloat(g.droneSpeed, SHIP_DRONE_SPEED_MIN, SHIP_DRONE_SPEED_MAX, -stepZ);
+        g.droneAggression = MutateFloat(g.droneAggression, SHIP_DRONE_AGGRESSION_MIN, SHIP_DRONE_AGGRESSION_MAX, -stepZ);
 
         return g;
     }

@@ -22,10 +22,10 @@ public class WaveManager : MonoBehaviour
     Camera sceneCamera;
 
     [SerializeField] int initialEnemies = 3;
-    [SerializeField] float enemyAmountMultiplier = 1.2f;
-    [SerializeField] float enemyStatsAdditive = 0.2f;
+    [SerializeField] float enemyAmountExponent = 0.6f;
+    [SerializeField] float enemyStatsExponent = 0.5f;
     private int currentWave = 1;
-    private int enemiesInWave { get { return Mathf.CeilToInt(initialEnemies * Mathf.Pow(enemyAmountMultiplier, (currentWave - 1))); } }
+    private int enemiesInWave { get { return Mathf.CeilToInt(initialEnemies * Mathf.Pow((currentWave),enemyAmountExponent)); } }
     bool wavesPaused = true;
     void Start()
     {
@@ -63,7 +63,7 @@ public class WaveManager : MonoBehaviour
             int enemyType = Random.Range(0, enemyPrefabs.Count);
 
             GameObject enemy = Instantiate(enemyPrefabs[enemyType], spawnPosition, Quaternion.identity, transform);
-            enemy.GetComponent<EnemyHealth>().SetStats((currentWave-2) * enemyStatsAdditive);
+            enemy.GetComponent<EnemyHealth>().SetStats(Mathf.Pow((currentWave), enemyStatsExponent));
             enemiesLeftInWave.Add(enemy);
         }
 

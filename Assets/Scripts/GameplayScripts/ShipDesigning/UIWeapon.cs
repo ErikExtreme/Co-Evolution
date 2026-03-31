@@ -34,6 +34,7 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
         MappingDisplayBarY.SetValue((weaponGenome.mapping.y + 1) / 2);
         MappingDisplayBarZ.SetValue((weaponGenome.mapping.z + 1) / 2);
 
+        statsTextBox.text = "";
         //statsTextBox.text =
         //    "Damage: " + Mathf.RoundToInt(weaponGenome.baseDamage / 1.15f) +
         //    "\nBurst size: " + weaponGenome.burstSize +

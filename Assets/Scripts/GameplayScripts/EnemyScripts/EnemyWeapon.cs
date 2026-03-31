@@ -27,6 +27,7 @@ public class EnemyWeapon : Weapon
     [SerializeField] float statusEffectStrength;
     [SerializeField] float aoeRadius;
     //public float piercingDepth;
+
     protected override void OnStart()
     {
         weapon_Genome = new WeaponGenome();
@@ -50,8 +51,6 @@ public class EnemyWeapon : Weapon
         weapon_Genome.aoeRadius = aoeRadius;
 
         base.OnStart();
-
-        opponentTag = "Player";
     }
 
     public override Transform FindNewTarget()

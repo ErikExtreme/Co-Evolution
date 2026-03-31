@@ -28,7 +28,6 @@ public class OverallShipStats : MonoBehaviour
             "\nNet power: " + FormatFloat(netEnergyProduction) +
 
             "\nSpeed: " + FormatFloat(Mathf.Min(shipMobilityStats.speed / 20, 4)) +
-            "\nTurn rate: " + FormatFloat(shipMobilityStats.turnRate) +
             "\nEvasion: " + FormatFloat(shipCoreStats.evasion / 5) +
 
             "\nDrone count: " + shipDroneStats.availableDrones.Sum(drones => (drones.count));

@@ -34,6 +34,8 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
         MappingDisplayBarX.SetValue((shipGenome.mapping.x + 1) / 2);
         MappingDisplayBarY.SetValue((shipGenome.mapping.y + 1) / 2);
         MappingDisplayBarZ.SetValue((shipGenome.mapping.z + 1) / 2);
+
+        statsTextBox.text = "";
         //statsTextBox.text =
         //    "Hull HP: " + shipGenome.hullHP +
         //    "\nArmor: " + shipGenome.armor / 20 +

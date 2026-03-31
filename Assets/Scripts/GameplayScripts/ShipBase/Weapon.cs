@@ -8,7 +8,7 @@ public abstract class Weapon : MonoBehaviour
     public ShipHealth shipHealthScript;
 
     [SerializeField] GameObject projectilePrefab;
-    protected string opponentTag;
+    [SerializeField] protected string opponentTag;
 
     protected float chargeUpTimer;
 
@@ -57,8 +57,6 @@ public abstract class Weapon : MonoBehaviour
         chargeUpTimer = chargeUpTimeAdjusted;
         shoot_Timer = 1 / Mathf.Max(fireRateAdjusted, 0.001f);
         bullets_Left_In_Burst = 0;
-
-        opponentTag = "Enemy";
     }
 
     public void NewTarget(Transform target)

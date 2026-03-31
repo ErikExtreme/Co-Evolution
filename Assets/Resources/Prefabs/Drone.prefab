@@ -178,13 +178,49 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1605060002483549913}
     m_Modifications:
+    - target: {fileID: 962889965124784174, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: range
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: accuracy
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: aoeRadius
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: baseDamage
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: opponentTag
+      value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: chargeUpTime
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: cooldownTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: projectileSpeed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
+      propertyPath: shipHealthScript
+      value: 
+      objectReference: {fileID: 2789045320326105344}
     - target: {fileID: 1170203728939420144, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
       propertyPath: m_Name
       value: EnemyWeaponPrefab
       objectReference: {fileID: 0}
     - target: {fileID: 1170203728939420144, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1962126970032158013, guid: 09e245d032e3e4947a71c1fb3f98478b, type: 3}
       propertyPath: m_LocalScale.x

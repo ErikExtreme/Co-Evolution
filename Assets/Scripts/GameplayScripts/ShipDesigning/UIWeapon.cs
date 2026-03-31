@@ -7,6 +7,9 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
     public MappingDisplayBar MappingDisplayBarY;
     public MappingDisplayBar MappingDisplayBarZ;
 
+    public GameObject WeaponTexts;
+    public GameObject ModuleTexts;
+
     public string PlacementTag => "PlacementPoint";
     public bool isActive { get; set; }
 
@@ -24,6 +27,9 @@ public class UIWeapon : MonoBehaviour, IGrabbableUI
     }
     public void DisplayStats()
     {
+        WeaponTexts.SetActive(true);
+        ModuleTexts.SetActive(false);
+
         MappingDisplayBarX.SetValue((weaponGenome.mapping.x + 1) / 2);
         MappingDisplayBarY.SetValue((weaponGenome.mapping.y + 1) / 2);
         MappingDisplayBarZ.SetValue((weaponGenome.mapping.z + 1) / 2);

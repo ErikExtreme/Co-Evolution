@@ -16,6 +16,8 @@ public class UpgradeSelectionManager : MonoBehaviour
     [SerializeField] MappingDisplayBar MappingDisplayBarX;
     [SerializeField] MappingDisplayBar MappingDisplayBarY;
     [SerializeField] MappingDisplayBar MappingDisplayBarZ;
+    [SerializeField] GameObject WeaponTexts;
+    [SerializeField] GameObject ModuleTexts;
 
     [Header("Prefabs")]
     [SerializeField] GameObject uiWeaponPrefab;
@@ -55,6 +57,8 @@ public class UpgradeSelectionManager : MonoBehaviour
             weaponScript.MappingDisplayBarX = MappingDisplayBarX;
             weaponScript.MappingDisplayBarY = MappingDisplayBarY;
             weaponScript.MappingDisplayBarZ = MappingDisplayBarZ;
+            weaponScript.WeaponTexts = WeaponTexts;
+            weaponScript.ModuleTexts = ModuleTexts;
 
             weaponInstance.GetComponent<SelectUpgrade>().upgradeSelectionManager = this;
         }
@@ -69,6 +73,8 @@ public class UpgradeSelectionManager : MonoBehaviour
             moduleScript.MappingDisplayBarX = MappingDisplayBarX;
             moduleScript.MappingDisplayBarY = MappingDisplayBarY;
             moduleScript.MappingDisplayBarZ = MappingDisplayBarZ;
+            moduleScript.WeaponTexts = WeaponTexts;
+            moduleScript.ModuleTexts = ModuleTexts;
 
             moduleInstance.GetComponent<SelectUpgrade>().upgradeSelectionManager = this;
         }

@@ -8,6 +8,9 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
     public MappingDisplayBar MappingDisplayBarY;
     public MappingDisplayBar MappingDisplayBarZ;
 
+    public GameObject WeaponTexts;
+    public GameObject ModuleTexts;
+
     public string PlacementTag => "ModuleSlot";
     public bool isActive { get; set; }
 
@@ -25,6 +28,9 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
     }
     public void DisplayStats()
     {
+        WeaponTexts.SetActive(false);
+        ModuleTexts.SetActive(true);
+
         MappingDisplayBarX.SetValue((shipGenome.mapping.x + 1) / 2);
         MappingDisplayBarY.SetValue((shipGenome.mapping.y + 1) / 2);
         MappingDisplayBarZ.SetValue((shipGenome.mapping.z + 1) / 2);

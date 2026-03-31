@@ -85,18 +85,16 @@ public abstract class Weapon : MonoBehaviour
         }
         else if (currentHeat <= 0)
             isOverHeated = false;
-
-
-        shipHealthScript.ConsumePower(powerCostAdjusted * Time.deltaTime);
     }
 
     private void HandleShooting()
     {
         chargeUpTimer -= Time.deltaTime;
         if (chargeUpTimer > 0)//Need to charge up again if weapon hasnt shot for X seconds?
-        {
             return;
-        }
+
+        if (!shipHealthScript.ConsumePower(powerCostAdjusted * Time.deltaTime))
+            return;
 
         if (bullets_Left_In_Burst <= 0)
         {

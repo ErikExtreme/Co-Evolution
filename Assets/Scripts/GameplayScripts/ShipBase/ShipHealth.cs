@@ -76,13 +76,12 @@ public class ShipHealth : MonoBehaviour
     }
     public bool ConsumePower(float amountConsumed)
     {
-        if (Power >= amountConsumed)
-        {
-            Power -= amountConsumed;
-            return true;
-        }
-        else
+        if (Power <= 0)
             return false;
+
+        Power -= amountConsumed;
+
+        return true;
     }
     protected virtual void OutOfHealth()
     {

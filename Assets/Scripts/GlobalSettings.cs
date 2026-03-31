@@ -83,8 +83,8 @@ public static class GlobalSettings
     public const int SHIP_SHIELD_REGEN_MAX = 40;
     public const int SHIP_SHIELD_REGEN_MIN = 5;
 
-    public const int SHIP_POWER_CAPACITY_MAX = 100;
-    public const int SHIP_POWER_CAPACITY_MIN = 50;
+    public const int SHIP_POWER_CAPACITY_MAX = 60;
+    public const int SHIP_POWER_CAPACITY_MIN = 30;
     public const int SHIP_POWER_REGEN_MAX = 15;
     public const int SHIP_POWER_REGEN_MIN = 2;
 

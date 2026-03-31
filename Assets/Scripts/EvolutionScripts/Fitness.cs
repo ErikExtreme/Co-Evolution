@@ -123,10 +123,11 @@ public static class Fitness
 
         Vector3 w = offspring.mapping;
 
-        // 1. Compute ideal ship vector from weapon vector
+        // ---------------------------------------------------------
+        // 1. Synergy (stronger influence)
+        // ---------------------------------------------------------
         Vector3 idealShip = Multiply(WeaponToShipMatrix, w);
 
-        // 2. Compare ideal ship to actual ship population
         float totalDist = 0f;
         foreach (var ship in shipPopulation)
         {
@@ -137,34 +138,75 @@ public static class Fitness
         }
 
         float avgDist = totalDist / shipPopulation.Count;
-        //float synergy = 1f / (1f + avgDist); // old
-        float synergy = Mathf.Exp(-0.3f * avgDist); // new
 
-        // 3. Player preference alignment
+        // Stronger synergy shaping
+        float synergy = Mathf.Exp(-0.6f * avgDist);
+        // (was 0.3f, doubling the slope makes synergy differences matter more)
+
+        // ---------------------------------------------------------
+        // 2. Player preference alignment (unchanged)
+        // ---------------------------------------------------------
         Vector3 playerPref = Mapping.PlayerPreferenceWeaponMapping(player);
         float playerAlign = 1f - Vector3.Distance(w, playerPref);
         playerAlign = Mathf.Clamp01(playerAlign);
 
-        // 4. Combine
-        const float alpha = 0.7f;
-        const float beta = 0.3f;
+        // ---------------------------------------------------------
+        // 3. Centroid penalty (prevents collapse)
+        // ---------------------------------------------------------
+        Vector3 centroid = Vector3.zero;
+        foreach (var ship in shipPopulation)
+            centroid += ship.mapping;
+        centroid /= shipPopulation.Count;
 
-        return alpha * synergy + beta * playerAlign;
-        //return synergy; // for the synergy test
+        float distToCentroid = Vector3.Distance(w, centroid);
+
+        // Normalize: max possible distance in normalized axis space is sqrt(3)
+        float centroidPenalty = 1f - (distToCentroid / Mathf.Sqrt(3f));
+        centroidPenalty = Mathf.Clamp01(centroidPenalty);
+        // High penalty near centroid -> low fitness
+
+        // ---------------------------------------------------------
+        // 4. Diversity pressure (reward being different)
+        // ---------------------------------------------------------
+        float diversitySum = 0f;
+        foreach (var ship in shipPopulation)
+            diversitySum += Vector3.Distance(w, ship.mapping);
+
+        float avgDiversity = diversitySum / shipPopulation.Count;
+
+        // Normalize diversity to [0,1]
+        float diversityScore = Mathf.Clamp01(avgDiversity / 1.5f);
+
+        // ---------------------------------------------------------
+        // 5. Combine components
+        // ---------------------------------------------------------
+        const float A = 0.65f;  // synergy (increased)
+        const float B = 0.20f;  // player alignment
+        const float C = 0.10f;  // diversity pressure
+        const float D = 0.05f;  // centroid penalty
+
+        float fitness =
+            (A * synergy) +
+            (B * playerAlign) +
+            (C * diversityScore) +
+            (D * (1f - centroidPenalty));
+        // (1 - penalty) means: far from centroid = good
+
+        return Mathf.Clamp01(fitness);
     }
 
     public static float CooperativeFitness(ShipGenome offspring, List<WeaponGenome> weaponPopulation, PlayerBehaviorTracker player)
     {
-        // Ensure mapping is cached
         if (offspring.mapping == Vector3.zero)
             offspring.mapping = Mapping.MapGenome(offspring);
 
         Vector3 s = offspring.mapping;
 
-        // 1. Compute ideal weapon vector from ship vector
+        // ---------------------------------------------------------
+        // 1. Synergy (stronger influence)
+        // ---------------------------------------------------------
         Vector3 idealWeapon = Multiply(ShipToWeaponMatrix, s);
 
-        // 2. Compare ideal weapon to actual weapon population
         float totalDist = 0f;
         foreach (var weapon in weaponPopulation)
         {
@@ -175,19 +217,51 @@ public static class Fitness
         }
 
         float avgDist = totalDist / weaponPopulation.Count;
-        //float synergy = 1f / (1f + avgDist); // old
-        float synergy = Mathf.Exp(-0.3f * avgDist); // new
+        float synergy = Mathf.Exp(-0.6f * avgDist);
 
-        // 3. Player preference alignment
+        // ---------------------------------------------------------
+        // 2. Player preference alignment
+        // ---------------------------------------------------------
         Vector3 playerPref = Mapping.PlayerPreferenceShipMapping(player);
         float playerAlign = 1f - Vector3.Distance(s, playerPref);
         playerAlign = Mathf.Clamp01(playerAlign);
 
-        // 4. Combine
-        const float alpha = 0.7f;
-        const float beta = 0.3f;
+        // ---------------------------------------------------------
+        // 3. Centroid penalty
+        // ---------------------------------------------------------
+        Vector3 centroid = Vector3.zero;
+        foreach (var weapon in weaponPopulation)
+            centroid += weapon.mapping;
+        centroid /= weaponPopulation.Count;
 
-        return alpha * synergy + beta * playerAlign;
-        //return synergy; // for the synergy test
+        float distToCentroid = Vector3.Distance(s, centroid);
+        float centroidPenalty = 1f - (distToCentroid / Mathf.Sqrt(3f));
+        centroidPenalty = Mathf.Clamp01(centroidPenalty);
+
+        // ---------------------------------------------------------
+        // 4. Diversity pressure
+        // ---------------------------------------------------------
+        float diversitySum = 0f;
+        foreach (var weapon in weaponPopulation)
+            diversitySum += Vector3.Distance(s, weapon.mapping);
+
+        float avgDiversity = diversitySum / weaponPopulation.Count;
+        float diversityScore = Mathf.Clamp01(avgDiversity / 1.5f);
+
+        // ---------------------------------------------------------
+        // 5. Combine
+        // ---------------------------------------------------------
+        const float A = 0.65f;
+        const float B = 0.20f;
+        const float C = 0.10f;
+        const float D = 0.05f;
+
+        float fitness =
+            (A * synergy) +
+            (B * playerAlign) +
+            (C * diversityScore) +
+            (D * (1f - centroidPenalty));
+
+        return Mathf.Clamp01(fitness);
     }
 }

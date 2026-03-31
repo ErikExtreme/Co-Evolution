@@ -85,6 +85,9 @@ public abstract class Weapon : MonoBehaviour
         }
         else if (currentHeat <= 0)
             isOverHeated = false;
+
+
+        shipHealthScript.ConsumePower(powerCostAdjusted * Time.deltaTime);
     }
 
     private void HandleShooting()
@@ -115,9 +118,6 @@ public abstract class Weapon : MonoBehaviour
     {
         cooldown_Timer -= Time.deltaTime;
         if (cooldown_Timer > 0)
-            return;
-
-        if (!shipHealthScript.ConsumePower(powerCostAdjusted))
             return;
 
         cooldown_Timer = weapon_Genome.cooldownTime;

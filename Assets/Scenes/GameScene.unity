@@ -14691,8 +14691,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EvolutionManager
   initalPopulationSize: 10
-  burstPopSize: 100
-  generations: 10
+  burstPopSize: 50
+  generations: 5
   sessionLog:
     sessionId: 
     timestamp: 

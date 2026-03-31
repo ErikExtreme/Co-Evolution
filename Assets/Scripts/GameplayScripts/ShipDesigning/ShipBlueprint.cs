@@ -172,9 +172,10 @@ public class ShipBlueprint : MonoBehaviour
             if (weapon.genome == null)
                 continue;
 
-            float burstDuration = (weapon.genome.burstSize / weapon.genome.fireRate);
+            //float burstDuration = (weapon.genome.burstSize / weapon.genome.fireRate);
 
-            consumption += (weapon.genome.powerCost * 1.66f) / (weapon.genome.cooldownTime + burstDuration);
+            //consumption += (weapon.genome.powerCost * 1.66f) / (weapon.genome.cooldownTime + burstDuration);
+            consumption += weapon.genome.powerCost;
         }
 
         return consumption;

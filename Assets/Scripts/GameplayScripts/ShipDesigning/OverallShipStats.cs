@@ -24,7 +24,7 @@ public class OverallShipStats : MonoBehaviour
             "\nArmor: " + shipCoreStats.armor / 20 +
             "\nShield Cap: " + shipCoreStats.shieldCapacity / 3 +
             "\nShield Regen: " + shipCoreStats.shieldRegen / 5 +
-            "\nPower cap: " + shipCoreStats.powerCapacity +
+            "\nPower cap: " + shipCoreStats.powerCapacity / 5 +
             "\nNet power: " + FormatFloat(netEnergyProduction) +
 
             "\nSpeed: " + FormatFloat(Mathf.Min(shipMobilityStats.speed / 20, 4)) +

@@ -372,7 +372,7 @@ MonoBehaviour:
   enemyShieldCapacity: 35
   enemyShieldRegen: 4
   enemyPowerCapacity: 10
-  enemyPowerRegen: 3
+  enemyPowerRegen: 5
   enemyEvasion: 0.15
 --- !u!114 &1716039677175244755
 MonoBehaviour:

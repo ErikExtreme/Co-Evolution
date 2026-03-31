@@ -14,11 +14,9 @@ public class ShipHealth : MonoBehaviour
     protected float evasion;
 
     //Current
-    public int Health { get; protected set; }
-    public int Shield { get; protected set; }
+    public float Health { get; protected set; }
+    public float Shield { get; protected set; }
     public float Power { get; protected set; }
-
-    protected float regenTimer;
 
     //Modifiers
     [System.NonSerialized] public float armorReduction;
@@ -33,27 +31,19 @@ public class ShipHealth : MonoBehaviour
         Shield = ShieldCapacity;
         Power = PowerCapacity;
 
-        regenTimer = 1;
-
         armorReduction = 1;
     }
 
     void Update()
     {
-        regenTimer -= Time.deltaTime;
-        if (regenTimer <= 0)
-        {
-            regenTimer = 1;
+        if (Shield < ShieldCapacity)
+            Shield += shieldRegen * Time.deltaTime;
 
-            if (Shield < ShieldCapacity)
-                Shield += shieldRegen;
-
-            if (Power < PowerCapacity)
-                Power += powerRegen;
-        }
+        if (Power < PowerCapacity)
+            Power += powerRegen * Time.deltaTime;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(float damage)
     {
         //Evasion
         if (Random.value < evasion)

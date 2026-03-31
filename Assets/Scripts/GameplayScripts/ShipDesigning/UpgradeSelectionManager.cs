@@ -13,6 +13,10 @@ public class UpgradeSelectionManager : MonoBehaviour
     [SerializeField] Canvas constructionCanvas;
     [SerializeField] Inventory inventoryScript;
 
+    [SerializeField] MappingDisplayBar MappingDisplayBarX;
+    [SerializeField] MappingDisplayBar MappingDisplayBarY;
+    [SerializeField] MappingDisplayBar MappingDisplayBarZ;
+
     [Header("Prefabs")]
     [SerializeField] GameObject uiWeaponPrefab;
     [SerializeField] GameObject uiModulePrefab;
@@ -48,6 +52,9 @@ public class UpgradeSelectionManager : MonoBehaviour
             WeaponStatsTracker weaponStatsTracker = new WeaponStatsTracker();
             UIWeapon weaponScript = weaponInstance.GetComponent<UIWeapon>();
             weaponScript.Initialize(upgrades.weapons[i], weaponStatsTracker, statsTextBox);
+            weaponScript.MappingDisplayBarX = MappingDisplayBarX;
+            weaponScript.MappingDisplayBarY = MappingDisplayBarY;
+            weaponScript.MappingDisplayBarZ = MappingDisplayBarZ;
 
             weaponInstance.GetComponent<SelectUpgrade>().upgradeSelectionManager = this;
         }
@@ -59,6 +66,9 @@ public class UpgradeSelectionManager : MonoBehaviour
             ModuleStatsTracker moduleStatsTracker = new ModuleStatsTracker();
             UIShipModule moduleScript = moduleInstance.GetComponent<UIShipModule>();
             moduleScript.Initialize(upgrades.modules[i], moduleStatsTracker, statsTextBox);
+            moduleScript.MappingDisplayBarX = MappingDisplayBarX;
+            moduleScript.MappingDisplayBarY = MappingDisplayBarY;
+            moduleScript.MappingDisplayBarZ = MappingDisplayBarZ;
 
             moduleInstance.GetComponent<SelectUpgrade>().upgradeSelectionManager = this;
         }

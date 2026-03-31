@@ -24,12 +24,14 @@ public class EvolutionManager : MonoBehaviour
         foreach (var weaponGenome in weapons)
         {
             WeaponManager.Instance.AddWeapon(weaponGenome, new WeaponStatsTracker());
+            weaponGenome.mapping = Mapping.MapGenome(weaponGenome);
         }
 
         shipModules = Seeding.RandomShipSeed(initalPopulationSize).ToList();
         foreach (var moduleGenome in shipModules)
         {
             ModuleManager.Instance.AddModule(moduleGenome, new ModuleStatsTracker());
+            moduleGenome.mapping = Mapping.MapGenome(moduleGenome);
         }
     }
 

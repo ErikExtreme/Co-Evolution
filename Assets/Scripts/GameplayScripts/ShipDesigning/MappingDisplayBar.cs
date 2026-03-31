@@ -12,7 +12,7 @@ public class MappingDisplayBar : MonoBehaviour
     {
         rectTransform = GetComponent<RectTransform>();
         fullPosition = rectTransform.anchoredPosition.x;
-        emptyPosition = fullPosition - GetComponentInParent<RectTransform>().rect.width;
+        emptyPosition = fullPosition - 146.2f;//HARD CODED  GetComponentInParent<RectTransform>().rect.width;
     }
 
     void Update()

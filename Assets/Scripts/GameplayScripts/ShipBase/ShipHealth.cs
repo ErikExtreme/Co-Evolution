@@ -43,7 +43,7 @@ public class ShipHealth : MonoBehaviour
             Power += powerRegen * Time.deltaTime;
     }
 
-    public void TakeDamage(float damage)
+    public virtual void TakeDamage(float damage)
     {
         //Evasion
         if (Random.value < evasion)

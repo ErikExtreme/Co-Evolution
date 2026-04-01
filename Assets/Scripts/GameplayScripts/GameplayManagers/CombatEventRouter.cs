@@ -21,7 +21,7 @@ public class CombatEventRouter : MonoBehaviour
 
     public void ReportDamageAvoided(int id, float amount)
     {
-        ModuleManager.Instance.modules[id].tracker.RegisterDamageAvoided(amount);
+        //ModuleManager.Instance.modules[id].tracker.RegisterDamageAvoided(amount);
     }
 
     public void ReportEnemyFocus(string enemyType)

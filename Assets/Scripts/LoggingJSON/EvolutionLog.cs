@@ -292,10 +292,10 @@ public static class EvolutionLogger
             droneDurability = g.droneDurability,
             droneAggression = g.droneAggression,
 
-            timeEquipped = includeTracker ? t?.timeEquipped ?? 0f : 0f,
-            damageAvoided = includeTracker ? t?.damageAvoided ?? 0f : 0f,
-            powerSaved = includeTracker ? t?.powerSaved ?? 0f : 0f,
-            heatReduced = includeTracker ? t?.heatReduced ?? 0f : 0f
+            //timeEquipped = includeTracker ? t?.timeEquipped ?? 0f : 0f,
+            //damageAvoided = includeTracker ? t?.damageAvoided ?? 0f : 0f,
+            //powerSaved = includeTracker ? t?.powerSaved ?? 0f : 0f,
+            //heatReduced = includeTracker ? t?.heatReduced ?? 0f : 0f
         };
     }
 

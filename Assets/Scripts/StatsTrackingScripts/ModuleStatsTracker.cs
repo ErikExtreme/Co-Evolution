@@ -3,27 +3,37 @@ using UnityEngine;
 public class ModuleStatsTracker
 {
     public float timeEquipped;
-    public float damageAvoided;
-    public float powerSaved;
-    public float heatReduced;
+    public float damageTaken;
+    public float powerGenerated;
+    public float droneDamageDealt;
+    public float droneDamageTaken;
+    public float distanceMoved;
 
     public void UpdateEquipped(float dt)
     {
         timeEquipped += dt;
     }
 
-    public void RegisterDamageAvoided(float amount)
+    public void RegisterDamageTaken(float amount)
     {
-        damageAvoided += amount;
+        damageTaken += amount;
     }
 
-    public void RegisterPowerSaved(float amount)
+    public void RegisterPowerGenerated(float amount)
     {
-        powerSaved += amount;
+        powerGenerated += amount;
     }
 
-    public void RegisterHeatReduced(float amount)
+    public void RegisterDroneDamageDealt(float amount)
     {
-        heatReduced += amount;
+        droneDamageDealt += amount;
+    }
+    public void RegisterDroneDamageTaken(float amount)
+    {
+        droneDamageTaken += amount;
+    }
+    public void RegisterDistanceMoved(float amount)
+    {
+        distanceMoved += amount;
     }
 }

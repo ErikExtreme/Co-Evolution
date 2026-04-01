@@ -90,9 +90,10 @@ public static class Fitness
         float statScore = axis.magnitude / Mathf.Sqrt(3f);
 
         // 2. Tracker performance
-        float avoidNorm = Mathf.Clamp01(t.damageAvoided / 3000f);
-        float powerNorm = Mathf.Clamp01(t.powerSaved / 2000f);
-        float heatNorm = Mathf.Clamp01(t.heatReduced / 2000f);
+        //float avoidNorm = Mathf.Clamp01(t.damageAvoided / 3000f);
+        //float powerNorm = Mathf.Clamp01(t.powerSaved / 2000f);
+        //float heatNorm = Mathf.Clamp01(t.heatReduced / 2000f);
+        float avoidNorm = 1, powerNorm = 1, heatNorm = 1;//Temp since i changed Module tracking
 
         float trackerScore = (avoidNorm * 0.5f) + (powerNorm * 0.3f) + (heatNorm * 0.2f);
 
@@ -108,8 +109,8 @@ public static class Fitness
             (alignmentScore * 0.2f);
 
         // Store components inside genome
-        g.statScore = statScore; 
-        g.trackerScore = trackerScore; 
+        g.statScore = statScore;
+        g.trackerScore = trackerScore;
         g.alignmentScore = alignmentScore;
 
         return Mathf.Clamp01(fitness);

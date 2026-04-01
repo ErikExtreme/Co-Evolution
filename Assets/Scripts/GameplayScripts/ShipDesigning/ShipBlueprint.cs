@@ -145,7 +145,7 @@ public class ShipBlueprint : MonoBehaviour
 
 
         shipHealthScript.SetStats(shipStats.shipCoreStats, modulesArray);
-        gameObject.GetComponent<PlayerShip>().SetStats(shipStats.shipMobilityStats);
+        gameObject.GetComponent<PlayerShip>().SetStats(shipStats.shipMobilityStats,modulesArray);
         gameObject.GetComponent<ShipDroneManager>().SetStats(shipStats.shipDroneStats);
 
 

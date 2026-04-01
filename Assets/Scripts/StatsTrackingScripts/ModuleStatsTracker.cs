@@ -28,7 +28,6 @@ public class ModuleStatsTracker
     }
     public void RegisterDistanceMoved(float amount)
     {
-        Debug.Log("moved " + amount);
         distanceMoved += amount;
     }
 }

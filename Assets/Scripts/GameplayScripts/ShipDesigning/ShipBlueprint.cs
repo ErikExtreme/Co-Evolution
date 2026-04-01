@@ -7,7 +7,9 @@ public class ShipBlueprint : MonoBehaviour
 {
     (WeaponGenome genome, WeaponStatsTracker tracker)[,] weaponsArray;
     (ShipGenome genome, ModuleStatsTracker tracker)[] modulesArray;
+
     public WeaponBoost[,] weaponBoosts;
+    public float[,] weaponBoostTier;
 
     [SerializeField] WaveManager waveManager;
     [SerializeField] GameObject weaponPrefab;
@@ -60,6 +62,8 @@ public class ShipBlueprint : MonoBehaviour
         currentGridHeight += genome.gridHeight;
         totalSpecialDensity += genome.specialTileDensity;
 
+        float boostTier = (CurrentGridHeight * CurrentGridWidth) >= 12 ? ((CurrentGridHeight * CurrentGridWidth) >= 30 ? 1 : 2) : 3;
+
         for (int i = 0; i < MaxWeaponGridSize; i++)
             for (int j = 0; j < MaxWeaponGridSize; j++)
             {
@@ -69,7 +73,7 @@ public class ShipBlueprint : MonoBehaviour
                 cell.SetActive(shouldBeActive);
 
                 if (cell.CompareTag("PlacementPoint") && shouldBeActive)
-                    ToggleBoost(i, j, cell);
+                    ToggleBoost(i, j, cell, boostTier);
             }
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75 + 26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, CurrentGridHeight * 75 + 26);//Hard coded, 75 = the height of a cell, 26 = random padding the layoutgroup has
@@ -88,6 +92,8 @@ public class ShipBlueprint : MonoBehaviour
         modulesArray[pos].genome = null;
         modulesArray[pos].tracker = null;
 
+        float boostTier = (CurrentGridHeight * CurrentGridWidth) >= 12 ? ((CurrentGridHeight * CurrentGridWidth) >= 30 ? 1 : 2) : 3;
+
         for (int i = 0; i < MaxWeaponGridSize; i++)
             for (int j = 0; j < MaxWeaponGridSize; j++)
             {
@@ -98,7 +104,7 @@ public class ShipBlueprint : MonoBehaviour
                 cell.SetActive(shouldBeActive);
 
                 if (cell.CompareTag("PlacementPoint") && shouldBeActive)
-                    ToggleBoost(i, j, cell);
+                    ToggleBoost(i, j, cell, boostTier);
             }
 
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75 + 26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
@@ -127,6 +133,7 @@ public class ShipBlueprint : MonoBehaviour
                 weaponScript.tracker = weaponsArray[hori, vert].tracker;
                 weaponScript.shipHealthScript = shipHealthScript;//Separate out energy from health script?
                 weaponScript.activeBoost = weaponBoosts[hori, vert];
+                weaponScript.boostTier = weaponBoostTier[hori, vert];
 
                 Vector2 originOffset = new Vector2(CurrentGridWidth - 1, CurrentGridHeight - 1) / 2f;
                 Vector2 position = (new Vector2(hori, CurrentGridHeight - 1 - vert) - originOffset);
@@ -193,7 +200,7 @@ public class ShipBlueprint : MonoBehaviour
         return hash;
 
     }
-    public void ToggleBoost(int xPos, int yPos, GameObject cell)
+    private void ToggleBoost(int xPos, int yPos, GameObject cell, float powerTier)
     {
         //Gets if cell should have boost
         int hash = HashCell(xPos + 1, yPos + 1, hashingSeed);//+1 cause it stats at 0
@@ -204,12 +211,15 @@ public class ShipBlueprint : MonoBehaviour
             range2 = Mathf.Clamp(range2, 0, 0.9999f);
             int index = 1 + Mathf.FloorToInt(range2 * (boostTypeAmount - 1));
             weaponBoosts[xPos, yPos] = (WeaponBoost)index;
+            weaponBoostTier[xPos, yPos] = powerTier;
         }
         else
             weaponBoosts[xPos, yPos] = WeaponBoost.None;
 
-
-        //Visualy show potential boost
+        ToggleBoostVisuals(xPos, yPos,cell);
+    }
+    public void ToggleBoostVisuals(int xPos, int yPos, GameObject cell)
+    {//Visualy show potential boost
         bool boostActive = weaponBoosts[xPos, yPos] != WeaponBoost.None;
 
         cell.transform.GetChild(0).gameObject.SetActive(boostActive);
@@ -230,12 +240,12 @@ public class ShipBlueprint : MonoBehaviour
             case WeaponBoost.LowerHeatGeneration:
                 boostColor = Color.blue;
                 break;
-            case WeaponBoost.MoreDamageMoreHeat:
-                boostColor = Color.darkRed;
-                break;
-            case WeaponBoost.BiggerAOELessBurstRate:
-                boostColor = Color.purple;
-                break;
+            //case WeaponBoost.MoreDamageMoreHeat:
+            //    boostColor = Color.darkRed;
+            //    break;
+            //case WeaponBoost.BiggerAOELessBurstRate:
+            //    boostColor = Color.purple;
+            //    break;
             default:
                 break;
         }

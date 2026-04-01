@@ -144,7 +144,7 @@ public class ModuleGrabbingSystem : MonoBehaviour
 
             uiWeapon.isActive = false;
 
-            shipBlueprint.ToggleBoost(horiPos, vertPos, slotInstance);
+            shipBlueprint.ToggleBoostVisuals(horiPos, vertPos, slotInstance);
         }
         if (grabbed_Object_Transform.TryGetComponent<UIShipModule>(out var uiShipModule))
         {

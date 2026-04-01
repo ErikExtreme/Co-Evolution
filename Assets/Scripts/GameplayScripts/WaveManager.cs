@@ -25,19 +25,30 @@ public class WaveManager : MonoBehaviour
     [SerializeField] float enemyAmountExponent = 0.6f;
     [SerializeField] float enemyStatsExponent = 0.5f;
     private int currentWave = 1;
-    private int enemiesInWave { get { return Mathf.CeilToInt(initialEnemies * Mathf.Pow((currentWave),enemyAmountExponent)); } }
+    private int enemiesInWave { get { return Mathf.CeilToInt(initialEnemies * Mathf.Pow((currentWave), enemyAmountExponent)); } }
     bool wavesPaused = true;
+
+    List<ModuleStatsTracker> moduleStatsTrackers;
     void Start()
     {
         enemiesLeftInWave = new List<GameObject>();
         sceneCamera = Camera.main;
+
+        moduleStatsTrackers = new List<ModuleStatsTracker>();
     }
 
     void Update()
     {
-        if (enemiesLeftInWave.Count <= 0 && wavesPaused == false)
+        if (enemiesLeftInWave.Count <= 0 && !wavesPaused)
         {
             WaveCompleted();
+        }
+        if (!wavesPaused)
+        {
+            foreach (var tracker in moduleStatsTrackers)
+            {
+                tracker.UpdateEquipped(Time.deltaTime);
+            }
         }
     }
     private void WaveCompleted()
@@ -73,6 +84,12 @@ public class WaveManager : MonoBehaviour
         wavesPaused = false;
 
         shipDroneManager.SpawnDrones();
+
+        foreach (RectTransform module in moduleGrid)
+        {
+            if (module.GetComponent<UIShipModule>()?.moduleStatsTracker != null)
+                moduleStatsTrackers.Add(module.GetComponent<UIShipModule>().moduleStatsTracker);
+        }
     }
 
     private Vector2 RandomPointOutsideScreen(float objectWidth)

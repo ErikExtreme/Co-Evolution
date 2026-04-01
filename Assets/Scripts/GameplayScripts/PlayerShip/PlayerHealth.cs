@@ -80,7 +80,7 @@ public class PlayerHealth : ShipHealth
 
         foreach (var trackerPair in genomeTrackers)
         {
-            if (trackerPair.tracker != null && trackerPair.genome != null)
+            if (trackerPair.tracker != null && trackerPair.genome != null && armor != 0)
                 trackerPair.tracker.RegisterDamageTaken(trackerPair.genome.armor / armor * damageReduction);
         }
 

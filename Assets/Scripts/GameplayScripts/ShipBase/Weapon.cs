@@ -43,6 +43,7 @@ public abstract class Weapon : MonoBehaviour
     //float aoeRangeBoost = 1.5f;
     //float burstRatePenalty = 0.66f;
 
+    ModuleStatsTracker moduleStatsTracker;
     void Start()
     {
         OnStart();
@@ -135,7 +136,7 @@ public abstract class Weapon : MonoBehaviour
         {
             float possibleAngle = weapon_Genome.spreadAngle;
             if (activeBoost == WeaponBoost.Accuracy)
-                possibleAngle = Mathf.Max(possibleAngle - spreadAngleBoost*boostTier, 0);
+                possibleAngle = Mathf.Max(possibleAngle - spreadAngleBoost * boostTier, 0);
             float spreadAngle = Random.Range(-possibleAngle, possibleAngle);
             rotation = Quaternion.Euler(0, 0, targetAngle + spreadAngle);
         }
@@ -152,8 +153,10 @@ public abstract class Weapon : MonoBehaviour
         //if (activeBoost == WeaponBoost.BiggerAOELessBurstRate)
         //aoeRadius *= aoeRangeBoost;
 
-        projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectileSpeedAdjusted, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag);
-
+        if (moduleStatsTracker != null)
+            projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectileSpeedAdjusted, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag, moduleStatsTracker);
+        else
+            projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectileSpeedAdjusted, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag);
 
         bullets_Left_In_Burst--;
         shoot_Timer = 1 / Mathf.Max(fireRateAdjusted, 0.001f);
@@ -166,6 +169,11 @@ public abstract class Weapon : MonoBehaviour
 
         //Rotates weapon to point in shooting direction
         transform.rotation = Quaternion.Euler(0, 0, targetAngle);
+    }
+
+    public void AddTracker(ModuleStatsTracker moduleStatsTracker)
+    {
+        this.moduleStatsTracker = moduleStatsTracker;
     }
 }
 

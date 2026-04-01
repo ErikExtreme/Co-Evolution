@@ -26,6 +26,8 @@ public class Drone : ShipHealth
 
         shipTransform = GameObject.Find("Ship").transform;
         randomPositionOffset = Random.insideUnitCircle;
+
+        transform.GetChild(0).GetComponent<Weapon>().AddTracker(moduleStatsTracker);
     }
     private void FixedUpdate()
     {

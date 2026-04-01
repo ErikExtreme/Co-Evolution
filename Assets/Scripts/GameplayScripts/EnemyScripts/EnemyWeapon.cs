@@ -55,6 +55,6 @@ public class EnemyWeapon : Weapon
 
     public override Transform FindNewTarget()
     {
-        return EnemyManager.Instance.GetClosestEnemy(transform.position);//not used
+        return EnemyManager.Instance.GetClosestEnemy(transform.position);
     }
 }

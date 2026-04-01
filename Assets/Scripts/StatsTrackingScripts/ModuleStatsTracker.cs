@@ -4,7 +4,6 @@ public class ModuleStatsTracker
 {
     public float timeEquipped;
     public float damageTaken;
-    public float powerGenerated;
     public float droneDamageDealt;
     public float droneDamageTaken;
     public float distanceMoved;
@@ -17,11 +16,6 @@ public class ModuleStatsTracker
     public void RegisterDamageTaken(float amount)
     {
         damageTaken += amount;
-    }
-
-    public void RegisterPowerGenerated(float amount)
-    {
-        powerGenerated += amount;
     }
 
     public void RegisterDroneDamageDealt(float amount)

@@ -142,7 +142,9 @@ public class ShipBlueprint : MonoBehaviour
 
 
         var shipStats = CalculateShipStats();
-        shipHealthScript.SetStats(shipStats.shipCoreStats);
+
+
+        shipHealthScript.SetStats(shipStats.shipCoreStats, modulesArray);
         gameObject.GetComponent<PlayerShip>().SetStats(shipStats.shipMobilityStats);
         gameObject.GetComponent<ShipDroneManager>().SetStats(shipStats.shipDroneStats);
 
@@ -220,9 +222,9 @@ public class ShipBlueprint : MonoBehaviour
             ToggleBoostVisuals(xPos, yPos, cell);
     }
     public void ToggleBoostVisuals(int xPos, int yPos, GameObject cell)
-    {//Visualy show potential boost
+    {
         bool boostActive = weaponBoosts[xPos, yPos] != WeaponBoost.None;
-        Debug.Log(weaponBoosts[xPos, yPos]);
+
         cell.transform.GetChild(0).gameObject.SetActive(boostActive);
         Color boostColor = cell.transform.GetChild(0).GetComponent<Image>().color;
         switch (weaponBoosts[xPos, yPos])

@@ -77,7 +77,7 @@ public static class GlobalSettings
     public const int SHIP_HULLHP_MAX = 300;
     public const int SHIP_HULLHP_MIN = 50;
     public const int SHIP_ARMOR_MAX = 200;
-    public const int SHIP_ARMOR_MIN = 0;
+    public const int SHIP_ARMOR_MIN = 1;
     public const int SHIP_SHIELD_CAPACITY_MAX = 250;
     public const int SHIP_SHIELD_CAPACITY_MIN = 50;
     public const int SHIP_SHIELD_REGEN_MAX = 40;
@@ -93,7 +93,7 @@ public static class GlobalSettings
     public const float SHIP_TURNRATE_MAX = 1.2f;
     public const float SHIP_TURNRATE_MIN = 0.2f;
     public const float SHIP_EVASION_MAX = 0.5f;
-    public const float SHIP_EVASION_MIN = 0f;
+    public const float SHIP_EVASION_MIN = 0.01f;
     public const float SHIP_MASS_MAX = 200f;
     public const float SHIP_MASS_MIN = 20f;
     public const float SHIP_INERTIA_MAX = 8f;

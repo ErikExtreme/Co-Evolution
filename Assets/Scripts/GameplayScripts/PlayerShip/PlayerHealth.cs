@@ -1,20 +1,21 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerHealth : ShipHealth
 {
     [SerializeField] Canvas gameoverCanvas;
 
-    List<(ModuleStatsTracker tracker, ShipCoreStats stats)> genomeTrackers;
+    List<(ShipGenome genome, ModuleStatsTracker tracker)> genomeTrackers;
 
     protected override void OnStart()
     {
         base.OnStart();
 
-        genomeTrackers = new List<(ModuleStatsTracker, ShipCoreStats)>();
+        genomeTrackers = new List<(ShipGenome, ModuleStatsTracker)>();
     }
 
-    public void SetStats(ShipCoreStats shipCoreStats)
+    public void SetStats(ShipCoreStats shipCoreStats, (ShipGenome genome, ModuleStatsTracker tracker)[] genomeTrackers)
     {
         //Stats
         HullHP = shipCoreStats.hullHP;
@@ -32,35 +33,21 @@ public class PlayerHealth : ShipHealth
         Power = PowerCapacity;
 
         //Tracker
+        this.genomeTrackers = genomeTrackers.ToList();
     }
-    void Update()
-    {
-        if (Shield < ShieldCapacity)
-            Shield += shieldRegen * Time.deltaTime;
-
-        if (Power < PowerCapacity)
-        {
-            Power += powerRegen * Time.deltaTime;
-
-            foreach (var trackerPair in genomeTrackers)
-            {
-                trackerPair.tracker.RegisterPowerGenerated(trackerPair.stats.powerRegen * Time.deltaTime);
-            }
-        }
-    }
-
     public override void TakeDamage(float damage)
     {
         foreach (var trackerPair in genomeTrackers)
         {
-            trackerPair.tracker.RegisterDamageTaken(trackerPair.stats.evasion / evasion * damage);
+            if (trackerPair.tracker != null && trackerPair.genome != null)
+                trackerPair.tracker.RegisterDamageTaken(trackerPair.genome.evasion / evasion * damage);
         }
         //Evasion
         if (Random.value < evasion)
             return;
 
 
-       
+
         //Shield damage
         if (Shield >= damage)
         {
@@ -68,18 +55,20 @@ public class PlayerHealth : ShipHealth
 
             foreach (var trackerPair in genomeTrackers)
             {
-                trackerPair.tracker.RegisterDamageTaken(trackerPair.stats.shieldCapacity / ShieldCapacity * damage);
+                if (trackerPair.tracker != null && trackerPair.genome != null)
+                    trackerPair.tracker.RegisterDamageTaken(trackerPair.genome.shieldCapacity / ShieldCapacity * damage);
             }
 
             return;
         }
         else
         {
-            damage -= Shield; 
-            
+            damage -= Shield;
+
             foreach (var trackerPair in genomeTrackers)
             {
-                trackerPair.tracker.RegisterDamageTaken(trackerPair.stats.shieldCapacity / ShieldCapacity * Shield);
+                if (trackerPair.tracker != null && trackerPair.genome != null)
+                    trackerPair.tracker.RegisterDamageTaken(trackerPair.genome.shieldCapacity / ShieldCapacity * Shield);
             }
 
             Shield = 0;
@@ -91,7 +80,8 @@ public class PlayerHealth : ShipHealth
 
         foreach (var trackerPair in genomeTrackers)
         {
-            trackerPair.tracker.RegisterDamageTaken(trackerPair.stats.armor / armor * damageReduction);
+            if (trackerPair.tracker != null && trackerPair.genome != null)
+                trackerPair.tracker.RegisterDamageTaken(trackerPair.genome.armor / armor * damageReduction);
         }
 
         damage -= damageReduction;
@@ -100,7 +90,8 @@ public class PlayerHealth : ShipHealth
         //Hull Damage
         foreach (var trackerPair in genomeTrackers)
         {
-            trackerPair.tracker.RegisterDamageTaken(trackerPair.stats.hullHP / HullHP * damage);
+            if (trackerPair.tracker != null && trackerPair.genome != null)
+                trackerPair.tracker.RegisterDamageTaken(trackerPair.genome.hullHP / HullHP * damage);
         }
         Health -= Mathf.Max(damage, 1);
         if (Health <= 0)

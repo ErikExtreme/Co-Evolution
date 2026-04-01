@@ -167,7 +167,7 @@ public class ShipBlueprint : MonoBehaviour
 
             shipCoreStats.Add(genome.hullHP, genome.armor, genome.shieldCapacity, genome.shieldRegen, genome.powerCapacity, genome.powerRegen, genome.evasion);
             shipMobilityStats.Add(genome.speed, genome.turnRate, genome.mass, genome.inertia);
-            shipDroneStats.Add(genome.droneCount, genome.droneSpeed, genome.droneDurability, genome.droneAggression);
+            shipDroneStats.Add(genome.droneCount, genome.droneSpeed, genome.droneDurability, genome.droneAggression, module.tracker);
         }
 
         return (shipCoreStats, shipMobilityStats, shipDroneStats);
@@ -181,9 +181,6 @@ public class ShipBlueprint : MonoBehaviour
             if (weapon.genome == null)
                 continue;
 
-            //float burstDuration = (weapon.genome.burstSize / weapon.genome.fireRate);
-
-            //consumption += (weapon.genome.powerCost * 1.66f) / (weapon.genome.cooldownTime + burstDuration);
             consumption += weapon.genome.powerCost;
         }
 
@@ -304,13 +301,15 @@ public class ShipMobilityStats
 //}
 public class ShipDroneStats
 {
-    public List<(int count, float speed, int durability, float aggression)> availableDrones;
+    public List<(int count, float speed, int durability, float aggression, ModuleStatsTracker tracker)> availableDrones;
+    public List<ModuleStatsTracker> trackers;
     public ShipDroneStats()
     {
-        availableDrones = new List<(int count, float speed, int durability, float aggression)>();
+        availableDrones = new List<(int count, float speed, int durability, float aggression, ModuleStatsTracker tracker)>();
+        trackers = new List<ModuleStatsTracker>();
     }
-    public void Add(int droneCount, float droneSpeed, int droneDurability, float droneAggression)
+    public void Add(int droneCount, float droneSpeed, int droneDurability, float droneAggression, ModuleStatsTracker moduleTracker)
     {
-        availableDrones.Add((droneCount, droneSpeed / 10, droneDurability, droneAggression));
+        availableDrones.Add((droneCount, droneSpeed / 10, droneDurability, droneAggression,moduleTracker));
     }
 }

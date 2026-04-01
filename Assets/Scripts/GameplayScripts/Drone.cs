@@ -18,6 +18,8 @@ public class Drone : ShipHealth
 
     ShipDroneManager shipDroneManager;
 
+    ModuleStatsTracker moduleStatsTracker;
+
     private void Start()
     {
         rigidbodyThis = GetComponent<Rigidbody2D>();
@@ -48,7 +50,7 @@ public class Drone : ShipHealth
 
         rigidbodyThis.MovePosition(rigidbodyThis.position + targetDirection * speed * Time.fixedDeltaTime);
     }
-    public void SetStats(float speed, int durability, float aggression, ShipDroneManager shipDroneManager)
+    public void SetStats(float speed, int durability, float aggression, ShipDroneManager shipDroneManager, ModuleStatsTracker moduleStatsTracker)
     {
         this.speed = speed;
         this.aggression = aggression * 0.9f + 0.1f;//remaps 0-1 range to 0.1-1 range
@@ -56,13 +58,24 @@ public class Drone : ShipHealth
         this.shipDroneManager = shipDroneManager;
 
 
-        HullHP = durability*3;
+        HullHP = durability * 3;
         armor = 0;
         ShieldCapacity = 0;
         shieldRegen = 0;
         PowerCapacity = 10;
         powerRegen = 10;
         evasion = 0;
+
+        this.moduleStatsTracker = moduleStatsTracker;
+    }
+    public override void TakeDamage(float damage)
+    {
+        moduleStatsTracker.RegisterDroneDamageTaken(Mathf.Max(damage, 1));
+
+        Health -= Mathf.Max(damage, 1);
+
+        if (Health <= 0)
+            OutOfHealth();
     }
     protected override void OutOfHealth()
     {

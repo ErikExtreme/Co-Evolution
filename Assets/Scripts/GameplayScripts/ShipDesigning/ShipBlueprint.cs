@@ -35,6 +35,7 @@ public class ShipBlueprint : MonoBehaviour
         weaponsArray = new (WeaponGenome genome, WeaponStatsTracker tracker)[maxWeaponGridSize, maxWeaponGridSize];
         modulesArray = new (ShipGenome genome, ModuleStatsTracker tracker)[moduleListSize];
         weaponBoosts = new WeaponBoost[maxWeaponGridSize, maxWeaponGridSize];
+        weaponBoostTier = new float[maxWeaponGridSize, maxWeaponGridSize];
 
         hashingSeed = (int)System.DateTime.Now.Ticks;
 
@@ -72,8 +73,7 @@ public class ShipBlueprint : MonoBehaviour
                 GameObject cell = gridLayoutGroup.GetChild(index).gameObject;
                 cell.SetActive(shouldBeActive);
 
-                if (cell.CompareTag("PlacementPoint") && shouldBeActive)
-                    ToggleBoost(i, j, cell, boostTier);
+                ToggleBoost(i, j, cell, boostTier);
             }
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75 + 26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, CurrentGridHeight * 75 + 26);//Hard coded, 75 = the height of a cell, 26 = random padding the layoutgroup has
@@ -216,12 +216,13 @@ public class ShipBlueprint : MonoBehaviour
         else
             weaponBoosts[xPos, yPos] = WeaponBoost.None;
 
-        ToggleBoostVisuals(xPos, yPos,cell);
+        if (cell.CompareTag("PlacementPoint"))
+            ToggleBoostVisuals(xPos, yPos, cell);
     }
     public void ToggleBoostVisuals(int xPos, int yPos, GameObject cell)
     {//Visualy show potential boost
         bool boostActive = weaponBoosts[xPos, yPos] != WeaponBoost.None;
-
+        Debug.Log(weaponBoosts[xPos, yPos]);
         cell.transform.GetChild(0).gameObject.SetActive(boostActive);
         Color boostColor = cell.transform.GetChild(0).GetComponent<Image>().color;
         switch (weaponBoosts[xPos, yPos])
@@ -249,7 +250,9 @@ public class ShipBlueprint : MonoBehaviour
             default:
                 break;
         }
-        boostColor.a = 0.7f;
+
+        float boostTier = weaponBoostTier[xPos, yPos];
+        boostColor.a = boostTier == 1 ? 0.4f : (boostTier == 2 ? 0.65f : 0.9f);
         cell.transform.GetChild(0).GetComponent<Image>().color = boostColor;
     }
 }

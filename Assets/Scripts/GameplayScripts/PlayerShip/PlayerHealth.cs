@@ -35,7 +35,7 @@ public class PlayerHealth : ShipHealth
         //Tracker
         this.genomeTrackers = genomeTrackers.ToList();
     }
-    public override void TakeDamage(float damage)
+    public override bool TakeDamage(float damage)
     {
         foreach (var trackerPair in genomeTrackers)
         {
@@ -44,7 +44,7 @@ public class PlayerHealth : ShipHealth
         }
         //Evasion
         if (Random.value < evasion)
-            return;
+            return false;
 
 
 
@@ -59,7 +59,7 @@ public class PlayerHealth : ShipHealth
                     trackerPair.tracker.RegisterDamageTaken(trackerPair.genome.shieldCapacity / ShieldCapacity * damage);
             }
 
-            return;
+            return false;
         }
         else
         {
@@ -95,7 +95,11 @@ public class PlayerHealth : ShipHealth
         }
         Health -= Mathf.Max(damage, 1);
         if (Health <= 0)
+        {
             OutOfHealth();
+            return true;
+        }
+        return false;
     }
     protected override void OutOfHealth()
     {

@@ -70,14 +70,18 @@ public class Drone : ShipHealth
 
         this.moduleStatsTracker = moduleStatsTracker;
     }
-    public override void TakeDamage(float damage)
+    public override bool TakeDamage(float damage)
     {
         moduleStatsTracker.RegisterDroneDamageTaken(Mathf.Max(damage, 1));
 
         Health -= Mathf.Max(damage, 1);
 
         if (Health <= 0)
+        {
             OutOfHealth();
+            return true;
+        }
+        return false;
     }
     protected override void OutOfHealth()
     {

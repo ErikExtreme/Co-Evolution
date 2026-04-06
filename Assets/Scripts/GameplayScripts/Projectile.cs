@@ -71,11 +71,17 @@ public class Projectile : MonoBehaviour
             if (moduleStatsTracker != null)
                 moduleStatsTracker.RegisterDroneDamageDealt(damage);
             if (weaponGenomeID != -1)
+            {
                 CombatEventRouter.Instance.ReportWeaponDamage(weaponGenomeID, damage, Vector2.Distance(transform.position, GameObject.Find("Ship").transform.position));
+            }
             //else if (weaponStatsTracker!= null)
             //    weaponStatsTracker.RegisterDamage(damage); //not sure if this one is needed
 
-            collidedObject.GetComponentInParent<ShipHealth>().TakeDamage(damage);
+            if(collidedObject.GetComponentInParent<ShipHealth>().TakeDamage(damage))
+            {
+                if (weaponGenomeID != -1)
+                    CombatEventRouter.Instance.ReportWeaponKill(weaponGenomeID);
+            }
 
             if (effectType == EffectType.Burn)
                 collidedObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage / 4);

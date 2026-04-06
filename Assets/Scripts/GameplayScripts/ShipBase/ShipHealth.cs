@@ -43,17 +43,17 @@ public class ShipHealth : MonoBehaviour
             Power += powerRegen * Time.deltaTime;
     }
 
-    public virtual void TakeDamage(float damage)
+    public virtual bool TakeDamage(float damage)
     {
         //Evasion
         if (Random.value < evasion)
-            return;
+            return false;
 
         //Shield damage
         if (Shield >= damage)
         {
             Shield -= damage;
-            return;
+            return false;
         }
         else
         {
@@ -66,7 +66,11 @@ public class ShipHealth : MonoBehaviour
         Health -= Mathf.Max(damage, 1);
 
         if (Health <= 0)
+        {
             OutOfHealth();
+            return true;
+        }
+        return false;
     }
     public void RegainHealth(int regainAmount)
     {

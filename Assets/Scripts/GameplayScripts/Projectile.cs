@@ -13,6 +13,7 @@ public class Projectile : MonoBehaviour
 
     //WeaponStatsTracker weaponStatsTracker;
     ModuleStatsTracker moduleStatsTracker;
+    int weaponGenomeID = -1;
 
     public void SetInitialValues(int damage, float velocity, float range, float aoeRadius, EffectType effectType, float effectStrength, string opponentTag)
     {
@@ -40,6 +41,20 @@ public class Projectile : MonoBehaviour
 
         this.moduleStatsTracker = moduleStatsTracker;
     }
+    public void SetInitialValues(int damage, float velocity, float range, float aoeRadius, EffectType effectType, float effectStrength, string opponentTag, int weaponGenomeID)
+    {
+        this.damage = damage;
+        gameObject.GetComponent<Rigidbody2D>().linearVelocity = transform.up * velocity;
+        lifeTime = range / velocity;
+        this.aoeRadius = aoeRadius;
+
+        this.effectType = effectType;
+        this.effectStrength = effectStrength;
+
+        this.opponentTag = opponentTag;
+
+        this.weaponGenomeID = weaponGenomeID;
+    }
     private void Update()
     {
         lifeTime -= Time.deltaTime;
@@ -55,10 +70,12 @@ public class Projectile : MonoBehaviour
         {
             if (moduleStatsTracker != null)
                 moduleStatsTracker.RegisterDroneDamageDealt(damage);
+            if (weaponGenomeID != -1)
+                CombatEventRouter.Instance.ReportWeaponDamage(weaponGenomeID, damage, Vector2.Distance(transform.position, GameObject.Find("Ship").transform.position));
             //else if (weaponStatsTracker!= null)
             //    weaponStatsTracker.RegisterDamage(damage); //not sure if this one is needed
 
-                collidedObject.GetComponentInParent<ShipHealth>().TakeDamage(damage);
+            collidedObject.GetComponentInParent<ShipHealth>().TakeDamage(damage);
 
             if (effectType == EffectType.Burn)
                 collidedObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage / 4);

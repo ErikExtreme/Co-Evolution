@@ -44,6 +44,7 @@ public abstract class Weapon : MonoBehaviour
     //float burstRatePenalty = 0.66f;
 
     ModuleStatsTracker moduleStatsTracker;
+    protected int weaponGenomeID = -1;
     void Start()
     {
         OnStart();
@@ -155,8 +156,10 @@ public abstract class Weapon : MonoBehaviour
 
         if (moduleStatsTracker != null)
             projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectileSpeedAdjusted, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag, moduleStatsTracker);
+        else if(weaponGenomeID != -1)
+            projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectileSpeedAdjusted, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag,weaponGenomeID);
         else
-            projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectileSpeedAdjusted, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag);
+                    projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectileSpeedAdjusted, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag);
 
         bullets_Left_In_Burst--;
         shoot_Timer = 1 / Mathf.Max(fireRateAdjusted, 0.001f);

@@ -23,5 +23,6 @@ public class WeaponStatsTracker
     public void RegisterKill()
     {
         kills++;
+        Debug.Log(kills);
     }
 }

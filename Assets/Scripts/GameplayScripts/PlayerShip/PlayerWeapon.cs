@@ -19,6 +19,8 @@ public class PlayerWeapon : Weapon
 
         playerShip = transform.GetComponentInParent<PlayerShip>();
         playerShip.targetSelection += NewTarget;
+
+        weaponGenomeID = weapon_Genome.id;
     }
 
     public override Transform FindNewTarget()

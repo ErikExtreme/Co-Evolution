@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static GlobalSettings;
 
@@ -263,5 +264,177 @@ public static class Fitness
             (D * (1f - centroidPenalty));
 
         return Mathf.Clamp01(fitness);
+    }
+
+    public static float ComputeNovelty(WeaponGenome genome, List<WeaponGenome> population, int k = 5)
+    {
+        // Ensure mapping is computed
+        Vector3 gMap = genome.mapping;
+        if (gMap == Vector3.zero)
+            gMap = genome.mapping = Mapping.MapGenome(genome);
+
+        List<float> distances = new List<float>();
+
+        foreach (var other in population)
+        {
+            if (ReferenceEquals(other, genome))
+                continue;
+
+            Vector3 oMap = other.mapping;
+            if (oMap == Vector3.zero)
+                oMap = other.mapping = Mapping.MapGenome(other);
+
+            float d = Vector3.Distance(gMap, oMap);
+            distances.Add(d);
+        }
+
+        if (distances.Count == 0)
+            return 0f;
+
+        distances.Sort();
+
+        int take = Mathf.Min(k, distances.Count);
+        float sum = 0f;
+
+        for (int i = 0; i < take; i++)
+            sum += distances[i];
+
+        float avg = sum / take;
+
+        // Normalize novelty to [0,1]
+        float novelty = Mathf.Clamp01(avg / Mathf.Sqrt(3f));
+        return novelty;
+    }
+
+    public static float ComputeNovelty(ShipGenome genome, List<ShipGenome> population, int k = 5)
+    {
+        // Ensure mapping is computed
+        Vector3 gMap = genome.mapping;
+        if (gMap == Vector3.zero)
+            gMap = genome.mapping = Mapping.MapGenome(genome);
+
+        List<float> distances = new List<float>();
+
+        foreach (var other in population)
+        {
+            if (ReferenceEquals(other, genome))
+                continue;
+
+            Vector3 oMap = other.mapping;
+            if (oMap == Vector3.zero)
+                oMap = other.mapping = Mapping.MapGenome(other);
+
+            float d = Vector3.Distance(gMap, oMap);
+            distances.Add(d);
+        }
+
+        if (distances.Count == 0)
+            return 0f;
+
+        distances.Sort();
+
+        int take = Mathf.Min(k, distances.Count);
+        float sum = 0f;
+
+        for (int i = 0; i < take; i++)
+            sum += distances[i];
+
+        float avg = sum / take;
+
+        // Normalize novelty to [0,1]
+        float novelty = Mathf.Clamp01(avg / Mathf.Sqrt(3f));
+        return novelty;
+    }
+
+    public static List<WeaponGenome> SelectDiverseTopX(List<WeaponGenome> population, int topX)
+    {
+        if (population == null || population.Count == 0)
+            return new List<WeaponGenome>();
+
+        // 1. Sort by finalFitness descending
+        var sorted = population
+            .OrderByDescending(g => g.finalFitness)
+            .ToList();
+
+        // 2. Start with the best genome
+        List<WeaponGenome> selected = new List<WeaponGenome>();
+        selected.Add(sorted[0]);
+        sorted.RemoveAt(0);
+
+        // 3. Pick the most diverse next
+        while (selected.Count < topX && sorted.Count > 0)
+        {
+            WeaponGenome bestCandidate = null;
+            float bestDistance = -1f;
+
+            foreach (var g in sorted)
+            {
+                float minDist = float.MaxValue;
+
+                foreach (var s in selected)
+                {
+                    float d = Vector3.Distance(g.mapping, s.mapping);
+                    if (d < minDist)
+                        minDist = d;
+                }
+
+                if (minDist > bestDistance)
+                {
+                    bestDistance = minDist;
+                    bestCandidate = g;
+                }
+            }
+
+            selected.Add(bestCandidate);
+            sorted.Remove(bestCandidate);
+        }
+
+        return selected;
+    }
+
+    public static List<ShipGenome> SelectDiverseTopX(List<ShipGenome> population, int topX)
+    {
+        if (population == null || population.Count == 0)
+            return new List<ShipGenome>();
+
+        // 1. Sort by finalFitness descending
+        var sorted = population
+            .OrderByDescending(g => g.finalFitness)
+            .ToList();
+
+        // 2. Start with the best genome
+        List<ShipGenome> selected = new List<ShipGenome>();
+        selected.Add(sorted[0]);
+        sorted.RemoveAt(0);
+
+        // 3. Pick the most diverse next
+        while (selected.Count < topX && sorted.Count > 0)
+        {
+            ShipGenome bestCandidate = null;
+            float bestDistance = -1f;
+
+            foreach (var g in sorted)
+            {
+                float minDist = float.MaxValue;
+
+                foreach (var s in selected)
+                {
+                    float d = Vector3.Distance(g.mapping, s.mapping);
+                    if (d < minDist)
+                        minDist = d;
+                }
+
+                if (minDist > bestDistance)
+                {
+                    bestDistance = minDist;
+                    bestCandidate = g;
+                }
+            }
+
+            selected.Add(bestCandidate);
+            sorted.Remove(bestCandidate);
+        }
+
+        return selected;
     }
 }

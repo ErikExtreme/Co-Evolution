@@ -59,6 +59,8 @@ public class WeaponGenomeLog
     public int parentId;
 
     public float fitness;
+    public float novelty;
+    public float finalFitness;
     public float statScore;
     public float trackerScore;
     public float alignmentScore;
@@ -96,6 +98,8 @@ public class ShipGenomeLog
     public int parentId;
 
     public float fitness;
+    public float novelty;
+    public float finalFitness;
     public float statScore;
     public float trackerScore;
     public float alignmentScore;
@@ -221,6 +225,8 @@ public static class EvolutionLogger
             parentId = g.parentId,
 
             fitness = g.fitness,
+            novelty = g.novelty,
+            finalFitness = g.finalFitness,
             statScore = g.statScore,
             trackerScore = g.trackerScore,
             alignmentScore = g.alignmentScore,
@@ -266,6 +272,8 @@ public static class EvolutionLogger
             parentId = g.parentId,
 
             fitness = g.fitness,
+            novelty = g.novelty,
+            finalFitness = g.finalFitness,
             statScore = g.statScore,
             trackerScore = g.trackerScore,
             alignmentScore = g.alignmentScore,

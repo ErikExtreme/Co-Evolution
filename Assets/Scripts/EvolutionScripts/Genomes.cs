@@ -6,6 +6,8 @@ public class WeaponGenome
     public int parentId;
 
     public float fitness;
+    public float novelty;
+    public float finalFitness;
     public Vector3 mapping = Vector3.zero;
 
     public float statScore;
@@ -108,6 +110,8 @@ public class ShipGenome
     public int parentId;
 
     public float fitness;
+    public float novelty;
+    public float finalFitness;
     public Vector3 mapping = Vector3.zero;
 
     public float statScore;

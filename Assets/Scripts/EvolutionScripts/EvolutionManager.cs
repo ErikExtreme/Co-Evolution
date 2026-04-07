@@ -66,6 +66,7 @@ public class EvolutionManager : MonoBehaviour
                 continue;
             }
             w.fitness = Fitness.IndividualFitness(w, weapon.tracker, playerTracker);
+            w.finalFitness = w.fitness;
         }
         foreach (var s in shipModules)
         {
@@ -77,6 +78,7 @@ public class EvolutionManager : MonoBehaviour
                 continue;
             }
             s.fitness = Fitness.IndividualFitness(s, module.tracker, playerTracker);
+            s.finalFitness = s.fitness;
         }
 
         EvolutionLogger.RecordGlobalPopulation(rec, weapons, shipModules);
@@ -127,14 +129,28 @@ public class EvolutionManager : MonoBehaviour
                 mutationDirsS.Add(dir);
             }
 
+            foreach (var g in nextGenW)
+            {
+                g.novelty = Fitness.ComputeNovelty(g, nextGenW);
+                g.finalFitness = g.fitness * 0.7f + g.novelty * 0.3f;
+            }
+            foreach (var g in nextGenS)
+            {
+                g.novelty = Fitness.ComputeNovelty(g, nextGenS);
+                g.finalFitness = g.fitness * 0.7f + g.novelty * 0.3f;
+            }
+
             EvolutionLogger.RecordGeneration(rec, gen, nextGenW, mutationDirsW, nextGenS, mutationDirsS);
 
             weaponPop = nextGenW;
             shipPop = nextGenS;
         }
 
-        weaponPop = weaponPop.OrderByDescending(g => g.fitness).ToList();
-        shipPop = shipPop.OrderByDescending(g => g.fitness).ToList();
+        //weaponPop = weaponPop.OrderByDescending(g => g.finalFitness).ToList();
+        //shipPop = shipPop.OrderByDescending(g => g.finalFitness).ToList();
+
+        weaponPop = Fitness.SelectDiverseTopX(weaponPop, 20);
+        shipPop = Fitness.SelectDiverseTopX(shipPop, 20);
         return (weaponPop, shipPop);
     }
 
@@ -146,7 +162,7 @@ public class EvolutionManager : MonoBehaviour
         for (int i = 0; i < k; i++)
         {
             var candidate = genomes[Random.Range(0, genomes.Count)];
-            if (best == null || candidate.fitness > best.fitness)
+            if (best == null || candidate.finalFitness > best.finalFitness)
                 best = candidate;
         }
 
@@ -161,7 +177,7 @@ public class EvolutionManager : MonoBehaviour
         for (int i = 0; i < k; i++)
         {
             var candidate = genomes[Random.Range(0, genomes.Count)];
-            if (best == null || candidate.fitness > best.fitness)
+            if (best == null || candidate.finalFitness > best.finalFitness)
                 best = candidate;
         }
 
@@ -176,7 +192,7 @@ public class EvolutionManager : MonoBehaviour
         // 2. Select top 20% of population
         int count = Mathf.Max(1, population.Count / 5);
         var top = population
-            .OrderByDescending(g => g.fitness)
+            .OrderByDescending(g => g.finalFitness)
             .Take(count)
             .ToList();
 
@@ -211,7 +227,7 @@ public class EvolutionManager : MonoBehaviour
         // 2. Select top 20% of population
         int count = Mathf.Max(1, population.Count / 5);
         var top = population
-            .OrderByDescending(g => g.fitness)
+            .OrderByDescending(g => g.finalFitness)
             .Take(count)
             .ToList();
 
@@ -382,7 +398,7 @@ public class EvolutionManager : MonoBehaviour
 
         for (int i = 1; i < genomes.Count; i++)
         {
-            if (genomes[i].fitness > best.fitness)
+            if (genomes[i].finalFitness > best.finalFitness)
                 best = genomes[i];
         }
 
@@ -395,7 +411,7 @@ public class EvolutionManager : MonoBehaviour
 
         for (int i = 1; i < genomes.Count; i++)
         {
-            if (genomes[i].fitness > best.fitness)
+            if (genomes[i].finalFitness > best.finalFitness)
                 best = genomes[i];
         }
 

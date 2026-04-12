@@ -4367,7 +4367,7 @@ MonoBehaviour:
   - {fileID: 6602281869372471137, guid: 0398507cfe3e837438adb15aeaf31a53, type: 3}
   initialEnemies: 3
   enemyAmountExponent: 0.63
-  enemyStatsAdditive: 0.4
+  enemyStatsExponent: 0.5
 --- !u!1001 &359068935
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17834,6 +17834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21f45ee7fb1f56544846bc3e8333f3ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerBehaviorTracker
+  rb: {fileID: 0}
   avgSpeed: 0
   avgTurnRate: 0
   movementEntropy: 0
@@ -20968,6 +20969,8 @@ GameObject:
   - component: {fileID: 2045149459}
   - component: {fileID: 2045149458}
   - component: {fileID: 2045149457}
+  - component: {fileID: 2045149463}
+  - component: {fileID: 2045149462}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -21041,6 +21044,30 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2045149462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045149456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6d464799d0d6dc244957c95d8aee05c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BattleWeaponMetricsRecorder
+--- !u!114 &2045149463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2045149456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4187935889f3b0243885dcd6ae41ae85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BattleMetricsRecorder
 --- !u!1 &2062195932
 GameObject:
   m_ObjectHideFlags: 0

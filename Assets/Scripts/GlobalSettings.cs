@@ -24,8 +24,8 @@ public static class GlobalSettings
     public const float WEAPON_RANGE_MAX = 40f;
     public const float WEAPON_RANGE_MIN = 5f;
 
-    public const int WEAPON_POWERCOST_MAX = 15;
-    public const int WEAPON_POWERCOST_MIN = 3;//I increased this from 1 to 3
+    public const int WEAPON_POWERCOST_MAX = 8;
+    public const int WEAPON_POWERCOST_MIN = 2;
     public const int WEAPON_HEATPERSHOT_MAX = 15;
     public const int WEAPON_HEATPERSHOT_MIN = 0;
     public const float WEAPON_HEATDISSIPATION_MAX = 25f;
@@ -77,23 +77,23 @@ public static class GlobalSettings
     public const int SHIP_HULLHP_MAX = 300;
     public const int SHIP_HULLHP_MIN = 50;
     public const int SHIP_ARMOR_MAX = 200;
-    public const int SHIP_ARMOR_MIN = 0;
+    public const int SHIP_ARMOR_MIN = 1;
     public const int SHIP_SHIELD_CAPACITY_MAX = 250;
     public const int SHIP_SHIELD_CAPACITY_MIN = 50;
     public const int SHIP_SHIELD_REGEN_MAX = 40;
     public const int SHIP_SHIELD_REGEN_MIN = 5;
 
-    public const int SHIP_POWER_CAPACITY_MAX = 200;
-    public const int SHIP_POWER_CAPACITY_MIN = 50;
-    public const int SHIP_POWER_REGEN_MAX = 30;
-    public const int SHIP_POWER_REGEN_MIN = 5;
+    public const int SHIP_POWER_CAPACITY_MAX = 60;
+    public const int SHIP_POWER_CAPACITY_MIN = 30;
+    public const int SHIP_POWER_REGEN_MAX = 15;
+    public const int SHIP_POWER_REGEN_MIN = 2;
 
-    public const float SHIP_SPEED_MAX = 40f;//I decreased this from 80 to 40
+    public const float SHIP_SPEED_MAX = 40f;
     public const float SHIP_SPEED_MIN = 20f;
     public const float SHIP_TURNRATE_MAX = 1.2f;
     public const float SHIP_TURNRATE_MIN = 0.2f;
     public const float SHIP_EVASION_MAX = 0.5f;
-    public const float SHIP_EVASION_MIN = 0f;
+    public const float SHIP_EVASION_MIN = 0.01f;
     public const float SHIP_MASS_MAX = 200f;
     public const float SHIP_MASS_MIN = 20f;
     public const float SHIP_INERTIA_MAX = 8f;

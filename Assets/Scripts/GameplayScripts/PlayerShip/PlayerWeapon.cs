@@ -11,7 +11,7 @@ public class PlayerWeapon : Weapon
         fireRateAdjusted = weapon_Genome.fireRate;
         projectileSpeedAdjusted = weapon_Genome.projectileSpeed * 0.7f;
         chargeUpTimeAdjusted = weapon_Genome.chargeUpTime*2;
-        powerCostAdjusted = weapon_Genome.powerCost * 1.4f;
+        //powerCostAdjusted = weapon_Genome.powerCost * 1.66f;
         damageAdjusted = Mathf.RoundToInt(weapon_Genome.baseDamage / 1.15f);
 
         chargeUpTimer = chargeUpTimeAdjusted;
@@ -19,6 +19,8 @@ public class PlayerWeapon : Weapon
 
         playerShip = transform.GetComponentInParent<PlayerShip>();
         playerShip.targetSelection += NewTarget;
+
+        weaponGenomeID = weapon_Genome.id;
     }
 
     public override Transform FindNewTarget()

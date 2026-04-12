@@ -4,6 +4,13 @@ using UnityEngine.UI;
 
 public class UIShipModule : MonoBehaviour, IGrabbableUI
 {
+    public MappingDisplayBar MappingDisplayBarX;
+    public MappingDisplayBar MappingDisplayBarY;
+    public MappingDisplayBar MappingDisplayBarZ;
+
+    public GameObject WeaponTexts;
+    public GameObject ModuleTexts;
+
     public string PlacementTag => "ModuleSlot";
     public bool isActive { get; set; }
 
@@ -21,29 +28,36 @@ public class UIShipModule : MonoBehaviour, IGrabbableUI
     }
     public void DisplayStats()
     {
+        WeaponTexts.SetActive(false);
+        ModuleTexts.SetActive(true);
 
-        statsTextBox.text =
-            "Hull HP: " + shipGenome.hullHP +
-            "\nArmor: " + shipGenome.armor / 20 +
-            "\nShield cap: " + shipGenome.shieldCapacity / 3 +
-            "\nShield regen: " + shipGenome.shieldRegen / 5 +
-            "\nPower cap: " + shipGenome.powerCapacity +
-            "\nPower regen: " + shipGenome.powerRegen +
+        MappingDisplayBarX.SetValue((shipGenome.mapping.x + 1) / 2);
+        MappingDisplayBarY.SetValue((shipGenome.mapping.y + 1) / 2);
+        MappingDisplayBarZ.SetValue((shipGenome.mapping.z + 1) / 2);
 
-            "\nSpeed: " + FormatFloat(Mathf.Min(shipGenome.speed / 20, 4)) +
-            "\nTurn rate: " + FormatFloat(shipGenome.turnRate) +
-            "\nEvasion: " + FormatFloat(shipGenome.evasion / 5) +
-            "\nMass: " + FormatFloat(shipGenome.mass) +
-            "\nInertia: " + FormatFloat(shipGenome.inertia / 20) +
+        statsTextBox.text = "";
+        //statsTextBox.text =
+        //    "Hull HP: " + shipGenome.hullHP +
+        //    "\nArmor: " + shipGenome.armor / 20 +
+        //    "\nShield cap: " + shipGenome.shieldCapacity / 3 +
+        //    "\nShield regen: " + shipGenome.shieldRegen / 5 +
+        //    "\nPower cap: " + shipGenome.powerCapacity / 5 +
+        //    "\nPower regen: " + shipGenome.powerRegen +
 
-            "\nGrid width: " + shipGenome.gridWidth +
-            "\nGrid height: " + shipGenome.gridHeight +
-            "\nSpecial Tile Density: " + FormatFloat(shipGenome.specialTileDensity) +
+        //    "\nSpeed: " + FormatFloat(Mathf.Min(shipGenome.speed / 20, 4)) +
+        //    "\nTurn rate: " + FormatFloat(shipGenome.turnRate) +
+        //    "\nEvasion: " + FormatFloat(shipGenome.evasion / 5) +
+        //    "\nMass: " + FormatFloat(shipGenome.mass) +
+        //    "\nInertia: " + FormatFloat(shipGenome.inertia / 20) +
 
-            "\nDrone count: " + shipGenome.droneCount +
-            "\nDrone speed: " + FormatFloat(shipGenome.droneSpeed) +
-            "\nDrone durability: " + shipGenome.droneDurability +
-            "\nDrone aggression: " + FormatFloat(shipGenome.droneAggression);
+        //    "\nGrid width: " + shipGenome.gridWidth +
+        //    "\nGrid height: " + shipGenome.gridHeight +
+        //    "\nSpecial Tile Density: " + FormatFloat(shipGenome.specialTileDensity) +
+
+        //    "\nDrone count: " + shipGenome.droneCount +
+        //    "\nDrone speed: " + FormatFloat(shipGenome.droneSpeed) +
+        //    "\nDrone durability: " + shipGenome.droneDurability +
+        //    "\nDrone aggression: " + FormatFloat(shipGenome.droneAggression);
     }
     private string FormatFloat(float value) => value.ToString("F2");
 }

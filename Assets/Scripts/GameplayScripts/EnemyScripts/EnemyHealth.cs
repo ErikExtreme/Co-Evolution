@@ -24,11 +24,11 @@ public class EnemyHealth : ShipHealth
 
     public void SetStats(float increaseMult)
     {
-        HullHP = Mathf.RoundToInt(enemyHullHP * (1 + increaseMult));
-        armor = Mathf.RoundToInt(enemyArmor * (1 + increaseMult / 3));
-        ShieldCapacity = Mathf.RoundToInt(enemyShieldCapacity * (1 + increaseMult / 1.25f));
-        shieldRegen = Mathf.RoundToInt(enemyShieldRegen * (1 + increaseMult/5));
+        HullHP = Mathf.RoundToInt(enemyHullHP * (increaseMult - 0.4f));
+        armor = Mathf.RoundToInt(enemyArmor * (increaseMult / 3) - 0.4f);
+        ShieldCapacity = Mathf.RoundToInt(enemyShieldCapacity * (increaseMult / 1.25f - 0.4f));
+        shieldRegen = Mathf.RoundToInt(enemyShieldRegen * (increaseMult / 5 - 0.4f));
         PowerCapacity = enemyPowerCapacity;
-        powerRegen = Mathf.RoundToInt(enemyPowerRegen * (1 + increaseMult/5));
+        powerRegen = Mathf.RoundToInt(enemyPowerRegen * (increaseMult / 5) - 0.4f);
     }
 }

@@ -14,11 +14,9 @@ public class ShipHealth : MonoBehaviour
     protected float evasion;
 
     //Current
-    public int Health { get; protected set; }
-    public int Shield { get; protected set; }
+    public float Health { get; protected set; }
+    public float Shield { get; protected set; }
     public float Power { get; protected set; }
-
-    protected float regenTimer;
 
     //Modifiers
     [System.NonSerialized] public float armorReduction;
@@ -33,27 +31,19 @@ public class ShipHealth : MonoBehaviour
         Shield = ShieldCapacity;
         Power = PowerCapacity;
 
-        regenTimer = 1;
-
         armorReduction = 1;
     }
 
     void Update()
     {
-        regenTimer -= Time.deltaTime;
-        if (regenTimer <= 0)
-        {
-            regenTimer = 1;
+        if (Shield < ShieldCapacity)
+            Shield += shieldRegen * Time.deltaTime;
 
-            if (Shield < ShieldCapacity)
-                Shield += shieldRegen;
-
-            if (Power < PowerCapacity)
-                Power += powerRegen;
-        }
+        if (Power < PowerCapacity)
+            Power += powerRegen * Time.deltaTime;
     }
 
-    public void TakeDamage(int damage)
+    public virtual bool TakeDamage(float damage)
     {
         int originalDamage = damage;
 
@@ -91,7 +81,11 @@ public class ShipHealth : MonoBehaviour
         Health -= Mathf.Max(damage, 1);
 
         if (Health <= 0)
+        {
             OutOfHealth();
+            return true;
+        }
+        return false;
     }
 
     private void ReportDamageMitigated(int mitigatedAmount)
@@ -116,13 +110,12 @@ public class ShipHealth : MonoBehaviour
     }
     public bool ConsumePower(float amountConsumed)
     {
-        if (Power >= amountConsumed)
-        {
-            Power -= amountConsumed;
-            return true;
-        }
-        else
+        if (Power <= 0)
             return false;
+
+        Power -= amountConsumed;
+
+        return true;
     }
     protected virtual void OutOfHealth()
     {

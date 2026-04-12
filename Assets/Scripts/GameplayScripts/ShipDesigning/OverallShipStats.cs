@@ -21,17 +21,14 @@ public class OverallShipStats : MonoBehaviour
 
         statsTextBox.text =
             "Health: " + shipCoreStats.hullHP +
-            "\nArmor: " + shipCoreStats.armor / 20 +
-            "\nShield Cap: " + shipCoreStats.shieldCapacity / 3 +
-            "\nShield Regen: " + shipCoreStats.shieldRegen / 5 +
-            "\nPower cap: " + shipCoreStats.powerCapacity +
+            "\nArmor: " + FormatFloat((float)shipCoreStats.armor / 20) +
+            "\nShield Cap: " + FormatFloat((float)shipCoreStats.shieldCapacity / 3) +
+            "\nShield Regen: " + FormatFloat((float)shipCoreStats.shieldRegen / 5) +
+            "\nPower cap: " + FormatFloat((float)shipCoreStats.powerCapacity / 5) +
             "\nNet power: " + FormatFloat(netEnergyProduction) +
 
             "\nSpeed: " + FormatFloat(Mathf.Min(shipMobilityStats.speed / 20, 4)) +
-            "\nTurn rate: " + FormatFloat(shipMobilityStats.turnRate) +
             "\nEvasion: " + FormatFloat(shipCoreStats.evasion / 5) +
-            "\nMass: " + FormatFloat(shipMobilityStats.mass) +
-            "\nInertia: " + FormatFloat(shipMobilityStats.inertia / 20) +
 
             "\nDrone count: " + shipDroneStats.availableDrones.Sum(drones => (drones.count));
 

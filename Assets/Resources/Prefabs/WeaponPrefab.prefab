@@ -131,7 +131,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.3}
-    oldSize: {x: 0.5625, y: 0.84375}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -153,4 +153,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerWeapon
   shipHealthScript: {fileID: 0}
   projectilePrefab: {fileID: 116823659217514177, guid: 444cec6cfbb9fd94ab3d0cf738ce139b, type: 3}
+  opponentTag: Enemy
+  activeBoost: 0
   playerShip: {fileID: 0}

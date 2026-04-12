@@ -156,8 +156,8 @@ public static class Fitness
             (alignmentScore * 0.2f);
 
         // Store components inside genome
-        g.statScore = statScore; 
-        g.trackerScore = trackerScore; 
+        g.statScore = statScore;
+        g.trackerScore = trackerScore;
         g.alignmentScore = alignmentScore;
 
         return Mathf.Clamp01(fitness);

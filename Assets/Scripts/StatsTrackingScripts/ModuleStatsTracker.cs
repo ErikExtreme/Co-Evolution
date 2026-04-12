@@ -123,18 +123,18 @@ public class ModuleStatsTracker
     [System.Obsolete("Use RegisterDamageEfficiency instead")]
     public void RegisterDamageAvoided(float amount)
     {
-        damageAvoided += amount;
+        damageTaken += amount;
     }
 
     [System.Obsolete("Use RegisterPowerEfficiency instead")]
     public void RegisterPowerSaved(float amount)
     {
-        powerSaved += amount;
+        droneDamageDealt += amount;
     }
 
     [System.Obsolete("Use RegisterSurvivalContribution instead")]
     public void RegisterHeatReduced(float amount)
     {
-        heatReduced += amount;
+        distanceMoved += amount;
     }
 }

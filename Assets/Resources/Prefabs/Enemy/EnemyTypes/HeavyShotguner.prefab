@@ -653,6 +653,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 5534002332984215149}
     m_Modifications:
     - target: {fileID: 962889965124784174, guid: 6cb586e88a7bb594681e87408e58cbb2, type: 3}
+      propertyPath: powerCost
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 962889965124784174, guid: 6cb586e88a7bb594681e87408e58cbb2, type: 3}
       propertyPath: shipHealthScript
       value: 
       objectReference: {fileID: 2210187875960683089}

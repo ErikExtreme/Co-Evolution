@@ -106,6 +106,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyWeapon
   shipHealthScript: {fileID: 0}
   projectilePrefab: {fileID: 116823659217514177, guid: 444cec6cfbb9fd94ab3d0cf738ce139b, type: 3}
+  opponentTag: Player
   activeBoost: 0
   baseDamage: 75
   burstSize: 1

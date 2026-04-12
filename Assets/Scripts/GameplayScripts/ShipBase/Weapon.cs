@@ -8,7 +8,7 @@ public abstract class Weapon : MonoBehaviour
     public ShipHealth shipHealthScript;
 
     [SerializeField] GameObject projectilePrefab;
-    protected string opponentTag;
+    [SerializeField] protected string opponentTag;
 
     protected float chargeUpTimer;
 
@@ -31,17 +31,20 @@ public abstract class Weapon : MonoBehaviour
     private Transform target;
 
     public WeaponBoost activeBoost;
+    public float boostTier;
     //Values for boosts (standalone, all additive)
     int damageBoostAdditive = 10;
     float burstRateBoost = 0.5f;
     float spreadAngleBoost = 10;
     int heatBoost = 5;
     //Values for boosts (Buff + debuff, multiplicative)
-    float damageBoostMultiplier = 2;
-    float heatPenalty = 2;
-    float aoeRangeBoost = 1.5f;
-    float burstRatePenalty = 0.66f;
+    //float damageBoostMultiplier = 2;
+    //float heatPenalty = 2;
+    //float aoeRangeBoost = 1.5f;
+    //float burstRatePenalty = 0.66f;
 
+    ModuleStatsTracker moduleStatsTracker;
+    protected int weaponGenomeID = -1;
     void Start()
     {
         OnStart();
@@ -57,8 +60,6 @@ public abstract class Weapon : MonoBehaviour
         chargeUpTimer = chargeUpTimeAdjusted;
         shoot_Timer = 1 / Mathf.Max(fireRateAdjusted, 0.001f);
         bullets_Left_In_Burst = 0;
-
-        opponentTag = "Enemy";
     }
 
     public void NewTarget(Transform target)
@@ -91,9 +92,10 @@ public abstract class Weapon : MonoBehaviour
     {
         chargeUpTimer -= Time.deltaTime;
         if (chargeUpTimer > 0)//Need to charge up again if weapon hasnt shot for X seconds?
-        {
             return;
-        }
+
+        if (!shipHealthScript.ConsumePower(powerCostAdjusted * Time.deltaTime))
+            return;
 
         if (bullets_Left_In_Burst <= 0)
         {
@@ -117,14 +119,11 @@ public abstract class Weapon : MonoBehaviour
         if (cooldown_Timer > 0)
             return;
 
-        if (!shipHealthScript.ConsumePower(powerCostAdjusted))
-            return;
-
         cooldown_Timer = weapon_Genome.cooldownTime;
         if (activeBoost == WeaponBoost.BurstRate)
-            cooldown_Timer -= burstRateBoost;
-        if (activeBoost == WeaponBoost.BiggerAOELessBurstRate)
-            cooldown_Timer *= burstRatePenalty;
+            cooldown_Timer -= burstRateBoost * boostTier;
+        //if (activeBoost == WeaponBoost.BiggerAOELessBurstRate)
+        //    cooldown_Timer *= burstRatePenalty;
 
         bullets_Left_In_Burst = weapon_Genome.burstSize;
     }
@@ -138,7 +137,7 @@ public abstract class Weapon : MonoBehaviour
         {
             float possibleAngle = weapon_Genome.spreadAngle;
             if (activeBoost == WeaponBoost.Accuracy)
-                possibleAngle = Mathf.Max(possibleAngle - spreadAngleBoost, 0);
+                possibleAngle = Mathf.Max(possibleAngle - spreadAngleBoost * boostTier, 0);
             float spreadAngle = Random.Range(-possibleAngle, possibleAngle);
             rotation = Quaternion.Euler(0, 0, targetAngle + spreadAngle);
         }
@@ -149,26 +148,35 @@ public abstract class Weapon : MonoBehaviour
         int damage = damageAdjusted;
         float aoeRadius = weapon_Genome.aoeRadius;
         if (activeBoost == WeaponBoost.Damage)
-            damage += Mathf.RoundToInt(damageBoostAdditive);
-        if (activeBoost == WeaponBoost.MoreDamageMoreHeat)
-            damage = Mathf.RoundToInt(damage * damageBoostMultiplier);
-        if (activeBoost == WeaponBoost.BiggerAOELessBurstRate)
-            aoeRadius *= aoeRangeBoost;
+            damage += Mathf.RoundToInt(damageBoostAdditive * boostTier);
+        //if (activeBoost == WeaponBoost.MoreDamageMoreHeat)
+        //    damage = Mathf.RoundToInt(damage * damageBoostMultiplier);
+        //if (activeBoost == WeaponBoost.BiggerAOELessBurstRate)
+        //aoeRadius *= aoeRangeBoost;
 
-        projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectileSpeedAdjusted, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag);
-
+        if (moduleStatsTracker != null)
+            projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectileSpeedAdjusted, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag, moduleStatsTracker);
+        else if(weaponGenomeID != -1)
+            projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectileSpeedAdjusted, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag,weaponGenomeID);
+        else
+                    projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectileSpeedAdjusted, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag);
 
         bullets_Left_In_Burst--;
         shoot_Timer = 1 / Mathf.Max(fireRateAdjusted, 0.001f);
         int heatIncrease = weapon_Genome.heatPerShot;
         if (activeBoost == WeaponBoost.LowerHeatGeneration)
-            heatIncrease -= heatBoost;
-        if (activeBoost == WeaponBoost.MoreDamageMoreHeat)
-            heatIncrease = Mathf.RoundToInt(heatIncrease * heatPenalty);
+            heatIncrease -= Mathf.RoundToInt(heatBoost * boostTier);
+        //if (activeBoost == WeaponBoost.MoreDamageMoreHeat)
+        //    heatIncrease = Mathf.RoundToInt(heatIncrease * heatPenalty);
         currentHeat += heatIncrease;
 
         //Rotates weapon to point in shooting direction
         transform.rotation = Quaternion.Euler(0, 0, targetAngle);
+    }
+
+    public void AddTracker(ModuleStatsTracker moduleStatsTracker)
+    {
+        this.moduleStatsTracker = moduleStatsTracker;
     }
 }
 
@@ -178,7 +186,5 @@ public enum WeaponBoost
     Damage,
     BurstRate,
     Accuracy,
-    LowerHeatGeneration,
-    MoreDamageMoreHeat,
-    BiggerAOELessBurstRate
+    LowerHeatGeneration
 }

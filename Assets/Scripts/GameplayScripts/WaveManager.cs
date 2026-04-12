@@ -22,24 +22,35 @@ public class WaveManager : MonoBehaviour
     Camera sceneCamera;
 
     [SerializeField] int initialEnemies = 3;
-    [SerializeField] float enemyAmountMultiplier = 1.2f;
-    [SerializeField] float enemyStatsAdditive = 0.2f;
+    [SerializeField] float enemyAmountExponent = 0.6f;
+    [SerializeField] float enemyStatsExponent = 0.5f;
     private int currentWave = 1;
-    private int enemiesInWave { get { return Mathf.CeilToInt(initialEnemies * Mathf.Pow(enemyAmountMultiplier, (currentWave - 1))); } }
+    private int enemiesInWave { get { return Mathf.CeilToInt(initialEnemies * Mathf.Pow((currentWave), enemyAmountExponent)); } }
     bool wavesPaused = true;
+
+    List<ModuleStatsTracker> moduleStatsTrackers;
     void Start()
     {
         enemiesLeftInWave = new List<GameObject>();
         sceneCamera = Camera.main;
+
+        moduleStatsTrackers = new List<ModuleStatsTracker>();
     }
 
     private float waveStartTime;
 
     void Update()
     {
-        if (enemiesLeftInWave.Count <= 0 && wavesPaused == false)
+        if (enemiesLeftInWave.Count <= 0 && !wavesPaused)
         {
             WaveCompleted();
+        }
+        if (!wavesPaused)
+        {
+            foreach (var tracker in moduleStatsTrackers)
+            {
+                tracker.UpdateEquipped(Time.deltaTime);
+            }
         }
     }
 
@@ -106,7 +117,7 @@ public class WaveManager : MonoBehaviour
             int enemyType = Random.Range(0, enemyPrefabs.Count);
 
             GameObject enemy = Instantiate(enemyPrefabs[enemyType], spawnPosition, Quaternion.identity, transform);
-            enemy.GetComponent<EnemyHealth>().SetStats((currentWave-2) * enemyStatsAdditive);
+            enemy.GetComponent<EnemyHealth>().SetStats(Mathf.Pow((currentWave), enemyStatsExponent));
             enemiesLeftInWave.Add(enemy);
         }
 
@@ -116,6 +127,12 @@ public class WaveManager : MonoBehaviour
         wavesPaused = false;
 
         shipDroneManager.SpawnDrones();
+
+        foreach (RectTransform module in moduleGrid)
+        {
+            if (module.GetComponent<UIShipModule>()?.moduleStatsTracker != null)
+                moduleStatsTrackers.Add(module.GetComponent<UIShipModule>().moduleStatsTracker);
+        }
     }
 
     private PlayerHealth GetPlayerHealth()

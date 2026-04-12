@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -17,6 +18,8 @@ public class PlayerShip : ShipMovement
     private InputAction targetAction;
     private InputAction rotateAction;
 
+
+    List<(ShipGenome genome, ModuleStatsTracker tracker)> genomeTrackers;
     protected override void OnStart()
     {
         base.OnStart();
@@ -26,6 +29,8 @@ public class PlayerShip : ShipMovement
         rotateAction = InputSystem.actions.FindAction("Rotate");
 
         rotateAction.Enable();
+
+        genomeTrackers = new List<(ShipGenome, ModuleStatsTracker)>();
     }
     void FixedUpdate()
     {
@@ -43,7 +48,13 @@ public class PlayerShip : ShipMovement
             if (Vector2.Distance((Vector2)transform.position, mouseWorldPosition) > 0.2f)
             {
                 rigidbodyThis.linearVelocity = Vector2.zero;
-                rigidbodyThis.MovePosition(rigidbodyThis.position + targetDirection * Speed * Time.fixedDeltaTime);
+                rigidbodyThis.MovePosition(rigidbodyThis.position + targetDirection * Speed * Time.fixedDeltaTime); 
+
+                foreach (var trackerPair in genomeTrackers)
+                {
+                    if (trackerPair.tracker != null && trackerPair.genome != null)
+                        trackerPair.tracker.RegisterDistanceMoved(trackerPair.genome.speed * Time.fixedDeltaTime);
+                }
             }
         }
 
@@ -82,7 +93,7 @@ public class PlayerShip : ShipMovement
         // Auto-stabilization
         rigidbodyThis.AddTorque(-rigidbodyThis.angularVelocity * angularDamping, ForceMode2D.Force);
     }
-    public void SetStats(ShipMobilityStats shipMobilityStats)
+    public void SetStats(ShipMobilityStats shipMobilityStats, (ShipGenome genome, ModuleStatsTracker tracker)[] genomeTrackers)
     {
         //Stats
         speed = shipMobilityStats.speed / 20;//Adjust genome stats to gameplay stats       Max speed in settings would be good if it was reduced(50?)
@@ -94,5 +105,7 @@ public class PlayerShip : ShipMovement
         rigidbodyThis.inertia = inertia;
 
         speed = Mathf.Min(speed, 4);
+
+        this.genomeTrackers = genomeTrackers.ToList();
     }
 }

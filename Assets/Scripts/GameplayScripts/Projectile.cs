@@ -11,6 +11,10 @@ public class Projectile : MonoBehaviour
 
     private string opponentTag;
 
+    //WeaponStatsTracker weaponStatsTracker;
+    ModuleStatsTracker moduleStatsTracker;
+    int weaponGenomeID = -1;
+
     public void SetInitialValues(int damage, float velocity, float range, float aoeRadius, EffectType effectType, float effectStrength, string opponentTag)
     {
         this.damage = damage;
@@ -23,7 +27,34 @@ public class Projectile : MonoBehaviour
 
         this.opponentTag = opponentTag;
     }
+    public void SetInitialValues(int damage, float velocity, float range, float aoeRadius, EffectType effectType, float effectStrength, string opponentTag, ModuleStatsTracker moduleStatsTracker)
+    {
+        this.damage = damage;
+        gameObject.GetComponent<Rigidbody2D>().linearVelocity = transform.up * velocity;
+        lifeTime = range / velocity;
+        this.aoeRadius = aoeRadius;
 
+        this.effectType = effectType;
+        this.effectStrength = effectStrength;
+
+        this.opponentTag = opponentTag;
+
+        this.moduleStatsTracker = moduleStatsTracker;
+    }
+    public void SetInitialValues(int damage, float velocity, float range, float aoeRadius, EffectType effectType, float effectStrength, string opponentTag, int weaponGenomeID)
+    {
+        this.damage = damage;
+        gameObject.GetComponent<Rigidbody2D>().linearVelocity = transform.up * velocity;
+        lifeTime = range / velocity;
+        this.aoeRadius = aoeRadius;
+
+        this.effectType = effectType;
+        this.effectStrength = effectStrength;
+
+        this.opponentTag = opponentTag;
+
+        this.weaponGenomeID = weaponGenomeID;
+    }
     private void Update()
     {
         lifeTime -= Time.deltaTime;
@@ -37,7 +68,20 @@ public class Projectile : MonoBehaviour
 
         if (collidedObject.CompareTag(opponentTag))
         {
-            collidedObject.GetComponentInParent<ShipHealth>().TakeDamage(damage);
+            if (moduleStatsTracker != null)
+                moduleStatsTracker.RegisterDroneDamageDealt(damage);
+            if (weaponGenomeID != -1)
+            {
+                CombatEventRouter.Instance.ReportWeaponDamage(weaponGenomeID, damage, Vector2.Distance(transform.position, GameObject.Find("Ship").transform.position));
+            }
+            //else if (weaponStatsTracker!= null)
+            //    weaponStatsTracker.RegisterDamage(damage); //not sure if this one is needed
+
+            if(collidedObject.GetComponentInParent<ShipHealth>().TakeDamage(damage))
+            {
+                if (weaponGenomeID != -1)
+                    CombatEventRouter.Instance.ReportWeaponKill(weaponGenomeID);
+            }
 
             if (effectType == EffectType.Burn)
                 collidedObject.GetComponentInParent<StatusEffectHandler>().ApplyEffect(effectType, effectStrength * damage / 4);

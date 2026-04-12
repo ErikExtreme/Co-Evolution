@@ -7,7 +7,9 @@ public class ShipBlueprint : MonoBehaviour
 {
     (WeaponGenome genome, WeaponStatsTracker tracker)[,] weaponsArray;
     (ShipGenome genome, ModuleStatsTracker tracker)[] modulesArray;
+
     public WeaponBoost[,] weaponBoosts;
+    public float[,] weaponBoostTier;
 
     [SerializeField] WaveManager waveManager;
     [SerializeField] GameObject weaponPrefab;
@@ -33,6 +35,7 @@ public class ShipBlueprint : MonoBehaviour
         weaponsArray = new (WeaponGenome genome, WeaponStatsTracker tracker)[maxWeaponGridSize, maxWeaponGridSize];
         modulesArray = new (ShipGenome genome, ModuleStatsTracker tracker)[moduleListSize];
         weaponBoosts = new WeaponBoost[maxWeaponGridSize, maxWeaponGridSize];
+        weaponBoostTier = new float[maxWeaponGridSize, maxWeaponGridSize];
 
         hashingSeed = (int)System.DateTime.Now.Ticks;
 
@@ -60,6 +63,8 @@ public class ShipBlueprint : MonoBehaviour
         currentGridHeight += genome.gridHeight;
         totalSpecialDensity += genome.specialTileDensity;
 
+        float boostTier = (CurrentGridHeight * CurrentGridWidth) >= 12 ? ((CurrentGridHeight * CurrentGridWidth) >= 30 ? 1 : 2) : 3;
+
         for (int i = 0; i < MaxWeaponGridSize; i++)
             for (int j = 0; j < MaxWeaponGridSize; j++)
             {
@@ -68,8 +73,7 @@ public class ShipBlueprint : MonoBehaviour
                 GameObject cell = gridLayoutGroup.GetChild(index).gameObject;
                 cell.SetActive(shouldBeActive);
 
-                if (cell.CompareTag("PlacementPoint") && shouldBeActive)
-                    ToggleBoost(i, j, cell);
+                ToggleBoost(i, j, cell, boostTier);
             }
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75 + 26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, CurrentGridHeight * 75 + 26);//Hard coded, 75 = the height of a cell, 26 = random padding the layoutgroup has
@@ -88,6 +92,8 @@ public class ShipBlueprint : MonoBehaviour
         modulesArray[pos].genome = null;
         modulesArray[pos].tracker = null;
 
+        float boostTier = (CurrentGridHeight * CurrentGridWidth) >= 12 ? ((CurrentGridHeight * CurrentGridWidth) >= 30 ? 1 : 2) : 3;
+
         for (int i = 0; i < MaxWeaponGridSize; i++)
             for (int j = 0; j < MaxWeaponGridSize; j++)
             {
@@ -98,7 +104,7 @@ public class ShipBlueprint : MonoBehaviour
                 cell.SetActive(shouldBeActive);
 
                 if (cell.CompareTag("PlacementPoint") && shouldBeActive)
-                    ToggleBoost(i, j, cell);
+                    ToggleBoost(i, j, cell, boostTier);
             }
 
         gridLayoutGroup.SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, CurrentGridWidth * 75 + 26);//Hard coded, 75 = the width of a cell, 26 = random padding the layoutgroup has
@@ -127,6 +133,7 @@ public class ShipBlueprint : MonoBehaviour
                 weaponScript.tracker = weaponsArray[hori, vert].tracker;
                 weaponScript.shipHealthScript = shipHealthScript;//Separate out energy from health script?
                 weaponScript.activeBoost = weaponBoosts[hori, vert];
+                weaponScript.boostTier = weaponBoostTier[hori, vert];
 
                 Vector2 originOffset = new Vector2(CurrentGridWidth - 1, CurrentGridHeight - 1) / 2f;
                 Vector2 position = (new Vector2(hori, CurrentGridHeight - 1 - vert) - originOffset);
@@ -135,8 +142,10 @@ public class ShipBlueprint : MonoBehaviour
 
 
         var shipStats = CalculateShipStats();
-        shipHealthScript.SetStats(shipStats.shipCoreStats);
-        gameObject.GetComponent<PlayerShip>().SetStats(shipStats.shipMobilityStats);
+
+
+        shipHealthScript.SetStats(shipStats.shipCoreStats, modulesArray);
+        gameObject.GetComponent<PlayerShip>().SetStats(shipStats.shipMobilityStats,modulesArray);
         gameObject.GetComponent<ShipDroneManager>().SetStats(shipStats.shipDroneStats);
 
         // Calculate and register module synergy metrics
@@ -181,7 +190,7 @@ public class ShipBlueprint : MonoBehaviour
 
             shipCoreStats.Add(genome.hullHP, genome.armor, genome.shieldCapacity, genome.shieldRegen, genome.powerCapacity, genome.powerRegen, genome.evasion);
             shipMobilityStats.Add(genome.speed, genome.turnRate, genome.mass, genome.inertia);
-            shipDroneStats.Add(genome.droneCount, genome.droneSpeed, genome.droneDurability, genome.droneAggression);
+            shipDroneStats.Add(genome.droneCount, genome.droneSpeed, genome.droneDurability, genome.droneAggression, module.tracker);
         }
 
         return (shipCoreStats, shipMobilityStats, shipDroneStats);
@@ -195,9 +204,7 @@ public class ShipBlueprint : MonoBehaviour
             if (weapon.genome == null)
                 continue;
 
-            float burstDuration = (weapon.genome.burstSize / weapon.genome.fireRate);
-
-            consumption += (weapon.genome.powerCost * 1.66f) / (weapon.genome.cooldownTime + burstDuration);
+            consumption += weapon.genome.powerCost;
         }
 
         return consumption;
@@ -215,7 +222,7 @@ public class ShipBlueprint : MonoBehaviour
         return hash;
 
     }
-    public void ToggleBoost(int xPos, int yPos, GameObject cell)
+    private void ToggleBoost(int xPos, int yPos, GameObject cell, float powerTier)
     {
         //Gets if cell should have boost
         int hash = HashCell(xPos + 1, yPos + 1, hashingSeed);//+1 cause it stats at 0
@@ -226,12 +233,16 @@ public class ShipBlueprint : MonoBehaviour
             range2 = Mathf.Clamp(range2, 0, 0.9999f);
             int index = 1 + Mathf.FloorToInt(range2 * (boostTypeAmount - 1));
             weaponBoosts[xPos, yPos] = (WeaponBoost)index;
+            weaponBoostTier[xPos, yPos] = powerTier;
         }
         else
             weaponBoosts[xPos, yPos] = WeaponBoost.None;
 
-
-        //Visualy show potential boost
+        if (cell.CompareTag("PlacementPoint"))
+            ToggleBoostVisuals(xPos, yPos, cell);
+    }
+    public void ToggleBoostVisuals(int xPos, int yPos, GameObject cell)
+    {
         bool boostActive = weaponBoosts[xPos, yPos] != WeaponBoost.None;
 
         cell.transform.GetChild(0).gameObject.SetActive(boostActive);
@@ -252,16 +263,18 @@ public class ShipBlueprint : MonoBehaviour
             case WeaponBoost.LowerHeatGeneration:
                 boostColor = Color.blue;
                 break;
-            case WeaponBoost.MoreDamageMoreHeat:
-                boostColor = Color.darkRed;
-                break;
-            case WeaponBoost.BiggerAOELessBurstRate:
-                boostColor = Color.purple;
-                break;
+            //case WeaponBoost.MoreDamageMoreHeat:
+            //    boostColor = Color.darkRed;
+            //    break;
+            //case WeaponBoost.BiggerAOELessBurstRate:
+            //    boostColor = Color.purple;
+            //    break;
             default:
                 break;
         }
-        boostColor.a = 0.7f;
+
+        float boostTier = weaponBoostTier[xPos, yPos];
+        boostColor.a = boostTier == 1 ? 0.4f : (boostTier == 2 ? 0.65f : 0.9f);
         cell.transform.GetChild(0).GetComponent<Image>().color = boostColor;
     }
 }
@@ -311,13 +324,15 @@ public class ShipMobilityStats
 //}
 public class ShipDroneStats
 {
-    public List<(int count, float speed, int durability, float aggression)> availableDrones;
+    public List<(int count, float speed, int durability, float aggression, ModuleStatsTracker tracker)> availableDrones;
+    public List<ModuleStatsTracker> trackers;
     public ShipDroneStats()
     {
-        availableDrones = new List<(int count, float speed, int durability, float aggression)>();
+        availableDrones = new List<(int count, float speed, int durability, float aggression, ModuleStatsTracker tracker)>();
+        trackers = new List<ModuleStatsTracker>();
     }
-    public void Add(int droneCount, float droneSpeed, int droneDurability, float droneAggression)
+    public void Add(int droneCount, float droneSpeed, int droneDurability, float droneAggression, ModuleStatsTracker moduleTracker)
     {
-        availableDrones.Add((droneCount, droneSpeed / 10, droneDurability, droneAggression));
+        availableDrones.Add((droneCount, droneSpeed / 10, droneDurability, droneAggression,moduleTracker));
     }
 }

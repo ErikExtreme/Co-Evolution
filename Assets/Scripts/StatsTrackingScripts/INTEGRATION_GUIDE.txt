@@ -1,0 +1,312 @@
+// Integration Guide: ModuleStatsTracker New Metrics System
+// 
+// This file documents how to integrate the new universal metrics system into your gameplay code.
+// The new metrics are: damageEfficiency, survivalContribution, offensiveSynergy, 
+// powerEfficiency, roleFulfillment, battleDuration, survivalSuccess
+
+// ============================================================================
+// 1. BATTLE START - Call when a wave/combat starts
+// ============================================================================
+// In your WaveManager or battle controller:
+/*
+public class WaveManager : MonoBehaviour
+{
+    private void StartWave()
+    {
+        // ... setup code ...
+        
+        if (BattleMetricsRecorder.Instance != null)
+            BattleMetricsRecorder.Instance.BeginBattle();
+    }
+}
+*/
+
+// ============================================================================
+// 2. DAMAGE MITIGATION - Call when module prevents/reduces damage
+// ============================================================================
+// In your PlayerHealth.cs TakeDamage() method:
+/*
+public void TakeDamage(int damage)
+{
+    float damageBeforeMitigation = damage;
+    
+    // Evasion
+    if (Random.value < evasion)
+    {
+        // Report module(s) responsible for evasion
+        foreach (var moduleId in activeModuleIds)
+        {
+            CombatEventRouter.Instance.ReportModuleDamageMitigated(moduleId, damage);
+        }
+        return;
+    }
+
+    // Shield damage
+    if (Shield >= damage)
+    {
+        Shield -= damage;
+        float mitigatedDamage = damage;
+        
+        // Report to shield modules
+        foreach (var moduleId in GetShieldModuleIds())
+        {
+            CombatEventRouter.Instance.ReportModuleDamageMitigated(moduleId, mitigatedDamage);
+        }
+        return;
+    }
+    else
+    {
+        damage -= Shield;
+        Shield = 0;
+    }
+
+    // Armor mitigation
+    int armorReduction = Mathf.RoundToInt(Mathf.Max(armor * armorReduction, 0));
+    float armorMitigatedDamage = armorReduction;
+    damage -= armorReduction;
+    
+    // Report to armor/durability modules
+    foreach (var moduleId in GetArmorModuleIds())
+    {
+        CombatEventRouter.Instance.ReportModuleDamageMitigated(moduleId, armorMitigatedDamage);
+    }
+
+    Health -= Mathf.Max(damage, 1);
+
+    if (Health <= 0)
+        OutOfHealth();
+}
+*/
+
+// ============================================================================
+// 3. SURVIVAL TRACKING - Call periodically or at battle end
+// ============================================================================
+// In your battle controller:
+/*
+void Update()
+{
+    // ... every frame or every N frames ...
+    if (battleActive && BattleMetricsRecorder.Instance != null)
+    {
+        float elapsedTime = Time.time - battleStartTime;
+        float totalBattleTime = /* estimated/tracked total */;
+        
+        foreach (var (genome, tracker) in ModuleManager.Instance.GetAllModules())
+        {
+            if (tracker != null)
+            {
+                BattleMetricsRecorder.Instance.RegisterModuleSurvivalTime(
+                    genome.id, 
+                    elapsedTime, 
+                    totalBattleTime
+                );
+            }
+        }
+    }
+}
+*/
+
+// ============================================================================
+// 4. OFFENSIVE SYNERGY - Track how modules enable weapons
+// ============================================================================
+// In your Weapon or weapon controller:
+/*
+public class Weapon : MonoBehaviour
+{
+    // Calculate how much grid/drone/power support we received
+    float CalculateOffensiveSynergy()
+    {
+        // Grid synergy: how much available grid space enabled this weapon
+        float gridUse = weaponGridSize / maxAvailableGridSize;
+        
+        // Drone synergy: how much drone support we have
+        float droneSupport = activeDroneCount / maxDroneCount;
+        
+        // Power synergy: ratio of available power to what we use
+        float powerAvailable = ship.Power / ship.PowerCapacity;
+        
+        float synergy = (gridUse * 0.4f) + (droneSupport * 0.3f) + (powerAvailable * 0.3f);
+        return Mathf.Clamp01(synergy);
+    }
+    
+    // Call at end of wave or periodically
+    void ReportSynergyToModules()
+    {
+        float synergy = CalculateOffensiveSynergy();
+        foreach (var moduleId in GetOffensiveSupportModuleIds())
+        {
+            if (BattleMetricsRecorder.Instance != null)
+                BattleMetricsRecorder.Instance.RegisterModuleOffensiveSynergy(moduleId, synergy);
+        }
+    }
+}
+*/
+
+// ============================================================================
+// 5. POWER EFFICIENCY - Track power economy
+// ============================================================================
+// In your power management system:
+/*
+public class PowerManager : MonoBehaviour
+{
+    void UpdatePowerMetrics()
+    {
+        float totalPowerAvailable = ship.Power;
+        float totalPowerConsumed = CalculateTotalPowerConsumption();
+        
+        foreach (var (genome, tracker) in ModuleManager.Instance.GetAllModules())
+        {
+            if (tracker != null && BattleMetricsRecorder.Instance != null)
+            {
+                BattleMetricsRecorder.Instance.RegisterModulePowerEfficiency(
+                    genome.id,
+                    totalPowerAvailable,
+                    totalPowerConsumed
+                );
+            }
+        }
+    }
+}
+*/
+
+// ============================================================================
+// 6. ROLE FULFILLMENT - Compare intended mapping to actual performance
+// ============================================================================
+// In your wave manager at battle end:
+/*
+void EndWave(bool playerSurvived)
+{
+    float battleDuration = Time.time - waveStartTime;
+    
+    foreach (var (genome, tracker) in ModuleManager.Instance.GetAllModules())
+    {
+        // Get module's intended role from genome
+        Vector3 intendedMapping = Mapping.MapGenome(genome);
+        
+        // Calculate actual performance mapping
+        Vector3 actualMapping = CalculateActualPerformanceMapping(tracker);
+        
+        // Register the difference
+        if (BattleMetricsRecorder.Instance != null)
+        {
+            BattleMetricsRecorder.Instance.RegisterModuleRoleFulfillment(
+                genome.id,
+                intendedMapping,
+                actualMapping
+            );
+        }
+    }
+    
+    // Register battle outcome
+    ModuleManager.Instance.RegisterBattleMetricsForAll(battleDuration, playerSurvived);
+}
+
+Vector3 CalculateActualPerformanceMapping(ModuleStatsTracker tracker)
+{
+    // Based on what the module actually achieved, map it to 3D space
+    // X = Durability contribution (HP, armor, shields provided)
+    // Y = Weapon platform (grid, power, drones enabled)
+    // Z = Stability (resource efficiency, consistency)
+    
+    float durability = track.damageEfficiency; // 0-1
+    float weaponPlatform = tracker.offensiveSynergy; // 0-1
+    float stability = tracker.powerEfficiency; // 0-1
+    
+    // Normalize to [-1, 1] range for each axis
+    float x = (durability * 2f) - 1f;
+    float y = (weaponPlatform * 2f) - 1f;
+    float z = (stability * 2f) - 1f;
+    
+    return new Vector3(x, y, z);
+}
+*/
+
+// ============================================================================
+// 7. COMPLETE EXAMPLE: Wave Manager Integration
+// ============================================================================
+/*
+public class WaveManager : MonoBehaviour
+{
+    private float waveStartTime;
+    private bool waveActive;
+
+    public void StartWave()
+    {
+        waveStartTime = Time.time;
+        waveActive = true;
+        
+        // Reset metrics for new wave
+        ModuleManager.Instance.ResetMetricsForAll();
+        
+        // Begin metrics recording
+        if (BattleMetricsRecorder.Instance != null)
+            BattleMetricsRecorder.Instance.BeginBattle();
+        
+        // ... spawn enemies, etc ...
+    }
+
+    public void EndWave(bool playerSurvived)
+    {
+        if (!waveActive)
+            return;
+            
+        waveActive = false;
+        float waveDuration = Time.time - waveStartTime;
+
+        // Finalize all module metrics
+        foreach (var (genome, tracker) in ModuleManager.Instance.GetAllModules())
+        {
+            if (tracker == null || genome == null)
+                continue;
+
+            // 1. Survival time
+            tracker.RegisterSurvivalContribution(
+                playerSurvived ? waveDuration : (Time.time - waveStartTime),
+                waveDuration
+            );
+
+            // 2. Role fulfillment
+            Vector3 intendedMapping = Mapping.MapGenome(genome);
+            Vector3 actualMapping = CalculateActualPerformanceMapping(tracker);
+            tracker.RegisterRoleFulfillment(Vector3.Distance(intendedMapping, actualMapping));
+
+            // 3. Battle outcome
+            tracker.RegisterBattleOutcome(waveDuration, playerSurvived);
+        }
+
+        // End metrics recording
+        if (BattleMetricsRecorder.Instance != null)
+            BattleMetricsRecorder.Instance.EndBattle(playerSurvived);
+
+        // Now evolution can use these metrics for fitness evaluation
+        // EvolutionManager.Evolve() will calculate new fitness scores
+    }
+}
+*/
+
+// ============================================================================
+// NORMALIZATION REFERENCE
+// ============================================================================
+// When you register metrics, consider typical ranges for your game:
+// 
+// damageEfficiency: damage prevented per stat point
+//   Typical range: 0-100+ depending on difficulty
+//   Normalize with: value / 50f (adjust based on your balancing)
+//
+// survivalContribution: fraction of battle ship stayed alive
+//   Range: [0, 1] - naturally normalized
+//   Use directly in fitness calculation
+//
+// offensiveSynergy: how much modules enabled weapons
+//   Range: [0, 1] - constrained by RegisterOffensiveSynergy clamping
+//   Use directly in fitness calculation
+//
+// powerEfficiency: power available / power consumed
+//   Typical range: 0.5 to 3.0 (higher = better efficiency)
+//   Normalize with: Mathf.Clamp01(value / 2.0f)
+//
+// roleFulfillment: already normalized [0, 1] by RegisterRoleFulfillment
+//   No additional normalization needed
+//
+// survivalSuccess: 1.0 = survived, 0.0 = died
+//   Range: [0, 1] - use directly

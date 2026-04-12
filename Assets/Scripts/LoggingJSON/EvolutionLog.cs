@@ -59,6 +59,8 @@ public class WeaponGenomeLog
     public int parentId;
 
     public float fitness;
+    public float novelty;
+    public float finalFitness;
     public float statScore;
     public float trackerScore;
     public float alignmentScore;
@@ -82,7 +84,19 @@ public class WeaponGenomeLog
     public float statusEffectStrength;
     public float aoeRadius;
 
-    // Tracker data (only meaningful for global population)
+    // New universal tracker metrics
+    public float damageEfficiency;
+    public float heatManagementEfficiency;
+    public float hitRatio;
+    public float effectivenessPerCycle;
+    public float targetingTimeEfficiency;
+    public float targetUtility;
+    public float survivalContribution;
+    public float roleFulfillment;
+    public float battleDuration;
+    public float survivalSuccess;
+
+    // Legacy metrics (kept for backward compatibility)
     public float timeEquipped;
     public float damageDealt;
     public int kills;
@@ -96,6 +110,8 @@ public class ShipGenomeLog
     public int parentId;
 
     public float fitness;
+    public float novelty;
+    public float finalFitness;
     public float statScore;
     public float trackerScore;
     public float alignmentScore;
@@ -122,7 +138,16 @@ public class ShipGenomeLog
     public int droneDurability;
     public float droneAggression;
 
-    // Tracker data (only meaningful for global population)
+    // New universal tracker metrics
+    public float damageEfficiency;
+    public float survivalContribution;
+    public float offensiveSynergy;
+    public float powerEfficiency;
+    public float roleFulfillment;
+    public float battleDuration;
+    public float survivalSuccess;
+
+    // Legacy metrics (kept for backward compatibility)
     public float timeEquipped;
     public float damageAvoided;
     public float powerSaved;
@@ -221,6 +246,8 @@ public static class EvolutionLogger
             parentId = g.parentId,
 
             fitness = g.fitness,
+            novelty = g.novelty,
+            finalFitness = g.finalFitness,
             statScore = g.statScore,
             trackerScore = g.trackerScore,
             alignmentScore = g.alignmentScore,
@@ -244,6 +271,19 @@ public static class EvolutionLogger
             statusEffectStrength = g.statusEffectStrength,
             aoeRadius = g.aoeRadius,
 
+            // New universal metrics
+            damageEfficiency = includeTracker ? t?.damageEfficiency ?? 0f : 0f,
+            heatManagementEfficiency = includeTracker ? t?.heatManagementEfficiency ?? 0f : 0f,
+            hitRatio = includeTracker ? t?.hitRatio ?? 0f : 0f,
+            effectivenessPerCycle = includeTracker ? t?.effectivenessPerCycle ?? 0f : 0f,
+            targetingTimeEfficiency = includeTracker ? t?.targetingTimeEfficiency ?? 0f : 0f,
+            targetUtility = includeTracker ? t?.targetUtility ?? 0f : 0f,
+            survivalContribution = includeTracker ? t?.survivalContribution ?? 0f : 0f,
+            roleFulfillment = includeTracker ? t?.roleFulfillment ?? 0f : 0f,
+            battleDuration = includeTracker ? t?.battleDuration ?? 0f : 0f,
+            survivalSuccess = includeTracker ? t?.survivalSuccess ?? 0f : 0f,
+
+            // Legacy metrics
             timeEquipped = includeTracker ? t?.timeEquipped ?? 0f : 0f,
             damageDealt = includeTracker ? t?.damageDealt ?? 0f : 0f,
             kills = includeTracker ? t?.kills ?? 0 : 0,
@@ -266,6 +306,8 @@ public static class EvolutionLogger
             parentId = g.parentId,
 
             fitness = g.fitness,
+            novelty = g.novelty,
+            finalFitness = g.finalFitness,
             statScore = g.statScore,
             trackerScore = g.trackerScore,
             alignmentScore = g.alignmentScore,
@@ -292,10 +334,20 @@ public static class EvolutionLogger
             droneDurability = g.droneDurability,
             droneAggression = g.droneAggression,
 
-            //timeEquipped = includeTracker ? t?.timeEquipped ?? 0f : 0f,
-            //damageAvoided = includeTracker ? t?.damageAvoided ?? 0f : 0f,
-            //powerSaved = includeTracker ? t?.powerSaved ?? 0f : 0f,
-            //heatReduced = includeTracker ? t?.heatReduced ?? 0f : 0f
+            // New universal metrics
+            damageEfficiency = includeTracker ? t?.damageEfficiency ?? 0f : 0f,
+            survivalContribution = includeTracker ? t?.survivalContribution ?? 0f : 0f,
+            offensiveSynergy = includeTracker ? t?.offensiveSynergy ?? 0f : 0f,
+            powerEfficiency = includeTracker ? t?.powerEfficiency ?? 0f : 0f,
+            roleFulfillment = includeTracker ? t?.roleFulfillment ?? 0f : 0f,
+            battleDuration = includeTracker ? t?.battleDuration ?? 0f : 0f,
+            survivalSuccess = includeTracker ? t?.survivalSuccess ?? 0f : 0f,
+
+            // Legacy metrics
+            timeEquipped = includeTracker ? t?.timeEquipped ?? 0f : 0f,
+            damageAvoided = includeTracker ? t?.damageAvoided ?? 0f : 0f,
+            powerSaved = includeTracker ? t?.powerSaved ?? 0f : 0f,
+            heatReduced = includeTracker ? t?.heatReduced ?? 0f : 0f
         };
     }
 

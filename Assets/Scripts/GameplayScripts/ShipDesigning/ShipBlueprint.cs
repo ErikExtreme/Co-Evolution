@@ -148,9 +148,32 @@ public class ShipBlueprint : MonoBehaviour
         gameObject.GetComponent<PlayerShip>().SetStats(shipStats.shipMobilityStats,modulesArray);
         gameObject.GetComponent<ShipDroneManager>().SetStats(shipStats.shipDroneStats);
 
+        // Calculate and register module synergy metrics
+        RegisterModuleSynergyMetrics();
 
         constructionCanvas.gameObject.SetActive(false);
         waveManager.StartWave();
+    }
+
+    private void RegisterModuleSynergyMetrics()
+    {
+        if (BattleMetricsRecorder.Instance == null)
+            return;
+
+        // Calculate grid utilization synergy (how much of available grid is used)
+        float gridSynergy = (CurrentGridWidth * CurrentGridHeight) > 0 
+            ? (float)(CurrentGridWidth * CurrentGridHeight) / (MaxWeaponGridSize * MaxWeaponGridSize)
+            : 0f;
+
+        // Register synergy for all modules
+        // All modules share in the benefits of the overall grid synergy
+        foreach (var (genome, tracker) in modulesArray)
+        {
+            if (genome != null)
+            {
+                BattleMetricsRecorder.Instance.RegisterModuleOffensiveSynergy(genome.id, gridSynergy);
+            }
+        }
     }
 
     public (ShipCoreStats shipCoreStats, ShipMobilityStats shipMobilityStats, ShipDroneStats shipDroneStats) CalculateShipStats()

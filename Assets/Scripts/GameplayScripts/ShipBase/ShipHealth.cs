@@ -55,28 +55,58 @@ public class ShipHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        int originalDamage = damage;
+
         //Evasion
         if (Random.value < evasion)
+        {
+            // Report evasion as damage mitigation to all modules
+            ReportDamageMitigated(originalDamage);
             return;
+        }
 
         //Shield damage
         if (Shield >= damage)
         {
             Shield -= damage;
+            // Report shield mitigation to modules
+            ReportDamageMitigated(originalDamage);
             return;
         }
         else
         {
+            // Report shield portion to modules
+            ReportDamageMitigated(Shield);
             damage -= Shield;
             Shield = 0;
         }
 
         //Hull damage
-        damage -= Mathf.RoundToInt(Mathf.Max(armor * armorReduction, 0));
+        int armorMitigation = Mathf.RoundToInt(Mathf.Max(armor * armorReduction, 0));
+        damage -= armorMitigation;
+        
+        // Report armor mitigation to modules
+        ReportDamageMitigated(armorMitigation);
+        
         Health -= Mathf.Max(damage, 1);
 
         if (Health <= 0)
             OutOfHealth();
+    }
+
+    private void ReportDamageMitigated(int mitigatedAmount)
+    {
+        // Report to all modules (they all contribute to defense)
+        if (CombatEventRouter.Instance != null && ModuleManager.Instance != null)
+        {
+            foreach (var (genome, tracker) in ModuleManager.Instance.GetAllModules())
+            {
+                if (genome != null)
+                {
+                    CombatEventRouter.Instance.ReportModuleDamageMitigated(genome.id, mitigatedAmount);
+                }
+            }
+        }
     }
     public void RegainHealth(int regainAmount)
     {

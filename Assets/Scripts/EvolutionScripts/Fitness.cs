@@ -58,12 +58,46 @@ public static class Fitness
         Vector3 axis = Mapping.MapGenome(g);
         float statScore = axis.magnitude / Mathf.Sqrt(3f);
 
-        // 2. Tracker performance
-        float dmgNorm = Mathf.Clamp01(t.damageDealt / 5000f);
-        float killNorm = Mathf.Clamp01(t.kills / 50f);
-        float rangeNorm = Mathf.Clamp01(t.avgEffectiveRange / 40f);
+        // 2. Tracker performance using new universal metrics
+        // Normalize each metric to [0, 1] range with reasonable divisors
+        
+        // damageEfficiency: damage per power cost (higher is better)
+        // Typical range: 10-100 damage per power cost
+        float efficiencyNorm = Mathf.Clamp01(t.damageEfficiency / 50f);
+        
+        // heatManagementEfficiency: damage per heat (higher is better)
+        // Typical range: 5-50 damage per heat
+        float heatNorm = Mathf.Clamp01(t.heatManagementEfficiency / 25f);
+        
+        // hitRatio: already [0, 1], direct use
+        float accuracyNorm = Mathf.Clamp01(t.hitRatio);
+        
+        // effectivenessPerCycle: damage per cycle time
+        // Typical range: 10-100 damage per second
+        float cycleNorm = Mathf.Clamp01(t.effectivenessPerCycle / 50f);
+        
+        // targetingTimeEfficiency: already [0, 1], direct use
+        float utilizationNorm = Mathf.Clamp01(t.targetingTimeEfficiency);
+        
+        // targetUtility: already [0, 1], direct use
+        float targetNorm = Mathf.Clamp01(t.targetUtility);
+        
+        // roleFulfillment: already [0, 1], direct use
+        float roleNorm = Mathf.Clamp01(t.roleFulfillment);
+        
+        // survivalContribution: already [0, 1], direct use
+        float survivalNorm = Mathf.Clamp01(t.survivalContribution);
 
-        float trackerScore = (dmgNorm * 0.5f) + (killNorm * 0.3f) + (rangeNorm * 0.2f);
+        // Weighted tracker score: balance efficiency, accuracy, and outcome
+        float trackerScore = 
+            (efficiencyNorm * 0.2f) +        // Power efficiency
+            (heatNorm * 0.15f) +             // Heat efficiency
+            (accuracyNorm * 0.15f) +         // Hit ratio
+            (cycleNorm * 0.15f) +            // Damage per cycle
+            (utilizationNorm * 0.1f) +       // Time spent attacking
+            (targetNorm * 0.1f) +            // Targets engaged
+            (roleNorm * 0.05f) +             // Role fulfillment
+            (survivalNorm * 0.1f);           // Survival contribution
 
         // 3. Player alignment
         Vector3 playerAxis = Mapping.PlayerPreferenceWeaponMapping(p);
@@ -90,12 +124,25 @@ public static class Fitness
         Vector3 axis = Mapping.MapGenome(g);
         float statScore = axis.magnitude / Mathf.Sqrt(3f);
 
-        // 2. Tracker performance
-        float avoidNorm = Mathf.Clamp01(t.damageAvoided / 3000f);
-        float powerNorm = Mathf.Clamp01(t.powerSaved / 2000f);
-        float heatNorm = Mathf.Clamp01(t.heatReduced / 2000f);
+        // 2. Tracker performance using new universal metrics
+        // damageEfficiency: how much damage prevented per stat point invested
+        float efficiencyNorm = Mathf.Clamp01(t.damageEfficiency / 50f);
+        
+        // survivalContribution: what fraction of battle kept ship alive
+        float survivalNorm = Mathf.Clamp01(t.survivalContribution);
+        
+        // offensiveSynergy: how well this module enabled weapons
+        float synergyNorm = Mathf.Clamp01(t.offensiveSynergy);
+        
+        // roleFulfillment: how well module matched its intended role
+        float roleFulfillmentNorm = Mathf.Clamp01(t.roleFulfillment);
 
-        float trackerScore = (avoidNorm * 0.5f) + (powerNorm * 0.3f) + (heatNorm * 0.2f);
+        // Weighted tracker score: emphasis on survival & efficiency
+        float trackerScore = 
+            (efficiencyNorm * 0.35f) +      // Damage prevention per stat
+            (survivalNorm * 0.40f) +        // Overall survival contribution
+            (synergyNorm * 0.15f) +         // Support for weapons
+            (roleFulfillmentNorm * 0.10f);  // Role alignment
 
         // 3. Player alignment
         Vector3 playerAxis = Mapping.PlayerPreferenceShipMapping(p);

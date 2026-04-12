@@ -33,6 +33,8 @@ public class WaveManager : MonoBehaviour
         sceneCamera = Camera.main;
     }
 
+    private float waveStartTime;
+
     void Update()
     {
         if (enemiesLeftInWave.Count <= 0 && wavesPaused == false)
@@ -40,11 +42,27 @@ public class WaveManager : MonoBehaviour
             WaveCompleted();
         }
     }
+
     private void WaveCompleted()
     {
         if (currentWave < 5 && currentWave >= 0)
             moduleGrid.GetChild(currentWave).gameObject.SetActive(true);
 
+        // Record battle metrics before wave ends
+        float waveDuration = Time.time - waveStartTime;
+        bool playerSurvived = GetPlayerHealth()?.Health > 0;
+        
+        if (BattleMetricsRecorder.Instance != null && ModuleManager.Instance != null)
+        {
+            ModuleManager.Instance.RegisterBattleMetricsForAll(waveDuration, playerSurvived);
+            BattleMetricsRecorder.Instance.EndBattle(playerSurvived);
+        }
+
+        if (BattleWeaponMetricsRecorder.Instance != null && WeaponManager.Instance != null)
+        {
+            WeaponManager.Instance.RegisterBattleMetricsForAll(waveDuration, playerSurvived);
+            BattleWeaponMetricsRecorder.Instance.EndBattle(playerSurvived);
+        }
 
         wavesPaused = true;
         currentWave++;
@@ -53,9 +71,34 @@ public class WaveManager : MonoBehaviour
         upgradeSelectionCanvas.gameObject.SetActive(true);
         upgradeSelectionCanvas.GetComponent<UpgradeSelectionManager>().GetUpgrades();
     }
+
     public void StartWave()
     {
         gameplayCanvas.gameObject.SetActive(true);
+
+        // Start metrics recording
+        waveStartTime = Time.time;
+        if (BattleMetricsRecorder.Instance != null)
+        {
+            BattleMetricsRecorder.Instance.BeginBattle();
+        }
+
+        if (BattleWeaponMetricsRecorder.Instance != null)
+        {
+            BattleWeaponMetricsRecorder.Instance.BeginBattle();
+        }
+
+        // Reset metrics for all modules before starting
+        if (ModuleManager.Instance != null)
+        {
+            ModuleManager.Instance.ResetMetricsForAll();
+        }
+
+        // Reset metrics for all weapons before starting
+        if (WeaponManager.Instance != null)
+        {
+            WeaponManager.Instance.ResetMetricsForAll();
+        }
 
         for (int i = 0; i < enemiesInWave; i++)
         {
@@ -73,6 +116,11 @@ public class WaveManager : MonoBehaviour
         wavesPaused = false;
 
         shipDroneManager.SpawnDrones();
+    }
+
+    private PlayerHealth GetPlayerHealth()
+    {
+        return GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerHealth>();
     }
 
     private Vector2 RandomPointOutsideScreen(float objectWidth)

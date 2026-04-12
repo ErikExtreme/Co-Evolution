@@ -9,16 +9,6 @@ public class CombatEventRouter : MonoBehaviour
         Instance = this;
     }
 
-    public void ReportWeaponDamage(int id, float dmg, float distance)
-    {
-        WeaponManager.Instance.weapons[id].tracker.RegisterDamage(dmg, distance);
-    }
-
-    public void ReportWeaponKill(int id)
-    {
-        WeaponManager.Instance.weapons[id].tracker.RegisterKill();
-    }
-
     /// <summary>
     /// Report damage that was avoided/mitigated by a module's defensive stats.
     /// This updates the new damageEfficiency metric.

@@ -45,14 +45,14 @@ public class ShipHealth : MonoBehaviour
 
     public virtual bool TakeDamage(float damage)
     {
-        int originalDamage = damage;
+        float originalDamage = damage;
 
         //Evasion
         if (Random.value < evasion)
         {
             // Report evasion as damage mitigation to all modules
             ReportDamageMitigated(originalDamage);
-            return;
+            return false;
         }
 
         //Shield damage
@@ -61,7 +61,7 @@ public class ShipHealth : MonoBehaviour
             Shield -= damage;
             // Report shield mitigation to modules
             ReportDamageMitigated(originalDamage);
-            return;
+            return false;
         }
         else
         {
@@ -72,7 +72,7 @@ public class ShipHealth : MonoBehaviour
         }
 
         //Hull damage
-        int armorMitigation = Mathf.RoundToInt(Mathf.Max(armor * armorReduction, 0));
+        float armorMitigation = Mathf.Max(armor * armorReduction, 0);
         damage -= armorMitigation;
         
         // Report armor mitigation to modules
@@ -88,7 +88,7 @@ public class ShipHealth : MonoBehaviour
         return false;
     }
 
-    private void ReportDamageMitigated(int mitigatedAmount)
+    private void ReportDamageMitigated(float mitigatedAmount)
     {
         // Report to all modules (they all contribute to defense)
         if (CombatEventRouter.Instance != null && ModuleManager.Instance != null)

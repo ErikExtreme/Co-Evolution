@@ -75,6 +75,9 @@ public class WaveManager : MonoBehaviour
             BattleWeaponMetricsRecorder.Instance.EndBattle(playerSurvived);
         }
 
+        // Register individual weapon metrics
+        RegisterWeaponMetrics(waveDuration, playerSurvived);
+
         wavesPaused = true;
         currentWave++;
 
@@ -138,6 +141,51 @@ public class WaveManager : MonoBehaviour
     private PlayerHealth GetPlayerHealth()
     {
         return GameObject.FindGameObjectWithTag("Player")?.GetComponent<PlayerHealth>();
+    }
+
+    /// <summary>
+    /// Register all weapon metrics at the end of a battle.
+    /// </summary>
+    private void RegisterWeaponMetrics(float waveDuration, bool playerSurvived)
+    {
+        if (WeaponManager.Instance == null)
+            return;
+
+        foreach (var (genome, tracker) in WeaponManager.Instance.GetAllWeapons())
+        {
+            if (tracker != null && genome != null)
+            {
+                // Find the weapon script to get accumulated metrics
+                Weapon weaponScript = FindWeaponScript(genome.id);
+                if (weaponScript != null)
+                {
+                    // Register the battle metrics
+                    weaponScript.RegisterBattleMetrics(waveDuration);
+                    
+                    // Register survival outcome
+                    tracker.RegisterBattleOutcome(waveDuration, playerSurvived);
+                    
+                    // Register survival contribution (binary for now)
+                    tracker.RegisterSurvivalContribution(playerSurvived ? 1f : 0f);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Find the Weapon script instance by genome ID.
+    /// </summary>
+    private Weapon FindWeaponScript(int genomeId)
+    {
+        Weapon[] allWeapons = FindObjectsOfType<Weapon>();
+        foreach (var weapon in allWeapons)
+        {
+            if (weapon.weapon_Genome != null && weapon.weapon_Genome.id == genomeId)
+            {
+                return weapon;
+            }
+        }
+        return null;
     }
 
     private Vector2 RandomPointOutsideScreen(float objectWidth)

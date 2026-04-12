@@ -70,17 +70,20 @@ public class Projectile : MonoBehaviour
         {
             if (moduleStatsTracker != null)
                 moduleStatsTracker.RegisterDroneDamageDealt(damage);
+            
+            // Notify weapon of hit for metric tracking
             if (weaponGenomeID != -1)
             {
-                CombatEventRouter.Instance.ReportWeaponDamage(weaponGenomeID, damage, Vector2.Distance(transform.position, GameObject.Find("Ship").transform.position));
+                Weapon weaponScript = FindWeaponScript(weaponGenomeID);
+                if (weaponScript != null)
+                {
+                    weaponScript.OnProjectileHit(damage);
+                }
             }
-            //else if (weaponStatsTracker!= null)
-            //    weaponStatsTracker.RegisterDamage(damage); //not sure if this one is needed
 
             if(collidedObject.GetComponentInParent<ShipHealth>().TakeDamage(damage))
             {
-                if (weaponGenomeID != -1)
-                    CombatEventRouter.Instance.ReportWeaponKill(weaponGenomeID);
+                // Enemy died - don't need to report kill anymore, metrics handled at battle end
             }
 
             if (effectType == EffectType.Burn)
@@ -99,6 +102,22 @@ public class Projectile : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+    }
+
+    /// <summary>
+    /// Find the weapon script by genome ID for metric tracking.
+    /// </summary>
+    private Weapon FindWeaponScript(int genomeId)
+    {
+        Weapon[] allWeapons = FindObjectsOfType<Weapon>();
+        foreach (var weapon in allWeapons)
+        {
+            if (weapon.weapon_Genome != null && weapon.weapon_Genome.id == genomeId)
+            {
+                return weapon;
+            }
+        }
+        return null;
     }
     private void AoeCollision(GameObject hitObject)
     {

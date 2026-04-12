@@ -83,5 +83,12 @@ public class WeaponManager : MonoBehaviour
                 tracker.survivalSuccess = 0f;
             }
         }
+
+        // Also reset weapon script metrics
+        Weapon[] allWeapons = Object.FindObjectsOfType<Weapon>();
+        foreach (var weapon in allWeapons)
+        {
+            weapon.ResetMetrics();
+        }
     }
 }

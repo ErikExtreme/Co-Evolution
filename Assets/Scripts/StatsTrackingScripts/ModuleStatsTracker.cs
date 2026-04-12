@@ -123,18 +123,62 @@ public class ModuleStatsTracker
     [System.Obsolete("Use RegisterDamageEfficiency instead")]
     public void RegisterDamageAvoided(float amount)
     {
-        damageTaken += amount;
+        damageAvoided += amount;
     }
 
     [System.Obsolete("Use RegisterPowerEfficiency instead")]
     public void RegisterPowerSaved(float amount)
     {
-        droneDamageDealt += amount;
+        powerSaved += amount;
     }
 
     [System.Obsolete("Use RegisterSurvivalContribution instead")]
     public void RegisterHeatReduced(float amount)
     {
-        distanceMoved += amount;
+        heatReduced += amount;
+    }
+
+    /// <summary>
+    /// Register damage taken by the ship (used for module damage mitigation tracking).
+    /// This is a compatibility method for gameplay systems.
+    /// </summary>
+    [System.Obsolete("Damage tracking handled by new universal metrics system")]
+    public void RegisterDamageTaken(float damageAmount)
+    {
+        // This is tracked implicitly through damageEfficiency metric
+        // No action needed here as the new system handles this automatically
+    }
+
+    /// <summary>
+    /// Register distance moved by the ship (used for module tracking).
+    /// This is a compatibility method for gameplay systems.
+    /// </summary>
+    [System.Obsolete("Distance tracking handled by new universal metrics system")]
+    public void RegisterDistanceMoved(float distance)
+    {
+        // This is tracked implicitly through survival contribution
+        // No action needed here as the new system handles this automatically
+    }
+
+    /// <summary>
+    /// Register drone damage dealt (used by drone system).
+    /// This is a compatibility method for gameplay systems.
+    /// </summary>
+    [System.Obsolete("Drone damage tracking handled by new universal metrics system")]
+    public void RegisterDroneDamageDealt(float damage)
+    {
+        // This contributes to offensiveSynergy metric
+        // Tracked implicitly through the new system
+    }
+
+    /// <summary>
+    /// Register drone damage taken (used by drone system).
+    /// This is a compatibility method for gameplay systems.
+    /// </summary>
+    [System.Obsolete("Drone damage tracking handled by new universal metrics system")]
+    public void RegisterDroneDamageTaken(float damage)
+    {
+        // This contributes to defensive capability
+        // Tracked implicitly through the new system
     }
 }

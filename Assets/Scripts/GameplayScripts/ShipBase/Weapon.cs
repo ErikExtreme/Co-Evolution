@@ -45,6 +45,15 @@ public abstract class Weapon : MonoBehaviour
 
     ModuleStatsTracker moduleStatsTracker;
     protected int weaponGenomeID = -1;
+
+    // ===== Metric Tracking Fields =====
+    private float totalDamageDealt = 0f;
+    private float totalPowerCost = 0f;
+    private float totalHeatGenerated = 0f;
+    private int totalShotsFired = 0;
+    private int totalHits = 0;
+    private float activeFireTime = 0f;
+
     void Start()
     {
         OnStart();
@@ -77,7 +86,15 @@ public abstract class Weapon : MonoBehaviour
             currentHeat = Mathf.Max(currentHeat, 0);
         }
         else
+        {
             HandleShooting();
+            
+            // Track active firing time
+            if (target != null && target.gameObject.activeSelf && bullets_Left_In_Burst > 0)
+            {
+                activeFireTime += Time.deltaTime;
+            }
+        }
 
         if (currentHeat >= maxHeat)
         {
@@ -161,6 +178,10 @@ public abstract class Weapon : MonoBehaviour
         else
                     projectile_Instance.GetComponent<Projectile>().SetInitialValues(damage, projectileSpeedAdjusted, weapon_Genome.range, aoeRadius, weapon_Genome.statusEffectType, weapon_Genome.statusEffectStrength, opponentTag);
 
+        // ===== Track Metrics =====
+        totalShotsFired++;
+        totalPowerCost += powerCostAdjusted;
+        
         bullets_Left_In_Burst--;
         shoot_Timer = 1 / Mathf.Max(fireRateAdjusted, 0.001f);
         int heatIncrease = weapon_Genome.heatPerShot;
@@ -168,6 +189,8 @@ public abstract class Weapon : MonoBehaviour
             heatIncrease -= Mathf.RoundToInt(heatBoost * boostTier);
         //if (activeBoost == WeaponBoost.MoreDamageMoreHeat)
         //    heatIncrease = Mathf.RoundToInt(heatIncrease * heatPenalty);
+        
+        totalHeatGenerated += heatIncrease;
         currentHeat += heatIncrease;
 
         //Rotates weapon to point in shooting direction
@@ -177,6 +200,72 @@ public abstract class Weapon : MonoBehaviour
     public void AddTracker(ModuleStatsTracker moduleStatsTracker)
     {
         this.moduleStatsTracker = moduleStatsTracker;
+    }
+
+    /// <summary>
+    /// Called by Projectile when it successfully hits a target.
+    /// Updates weapon metrics for hit ratio and damage dealt.
+    /// </summary>
+    public void OnProjectileHit(int damage)
+    {
+        totalDamageDealt += damage;
+        totalHits++;
+    }
+
+    /// <summary>
+    /// Register all accumulated metrics with the tracker.
+    /// Should be called at end of battle/wave.
+    /// </summary>
+    public void RegisterBattleMetrics(float battleDuration)
+    {
+        if (tracker == null)
+            return;
+
+        // Register damage efficiency
+        tracker.RegisterDamageEfficiency(
+            totalDamageDealt,
+            totalPowerCost > 0 ? totalPowerCost : 1f
+        );
+
+        // Register heat management efficiency
+        tracker.RegisterHeatManagementEfficiency(
+            totalDamageDealt,
+            totalHeatGenerated > 0 ? totalHeatGenerated : 1f
+        );
+
+        // Register hit ratio
+        tracker.RegisterHitRatio(
+            totalHits,
+            totalShotsFired > 0 ? totalShotsFired : 1f
+        );
+
+        // Register effectiveness per cycle
+        float fireRateCycle = totalShotsFired > 0 ? 
+            (totalShotsFired / weapon_Genome.fireRate) : 1f;
+        tracker.RegisterEffectivenessPerCycle(
+            totalDamageDealt,
+            fireRateCycle,
+            weapon_Genome.cooldownTime
+        );
+
+        // Register targeting time efficiency
+        tracker.RegisterTargetingTimeEfficiency(
+            activeFireTime,
+            battleDuration > 0 ? battleDuration : 1f
+        );
+    }
+
+    /// <summary>
+    /// Reset all metric tracking for a new battle.
+    /// </summary>
+    public void ResetMetrics()
+    {
+        totalDamageDealt = 0f;
+        totalPowerCost = 0f;
+        totalHeatGenerated = 0f;
+        totalShotsFired = 0;
+        totalHits = 0;
+        activeFireTime = 0f;
     }
 }
 

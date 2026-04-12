@@ -5,6 +5,8 @@ public class PlayerBehaviorTracker : MonoBehaviour
 {
     public static PlayerBehaviorTracker Instance;
 
+    [HideInInspector]public Rigidbody2D rb;
+
     [Header("Raw Behavior")]
     public float avgSpeed;
     public float avgTurnRate;
@@ -28,11 +30,14 @@ public class PlayerBehaviorTracker : MonoBehaviour
 
     float smoothing = 0.1f;
     Vector3 lastPosition;
+    float lastSpeed;
+    float lastTurnRate;
 
     void Awake()
     {
         Instance = this;
         lastPosition = transform.position;
+        rb = GetComponent<Rigidbody2D>();
     }
 
     void Update()
@@ -45,24 +50,30 @@ public class PlayerBehaviorTracker : MonoBehaviour
 
     void TrackMovement()
     {
-        float speed = (transform.position - lastPosition).magnitude / Time.deltaTime;
+        float speed = (transform.position - lastPosition).magnitude / Mathf.Max(Time.deltaTime, 0.001f);
         avgSpeed = Mathf.Lerp(avgSpeed, speed, smoothing);
         speedStat.AddSample(avgSpeed);
 
-        float turn = Vector3.Angle(transform.forward, (transform.position - lastPosition).normalized);
+        float turn = Mathf.Abs(rb.angularVelocity) * Mathf.Rad2Deg;
         avgTurnRate = Mathf.Lerp(avgTurnRate, turn, smoothing);
         turnStat.AddSample(avgTurnRate);
 
-        movementEntropy = Mathf.Lerp(movementEntropy, turn * speed, smoothing);
+        float speedVar = Mathf.Abs(speed - lastSpeed);
+        float turnVar = Mathf.Abs(turn - lastTurnRate);
+        movementEntropy = (speedVar + turnVar) * 0.5f;
         entropyStat.AddSample(movementEntropy);
 
         lastPosition = transform.position;
+        lastSpeed = speed;
+        lastTurnRate = turn;
     }
 
     void TrackEngagementDistance()
     {
+        if (EnemyManager.Instance == null) return;
+
         Transform enemy = EnemyManager.Instance.GetClosestEnemy(transform.position);
-        if (enemy == null) return;
+        if (enemy == null || !enemy.gameObject.activeSelf) return;
 
         float d = Vector3.Distance(transform.position, enemy.position);
         avgEngagementDistance = Mathf.Lerp(avgEngagementDistance, d, smoothing);

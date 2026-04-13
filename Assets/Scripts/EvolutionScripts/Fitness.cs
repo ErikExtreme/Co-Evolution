@@ -188,7 +188,7 @@ public static class Fitness
         float avgDist = totalDist / shipPopulation.Count;
 
         // Stronger synergy shaping
-        float synergy = Mathf.Exp(-1.2f * avgDist);
+        float synergy = Mathf.Exp(-2.0f * avgDist);
         // (was 0.3f, doubling the slope makes synergy differences matter more)
 
         // ---------------------------------------------------------

@@ -111,7 +111,7 @@ public class EvolutionManager : MonoBehaviour
             while (nextGenW.Count < burstPopSize)
             {
                 var parent = SelectParent(weaponPop);
-                var dir = ComputeMutationDirection(parent, weaponPop);
+                var dir = ComputeMutationDirection_NSLC(parent, weaponPop);
                 var child = AxisAlignedMutation(parent, dir);
 
                 child.fitness = Fitness.CooperativeFitness(child, shipPop, playerTracker);
@@ -122,7 +122,7 @@ public class EvolutionManager : MonoBehaviour
             while (nextGenS.Count < burstPopSize)
             {
                 var parent = SelectParent(shipPop);
-                var dir = ComputeMutationDirection(parent, shipPop);
+                var dir = ComputeMutationDirection_NSLC(parent, shipPop);
                 var child = AxisAlignedMutation(parent, dir);
 
                 child.fitness = Fitness.CooperativeFitness(child, weaponPop, playerTracker);
@@ -252,6 +252,155 @@ public class EvolutionManager : MonoBehaviour
             Random.Range(-0.1f, 0.1f));
 
         direction += noise;
+
+        return direction;
+    }
+
+    private Vector3 ComputeMutationDirection_NSLC(WeaponGenome parent, List<WeaponGenome> population)
+    {
+        Vector3 parentAxis = Mapping.MapGenome(parent);
+
+        // --- 1. Find nearest neighbor (for novelty repulsion) ---
+        WeaponGenome nearest = null;
+        float nearestDist = float.MaxValue;
+
+        foreach (var g in population)
+        {
+            if (g == parent) continue;
+
+            Vector3 axis = Mapping.MapGenome(g);
+            float d = Vector3.Distance(parentAxis, axis);
+
+            if (d < nearestDist)
+            {
+                nearestDist = d;
+                nearest = g;
+            }
+        }
+
+        Vector3 noveltyDir = Vector3.zero;
+        if (nearest != null)
+        {
+            Vector3 nearestAxis = Mapping.MapGenome(nearest);
+            noveltyDir = (parentAxis - nearestAxis).normalized; // push away
+        }
+
+        // --- 2. Find nearest higher-fitness neighbor (local competition) ---
+        WeaponGenome bestLocal = null;
+        float bestLocalDist = float.MaxValue;
+
+        foreach (var g in population)
+        {
+            if (g == parent) continue;
+            if (g.finalFitness <= parent.finalFitness) continue; // must be better
+
+            Vector3 axis = Mapping.MapGenome(g);
+            float d = Vector3.Distance(parentAxis, axis);
+
+            if (d < bestLocalDist)
+            {
+                bestLocalDist = d;
+                bestLocal = g;
+            }
+        }
+
+        Vector3 localCompDir = Vector3.zero;
+        if (bestLocal != null)
+        {
+            Vector3 bestAxis = Mapping.MapGenome(bestLocal);
+            localCompDir = (bestAxis - parentAxis).normalized; // climb toward better neighbor
+        }
+
+        // --- 3. Combine novelty + local competition ---
+        // NSLC typically uses a balance between exploration and exploitation.
+        Vector3 direction = noveltyDir * 0.6f + localCompDir * 0.4f;
+
+        // --- 4. Add exploration noise ---
+        Vector3 noise = new Vector3(
+            Random.Range(-0.1f, 0.1f),
+            Random.Range(-0.1f, 0.1f),
+            Random.Range(-0.1f, 0.1f)
+        );
+
+        direction += noise;
+
+        // --- 5. Normalize and scale ---
+        if (direction.sqrMagnitude > 0.0001f)
+            direction = direction.normalized * 0.25f;
+
+        return direction;
+    }
+
+    private Vector3 ComputeMutationDirection_NSLC(ShipGenome parent, List<ShipGenome> population)
+    {
+        Vector3 parentAxis = Mapping.MapGenome(parent);
+
+        // --- 1. Nearest neighbor (novelty repulsion) ---
+        ShipGenome nearest = null;
+        float nearestDist = float.MaxValue;
+
+        foreach (var g in population)
+        {
+            if (g == parent) continue;
+
+            Vector3 axis = Mapping.MapGenome(g);
+            float d = Vector3.Distance(parentAxis, axis);
+
+            if (d < nearestDist)
+            {
+                nearestDist = d;
+                nearest = g;
+            }
+        }
+
+        Vector3 noveltyDir = Vector3.zero;
+        if (nearest != null)
+        {
+            Vector3 nearestAxis = Mapping.MapGenome(nearest);
+            noveltyDir = (parentAxis - nearestAxis).normalized;
+        }
+
+        // --- 2. Nearest higher-fitness neighbor (local competition) ---
+        ShipGenome bestLocal = null;
+        float bestLocalDist = float.MaxValue;
+
+        foreach (var g in population)
+        {
+            if (g == parent) continue;
+            if (g.finalFitness <= parent.finalFitness) continue;
+
+            Vector3 axis = Mapping.MapGenome(g);
+            float d = Vector3.Distance(parentAxis, axis);
+
+            if (d < bestLocalDist)
+            {
+                bestLocalDist = d;
+                bestLocal = g;
+            }
+        }
+
+        Vector3 localCompDir = Vector3.zero;
+        if (bestLocal != null)
+        {
+            Vector3 bestAxis = Mapping.MapGenome(bestLocal);
+            localCompDir = (bestAxis - parentAxis).normalized;
+        }
+
+        // --- 3. Combine novelty + local competition ---
+        Vector3 direction = noveltyDir * 0.6f + localCompDir * 0.4f;
+
+        // --- 4. Add exploration noise ---
+        Vector3 noise = new Vector3(
+            Random.Range(-0.1f, 0.1f),
+            Random.Range(-0.1f, 0.1f),
+            Random.Range(-0.1f, 0.1f)
+        );
+
+        direction += noise;
+
+        // --- 5. Normalize and scale ---
+        if (direction.sqrMagnitude > 0.0001f)
+            direction = direction.normalized * 0.25f;
 
         return direction;
     }

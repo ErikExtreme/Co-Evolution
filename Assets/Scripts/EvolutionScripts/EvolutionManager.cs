@@ -134,12 +134,12 @@ public class EvolutionManager : MonoBehaviour
             foreach (var g in nextGenW)
             {
                 g.novelty = Fitness.ComputeNovelty(g, nextGenW);
-                g.finalFitness = g.fitness * 0.7f + g.novelty * 0.3f;
+                g.finalFitness = g.fitness * 0.5f + g.novelty * 0.5f;
             }
             foreach (var g in nextGenS)
             {
                 g.novelty = Fitness.ComputeNovelty(g, nextGenS);
-                g.finalFitness = g.fitness * 0.7f + g.novelty * 0.3f;
+                g.finalFitness = g.fitness * 0.5f + g.novelty * 0.5f;
             }
 
             EvolutionLogger.RecordGeneration(rec, gen, nextGenW, mutationDirsW, nextGenS, mutationDirsS);
@@ -410,7 +410,7 @@ public class EvolutionManager : MonoBehaviour
         WeaponGenome g = genome.CloneForEvo();
 
         // Scale factor for how strongly direction affects mutation
-        const float mutationScale = 0.01f; // 1% of axis direction magnitude
+        const float mutationScale = 0.05f; // 5% of axis direction magnitude
 
         // Convert axis direction into per-axis mutation strength
         float stepX = dir.x * mutationScale;
@@ -482,7 +482,7 @@ public class EvolutionManager : MonoBehaviour
     {
         ShipGenome g = genome.CloneForEvo();
 
-        const float mutationScale = 0.01f;
+        const float mutationScale = 0.05f;
 
         float stepX = dir.x * mutationScale;
         float stepY = dir.y * mutationScale;

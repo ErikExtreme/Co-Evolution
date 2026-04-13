@@ -107,8 +107,8 @@ public static class Fitness
         // Final score
         float fitness =
             (statScore * 0.4f) +
-            (trackerScore * 0.4f) +
-            (alignmentScore * 0.2f);
+            (trackerScore * 0.3f) +
+            (alignmentScore * 0.3f);
 
         // Store components inside genome
         g.statScore = statScore;
@@ -152,8 +152,8 @@ public static class Fitness
         // Final score
         float fitness =
             (statScore * 0.4f) +
-            (trackerScore * 0.4f) +
-            (alignmentScore * 0.2f);
+            (trackerScore * 0.3f) +
+            (alignmentScore * 0.3f);
 
         // Store components inside genome
         g.statScore = statScore;
@@ -188,7 +188,7 @@ public static class Fitness
         float avgDist = totalDist / shipPopulation.Count;
 
         // Stronger synergy shaping
-        float synergy = Mathf.Exp(-0.6f * avgDist);
+        float synergy = Mathf.Exp(-1.2f * avgDist);
         // (was 0.3f, doubling the slope makes synergy differences matter more)
 
         // ---------------------------------------------------------
@@ -265,7 +265,7 @@ public static class Fitness
         }
 
         float avgDist = totalDist / weaponPopulation.Count;
-        float synergy = Mathf.Exp(-0.6f * avgDist);
+        float synergy = Mathf.Exp(-1.2f * avgDist);
 
         // ---------------------------------------------------------
         // 2. Player preference alignment
@@ -313,7 +313,7 @@ public static class Fitness
         return Mathf.Clamp01(fitness);
     }
 
-    public static float ComputeNovelty(WeaponGenome genome, List<WeaponGenome> population, int k = 5)
+    public static float ComputeNovelty(WeaponGenome genome, List<WeaponGenome> population, int k = 10)
     {
         // Ensure mapping is computed
         Vector3 gMap = genome.mapping;
@@ -350,10 +350,12 @@ public static class Fitness
 
         // Normalize novelty to [0,1]
         float novelty = Mathf.Clamp01(avg / Mathf.Sqrt(3f));
+        if (novelty < 0.01f)
+            novelty = 0.01f; // Minimum novelty to prevent zero fitness
         return novelty;
     }
 
-    public static float ComputeNovelty(ShipGenome genome, List<ShipGenome> population, int k = 5)
+    public static float ComputeNovelty(ShipGenome genome, List<ShipGenome> population, int k = 10)
     {
         // Ensure mapping is computed
         Vector3 gMap = genome.mapping;
@@ -390,6 +392,8 @@ public static class Fitness
 
         // Normalize novelty to [0,1]
         float novelty = Mathf.Clamp01(avg / Mathf.Sqrt(3f));
+        if (novelty < 0.01f)
+            novelty = 0.01f; // Minimum novelty to prevent zero fitness
         return novelty;
     }
 
